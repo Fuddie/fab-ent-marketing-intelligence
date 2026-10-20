@@ -1,0 +1,1799 @@
+version: 2
+models:
+- name: int_marketing__governed_orders
+  description: Internal governed order grain. Adds London date, explicit eligibility
+    and revenue scope to each unchanged all-status attributed order. Line anomalies
+    are aggregated before joining; no amounts are duplicated.
+  data_tests:
+  - marketing_unique_grain:
+      arguments:
+        columns:
+        - order_id
+  columns:
+  - name: order_id
+    description: Source order key; no status exclusions.
+    data_tests:
+    - not_null
+    - unique
+    - relationships:
+        arguments:
+          to: ref('stg_marketing__orders')
+          field: order_id
+  - name: order_timestamp
+    description: UTC-aware purchase attempt instant.
+    data_tests:
+    - not_null
+  - name: customer_id
+    description: Exact identified source customer; one acquisition per customer across
+      the whole snapshot.
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('stg_marketing__customers')
+          field: customer_id
+  - name: status
+    description: Unmodified order status; commercial eligibility remains unresolved.
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - completed
+          - partially_refunded
+          - refunded
+          - cancelled
+  - name: gross_order_amount_gbp
+    description: Unmodified DECIMAL(18,2) gross GBP amount, including cancelled attempts.
+    data_tests:
+    - not_null
+  - name: refund_amount_gbp
+    description: Unmodified final snapshot refund/cancellation reversal GBP amount.
+    data_tests:
+    - not_null
+  - name: net_order_amount_gbp
+    description: Unmodified source gross less reversal GBP amount; no revenue policy
+      inferred.
+    data_tests:
+    - not_null
+  - name: session_id
+    description: Selected or evaluated stable session identifier.
+  - name: campaign_id
+    description: Canonical single-channel campaign key; NULL only for campaignless
+      sessions or unmatched outcomes in internal daily facts.
+    data_tests:
+    - relationships:
+        arguments:
+          to: ref('stg_marketing__campaigns')
+          field: campaign_id
+  - name: source_medium
+    description: Unmodified session traffic classification.
+  - name: source
+    description: Source component split from source_medium at the literal separator
+      space/slash/space.
+  - name: medium
+    description: Medium component split from source_medium at the literal separator
+      space/slash/space.
+  - name: channel
+    description: Source session channel.
+  - name: interaction_timestamp
+    description: UTC-aware session start instant.
+  - name: attribution_status
+    description: 'Exhaustive assignment state: attributed or unattributed, across
+      all statuses.'
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - attributed
+          - unattributed
+  - name: unattributed_reason
+    description: 'NULL for attributed. Otherwise priority: missing order identity,
+      missing order time, no same-customer sessions, missing interaction time, unknown
+      campaign, missing campaign in window, then no eligible interaction in window.
+      A diagnostic, not proof of a unique cause; inspect candidates for all exclusions.'
+  - name: reporting_date
+    description: 'Europe/London calendar date: event instants converted before casting;
+      ad dates and budget days are already London dates.'
+    data_tests:
+    - not_null
+  - name: commercially_eligible
+    description: True only for status IN (completed, partially_refunded) AND net_order_amount_gbp
+      > 0. This governs conversions and acquisition, not revenue inclusion.
+    data_tests:
+    - not_null
+  - name: revenue_scope
+    description: True for completed, partially_refunded and refunded sales; excludes
+      cancellations. Signed amounts are preserved.
+    data_tests:
+    - not_null
+  - name: is_attributed
+    description: True for an existing campaign assignment; independent of commercial
+      eligibility.
+    data_tests:
+    - not_null
+  - name: marketing_channel
+    description: Paid campaign channel, valid Direct/Organic session channel, or Unattributed
+      for orders without an assignment. Never infer Direct/Organic from unmatched
+      orders.
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values: &id001
+          - Meta Paid Social
+          - Google Paid Search
+          - TikTok Paid Social
+          - Direct
+          - Organic
+          - Unattributed
+  - name: negative_input_count
+    description: Internal diagnostic count of negative media rows, orders (including
+      associated line anomalies), or campaign-budget days. Not a count of distinct
+      errors; >0 drives a flag.
+    data_tests:
+    - not_null
+- name: int_marketing__first_observed_acquisitions
+  description: Internal one-row-per-customer snapshot acquisition ledger. Select first
+    positive-net completed/partially-refunded order across all history, UTC timestamp
+    then ascending order_id. Recomputed with snapshot restatements; no lifetime claim.
+  data_tests:
+  - marketing_unique_grain:
+      arguments:
+        columns:
+        - customer_id
+  columns:
+  - name: customer_id
+    description: Exact identified source customer; one acquisition per customer across
+      the whole snapshot.
+    data_tests:
+    - not_null
+    - unique
+    - relationships:
+        arguments:
+          to: ref('stg_marketing__customers')
+          field: customer_id
+  - name: acquisition_order_id
+    description: Earliest commercially eligible order across all available history,
+      ordered by UTC timestamp then ascending lexical order ID.
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('stg_marketing__orders')
+          field: order_id
+  - name: acquisition_timestamp
+    description: UTC instant of the selected first eligible order, before London period
+      assignment.
+    data_tests:
+    - not_null
+  - name: reporting_date
+    description: 'Europe/London calendar date: event instants converted before casting;
+      ad dates and budget days are already London dates.'
+    data_tests:
+    - not_null
+  - name: campaign_id
+    description: Canonical single-channel campaign key; NULL only for campaignless
+      sessions or unmatched outcomes in internal daily facts.
+    data_tests:
+    - relationships:
+        arguments:
+          to: ref('stg_marketing__campaigns')
+          field: campaign_id
+  - name: marketing_channel
+    description: Paid campaign channel, valid Direct/Organic session channel, or Unattributed
+      for orders without an assignment. Never infer Direct/Organic from unmatched
+      orders.
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values: *id001
+  - name: is_attributed
+    description: True for an existing campaign assignment; independent of commercial
+      eligibility.
+    data_tests:
+    - not_null
+  - name: acquisition_basis
+    description: Always first_observed_2025_snapshot. Acquisition uses only available
+      2025 purchase history, not verified lifetime new customers.
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - first_observed_2025_snapshot
+- name: int_marketing__daily_facts
+  description: Internal date x nullable campaign x marketing channel fact spine. Separate
+    media/session/order/acquisition/budget aggregates join a union of keys using NULL-safe
+    campaign equality. Complete fixed-snapshot coverage permits zeros for absent activity.
+    Not a consumer ratio table.
+  data_tests:
+  - marketing_unique_grain:
+      arguments:
+        columns:
+        - reporting_date
+        - campaign_id
+        - marketing_channel
+  columns:
+  - name: reporting_date
+    description: 'Europe/London calendar date: event instants converted before casting;
+      ad dates and budget days are already London dates.'
+    data_tests:
+    - not_null
+  - name: campaign_id
+    description: Canonical single-channel campaign key; NULL only for campaignless
+      sessions or unmatched outcomes in internal daily facts.
+    data_tests:
+    - relationships:
+        arguments:
+          to: ref('stg_marketing__campaigns')
+          field: campaign_id
+  - name: marketing_channel
+    description: Paid campaign channel, valid Direct/Organic session channel, or Unattributed
+      for orders without an assignment. Never infer Direct/Organic from unmatched
+      orders.
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values: *id001
+  - name: spend_gbp
+    description: Recorded GBP platform media spend, aggregated independently of sessions/orders;
+      excludes fees, taxes, credits and unrecorded channel costs.
+    data_tests:
+    - not_null
+  - name: impressions
+    description: Recorded ad exposures, summed once per ad grain.
+    data_tests:
+    - not_null
+  - name: clicks
+    description: Recorded comparable outbound ad clicks, summed once per ad grain.
+    data_tests:
+    - not_null
+  - name: valid_sessions
+    description: All valid supplied sessions, including anonymous paid sessions; Direct/Organic
+      stay in their own channel. No order-based reclassification.
+    data_tests:
+    - not_null
+  - name: placed_orders
+    description: All recorded order attempts once, including cancelled and fully refunded
+      orders.
+    data_tests:
+    - not_null
+  - name: attributed_placed_orders
+    description: All-status placed orders with a campaign assignment. Not the commercially
+      eligible attributed conversion measure.
+    data_tests:
+    - not_null
+  - name: unattributed_placed_orders
+    description: All-status placed orders without a campaign assignment; retained
+      even when commercially ineligible.
+    data_tests:
+    - not_null
+  - name: eligible_conversions
+    description: Completed or partially_refunded orders with positive net value. Includes
+      both attributed and unattributed outcomes at overview scope.
+    data_tests:
+    - not_null
+  - name: attributed_orders
+    description: Commercially eligible orders assigned to a campaign; campaign/paid-channel
+      conversion numerator.
+    data_tests:
+    - not_null
+  - name: unattributed_eligible_orders
+    description: Commercially eligible orders without campaign assignment; overall
+      website conversion numerator includes these.
+    data_tests:
+    - not_null
+  - name: first_observed_acquisitions
+    description: Customers whose earliest eligible order across all available snapshot
+      history falls in this period/scope; each customer counted once.
+    data_tests:
+    - not_null
+  - name: attributed_first_observed_acquisitions
+    description: First observed acquisitions with paid campaign assignment; denominator
+      for matching period media-only CAC.
+    data_tests:
+    - not_null
+  - name: unattributed_first_observed_acquisitions
+    description: First observed acquisitions without assignment. Never reassign them
+      using later paid orders.
+    data_tests:
+    - not_null
+  - name: raw_gross_order_amount_gbp
+    description: All-status original merchandise amount, including cancelled attempts;
+      audit measure, not governed gross revenue.
+    data_tests:
+    - not_null
+  - name: cancellation_gross_amount_gbp
+    description: Original gross value of cancelled attempts, excluded from gross merchandise
+      revenue; equals cancellation reversals in this fixed source.
+    data_tests:
+    - not_null
+  - name: gross_merchandise_revenue_gbp
+    description: Original merchandise value of completed, partially_refunded and refunded
+      sales, excluding cancelled attempts. Not accounting revenue.
+    data_tests:
+    - not_null
+  - name: sales_refunds_gbp
+    description: Positive source deductions for non-cancelled sales, including partial
+      and full refunds; final snapshot at original order time.
+    data_tests:
+    - not_null
+  - name: cancellation_reversals_gbp
+    description: Source deductions for cancelled attempts only; bookkeeping reversal,
+      not evidence of a cash refund.
+    data_tests:
+    - not_null
+  - name: net_revenue_gbp
+    description: Non-cancelled sales net amount, including signed/zero values. Gross
+      merchandise revenue minus sales refunds, without subtracting refunds twice.
+    data_tests:
+    - not_null
+  - name: raw_net_order_amount_gbp
+    description: All-status source net amount; raw gross minus sales refunds minus
+      cancellation reversals. Audit reconciliation.
+    data_tests:
+    - not_null
+  - name: attributed_gross_merchandise_revenue_gbp
+    description: Original merchandise value of completed, partially_refunded and refunded
+      sales, excluding cancelled attempts. Not accounting revenue. Restricted to attributed
+      orders across revenue-eligible statuses (cancellation reversals use cancelled
+      status).
+    data_tests:
+    - not_null
+  - name: unattributed_gross_merchandise_revenue_gbp
+    description: Original merchandise value of completed, partially_refunded and refunded
+      sales, excluding cancelled attempts. Not accounting revenue. Restricted to unattributed
+      orders across revenue-eligible statuses (cancellation reversals use cancelled
+      status).
+    data_tests:
+    - not_null
+  - name: attributed_sales_refunds_gbp
+    description: Positive source deductions for non-cancelled sales, including partial
+      and full refunds; final snapshot at original order time. Restricted to attributed
+      orders across revenue-eligible statuses (cancellation reversals use cancelled
+      status).
+    data_tests:
+    - not_null
+  - name: unattributed_sales_refunds_gbp
+    description: Positive source deductions for non-cancelled sales, including partial
+      and full refunds; final snapshot at original order time. Restricted to unattributed
+      orders across revenue-eligible statuses (cancellation reversals use cancelled
+      status).
+    data_tests:
+    - not_null
+  - name: attributed_cancellation_reversals_gbp
+    description: Source deductions for cancelled attempts only; bookkeeping reversal,
+      not evidence of a cash refund. Restricted to attributed orders across revenue-eligible
+      statuses (cancellation reversals use cancelled status).
+    data_tests:
+    - not_null
+  - name: unattributed_cancellation_reversals_gbp
+    description: Source deductions for cancelled attempts only; bookkeeping reversal,
+      not evidence of a cash refund. Restricted to unattributed orders across revenue-eligible
+      statuses (cancellation reversals use cancelled status).
+    data_tests:
+    - not_null
+  - name: attributed_net_revenue_gbp
+    description: Non-cancelled sales net amount, including signed/zero values. Gross
+      merchandise revenue minus sales refunds, without subtracting refunds twice.
+      Restricted to attributed orders across revenue-eligible statuses (cancellation
+      reversals use cancelled status).
+    data_tests:
+    - not_null
+  - name: unattributed_net_revenue_gbp
+    description: Non-cancelled sales net amount, including signed/zero values. Gross
+      merchandise revenue minus sales refunds, without subtracting refunds twice.
+      Restricted to unattributed orders across revenue-eligible statuses (cancellation
+      reversals use cancelled status).
+    data_tests:
+    - not_null
+  - name: allocated_budget_gbp
+    description: Lifetime campaign budget allocated uniformly across inclusive active
+      days; additive across days/campaigns. Monthly totals are allocations, not approved
+      monthly budgets; floating precision may require tolerance.
+    data_tests:
+    - not_null
+  - name: negative_input_count
+    description: Internal diagnostic count of negative media rows, orders (including
+      associated line anomalies), or campaign-budget days. Not a count of distinct
+      errors; >0 drives a flag.
+    data_tests:
+    - not_null
+- name: mart_marketing__campaign_daily
+  description: 'Business mart: London reporting date x campaign. Includes every active
+    budget day and observed fact date, even outside campaign activity. Additive measures
+    preserve spend-only campaigns. Lifetime/cumulative budgets and ratios must not
+    be summed.'
+  data_tests:
+  - marketing_unique_grain:
+      arguments:
+        columns:
+        - reporting_date
+        - campaign_id
+  - marketing_mart_invariants:
+      arguments:
+        scope: campaign
+        budget_kind: daily
+  columns:
+  - name: reporting_date
+    description: 'Europe/London calendar date: event instants converted before casting;
+      ad dates and budget days are already London dates.'
+    data_tests:
+    - not_null
+  - name: campaign_id
+    description: Canonical single-channel campaign key; NULL only for campaignless
+      sessions or unmatched outcomes in internal daily facts.
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('stg_marketing__campaigns')
+          field: campaign_id
+  - name: marketing_channel
+    description: Paid campaign channel, valid Direct/Organic session channel, or Unattributed
+      for orders without an assignment. Never infer Direct/Organic from unmatched
+      orders.
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values: &id002
+          - Meta Paid Social
+          - Google Paid Search
+          - TikTok Paid Social
+  - name: spend_gbp
+    description: Recorded GBP platform media spend, aggregated independently of sessions/orders;
+      excludes fees, taxes, credits and unrecorded channel costs.
+    data_tests:
+    - not_null
+  - name: impressions
+    description: Recorded ad exposures, summed once per ad grain.
+    data_tests:
+    - not_null
+  - name: clicks
+    description: Recorded comparable outbound ad clicks, summed once per ad grain.
+    data_tests:
+    - not_null
+  - name: valid_sessions
+    description: All valid supplied sessions, including anonymous paid sessions; Direct/Organic
+      stay in their own channel. No order-based reclassification.
+    data_tests:
+    - not_null
+  - name: placed_orders
+    description: All recorded order attempts once, including cancelled and fully refunded
+      orders.
+    data_tests:
+    - not_null
+  - name: attributed_placed_orders
+    description: All-status placed orders with a campaign assignment. Not the commercially
+      eligible attributed conversion measure.
+    data_tests:
+    - not_null
+  - name: unattributed_placed_orders
+    description: All-status placed orders without a campaign assignment; retained
+      even when commercially ineligible.
+    data_tests:
+    - not_null
+  - name: eligible_conversions
+    description: Completed or partially_refunded orders with positive net value. Includes
+      both attributed and unattributed outcomes at overview scope.
+    data_tests:
+    - not_null
+  - name: attributed_orders
+    description: Commercially eligible orders assigned to a campaign; campaign/paid-channel
+      conversion numerator.
+    data_tests:
+    - not_null
+  - name: unattributed_eligible_orders
+    description: Commercially eligible orders without campaign assignment; overall
+      website conversion numerator includes these.
+    data_tests:
+    - not_null
+  - name: first_observed_acquisitions
+    description: Customers whose earliest eligible order across all available snapshot
+      history falls in this period/scope; each customer counted once.
+    data_tests:
+    - not_null
+  - name: attributed_first_observed_acquisitions
+    description: First observed acquisitions with paid campaign assignment; denominator
+      for matching period media-only CAC.
+    data_tests:
+    - not_null
+  - name: unattributed_first_observed_acquisitions
+    description: First observed acquisitions without assignment. Never reassign them
+      using later paid orders.
+    data_tests:
+    - not_null
+  - name: raw_gross_order_amount_gbp
+    description: All-status original merchandise amount, including cancelled attempts;
+      audit measure, not governed gross revenue.
+    data_tests:
+    - not_null
+  - name: cancellation_gross_amount_gbp
+    description: Original gross value of cancelled attempts, excluded from gross merchandise
+      revenue; equals cancellation reversals in this fixed source.
+    data_tests:
+    - not_null
+  - name: gross_merchandise_revenue_gbp
+    description: Original merchandise value of completed, partially_refunded and refunded
+      sales, excluding cancelled attempts. Not accounting revenue.
+    data_tests:
+    - not_null
+  - name: sales_refunds_gbp
+    description: Positive source deductions for non-cancelled sales, including partial
+      and full refunds; final snapshot at original order time.
+    data_tests:
+    - not_null
+  - name: cancellation_reversals_gbp
+    description: Source deductions for cancelled attempts only; bookkeeping reversal,
+      not evidence of a cash refund.
+    data_tests:
+    - not_null
+  - name: net_revenue_gbp
+    description: Non-cancelled sales net amount, including signed/zero values. Gross
+      merchandise revenue minus sales refunds, without subtracting refunds twice.
+    data_tests:
+    - not_null
+  - name: raw_net_order_amount_gbp
+    description: All-status source net amount; raw gross minus sales refunds minus
+      cancellation reversals. Audit reconciliation.
+    data_tests:
+    - not_null
+  - name: attributed_gross_merchandise_revenue_gbp
+    description: Original merchandise value of completed, partially_refunded and refunded
+      sales, excluding cancelled attempts. Not accounting revenue. Restricted to attributed
+      orders across revenue-eligible statuses (cancellation reversals use cancelled
+      status).
+    data_tests:
+    - not_null
+  - name: unattributed_gross_merchandise_revenue_gbp
+    description: Original merchandise value of completed, partially_refunded and refunded
+      sales, excluding cancelled attempts. Not accounting revenue. Restricted to unattributed
+      orders across revenue-eligible statuses (cancellation reversals use cancelled
+      status).
+    data_tests:
+    - not_null
+  - name: attributed_sales_refunds_gbp
+    description: Positive source deductions for non-cancelled sales, including partial
+      and full refunds; final snapshot at original order time. Restricted to attributed
+      orders across revenue-eligible statuses (cancellation reversals use cancelled
+      status).
+    data_tests:
+    - not_null
+  - name: unattributed_sales_refunds_gbp
+    description: Positive source deductions for non-cancelled sales, including partial
+      and full refunds; final snapshot at original order time. Restricted to unattributed
+      orders across revenue-eligible statuses (cancellation reversals use cancelled
+      status).
+    data_tests:
+    - not_null
+  - name: attributed_cancellation_reversals_gbp
+    description: Source deductions for cancelled attempts only; bookkeeping reversal,
+      not evidence of a cash refund. Restricted to attributed orders across revenue-eligible
+      statuses (cancellation reversals use cancelled status).
+    data_tests:
+    - not_null
+  - name: unattributed_cancellation_reversals_gbp
+    description: Source deductions for cancelled attempts only; bookkeeping reversal,
+      not evidence of a cash refund. Restricted to unattributed orders across revenue-eligible
+      statuses (cancellation reversals use cancelled status).
+    data_tests:
+    - not_null
+  - name: attributed_net_revenue_gbp
+    description: Non-cancelled sales net amount, including signed/zero values. Gross
+      merchandise revenue minus sales refunds, without subtracting refunds twice.
+      Restricted to attributed orders across revenue-eligible statuses (cancellation
+      reversals use cancelled status).
+    data_tests:
+    - not_null
+  - name: unattributed_net_revenue_gbp
+    description: Non-cancelled sales net amount, including signed/zero values. Gross
+      merchandise revenue minus sales refunds, without subtracting refunds twice.
+      Restricted to unattributed orders across revenue-eligible statuses (cancellation
+      reversals use cancelled status).
+    data_tests:
+    - not_null
+  - name: allocated_budget_gbp
+    description: Lifetime campaign budget allocated uniformly across inclusive active
+      days; additive across days/campaigns. Monthly totals are allocations, not approved
+      monthly budgets; floating precision may require tolerance.
+    data_tests:
+    - not_null
+  - name: negative_input_count
+    description: Internal diagnostic count of negative media rows, orders (including
+      associated line anomalies), or campaign-budget days. Not a count of distinct
+      errors; >0 drives a flag.
+    data_tests:
+    - not_null
+  - name: campaign_name
+    description: Source fictional campaign name.
+    data_tests:
+    - not_null
+  - name: objective
+    description: Source campaign objective.
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - Sales
+          - Traffic
+          - Awareness
+  - name: start_date
+    description: Inclusive London campaign start date.
+    data_tests:
+    - not_null
+  - name: end_date
+    description: Inclusive London campaign end date.
+    data_tests:
+    - not_null
+  - name: lifetime_budget_gbp
+    description: Fixed campaign lifetime media budget, counted once in summary. Repeated
+      on daily rows for context; never sum across days.
+    data_tests:
+    - not_null
+  - name: cost_coverage
+    description: platform_media_only for paid scopes and overview; not_available for
+      Direct, Organic and Unattributed. Zero spend does not establish missing cost
+      coverage.
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - platform_media_only
+          - not_available
+  - name: acquisition_basis
+    description: Always first_observed_2025_snapshot. Acquisition uses only available
+      2025 purchase history, not verified lifetime new customers.
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - first_observed_2025_snapshot
+  - name: cumulative_spend_gbp
+    description: Campaign spend through this reporting date, including any observed
+      outcome-only days; not additive across dates.
+    data_tests:
+    - not_null
+  - name: expected_cumulative_spend_gbp
+    description: Straight-line lifetime budget through inclusive elapsed active days,
+      clamped to zero before start and lifetime budget after end; not additive across
+      dates.
+    data_tests:
+    - not_null
+  - name: ctr_pct
+    description: 100 * total clicks / total impressions; NULL for zero/missing denominator.
+      Recompute from components when rolling up.
+  - name: cpc_gbp
+    description: Recorded media spend / clicks in GBP; NULL for zero/missing denominator.
+  - name: conversion_rate_pct
+    description: 'Campaign/paid channel: 100 * attributed eligible orders / valid
+      classified sessions. Overview: 100 * all eligible orders / all valid sessions.
+      Direct/Organic/Unattributed channel rates are NULL. Period order-to-session
+      rate, potentially above 100%.'
+  - name: gross_roas
+    description: Attributed gross merchandise revenue / media spend, a multiple. Overview
+      excludes unattributed revenue from this numerator. NULL for zero spend or absent
+      channel cost coverage.
+  - name: net_roas
+    description: Attributed net merchandise revenue / media spend, a multiple. NULL
+      for zero spend or absent channel cost coverage; not profit or causal return.
+  - name: media_only_cac_gbp
+    description: Period media spend / period attributed first observed acquisitions.
+      NULL for zero denominator or unavailable channel costs. Neither lifetime, fully
+      loaded nor spend-cohort CAC.
+  - name: attribution_rate_pct
+    description: 100 * attributed eligible orders / all eligible orders at row scope;
+      NULL with no eligible orders. Campaign/paid scopes are necessarily 100% when
+      defined; overview measures overall coverage.
+  - name: budget_utilisation_pct
+    description: 'Percent: daily campaign cumulative spend / lifetime budget; summary
+      full spend / lifetime budget; monthly spend / allocated active-day budget. NULL
+      for zero denominator.'
+  - name: budget_pacing_pct
+    description: 'Percent: daily campaign cumulative spend / expected cumulative spend;
+      completed-horizon summary utilisation; monthly spend / allocated monthly budget.
+      NULL for zero denominator.'
+  - name: flag_spend_without_eligible_attributed_orders
+    description: Period recorded spend > 0 and attributed eligible orders = 0. Includes
+      spend-only campaigns; not a causal waste claim.
+    data_tests:
+    - not_null
+  - name: flag_budget_overspend
+    description: Budget utilisation >100%; false when undefined. Daily compares cumulative
+      spend with lifetime budget; monthly compares period allocation.
+    data_tests:
+    - not_null
+  - name: flag_ahead_of_budget_pacing
+    description: Budget pacing >100%; false when undefined. Straight-line monitoring
+      convention.
+    data_tests:
+    - not_null
+  - name: flag_approaching_budget
+    description: Budget utilisation >=90% and <=100%; false when undefined. Adopted
+      monitoring threshold.
+    data_tests:
+    - not_null
+  - name: flag_unexpected_negative_inputs
+    description: True if negative media, budget, order or order-line inputs were detected.
+      Values are preserved, not clamped.
+    data_tests:
+    - not_null
+  - name: flag_incomplete_attribution
+    description: Unattributed placed orders >0 at row scope. False on campaign scopes
+      cannot establish global completeness; inspect monthly overview.
+    data_tests:
+    - not_null
+- name: mart_marketing__campaign_summary
+  description: 'Business mart: exactly one row per source campaign, retaining spend-only
+    and zero-activity campaigns. Lifetime budget occurs once. Attribution metrics
+    cover assigned outcomes only; use overview for unmatched outcomes.'
+  data_tests:
+  - marketing_unique_grain:
+      arguments:
+        columns:
+        - campaign_id
+  - marketing_mart_invariants:
+      arguments:
+        scope: campaign
+        budget_kind: lifetime
+  columns:
+  - name: campaign_id
+    description: Canonical single-channel campaign key; NULL only for campaignless
+      sessions or unmatched outcomes in internal daily facts.
+    data_tests:
+    - not_null
+    - unique
+    - relationships:
+        arguments:
+          to: ref('stg_marketing__campaigns')
+          field: campaign_id
+  - name: campaign_name
+    description: Source fictional campaign name.
+    data_tests:
+    - not_null
+  - name: marketing_channel
+    description: Paid campaign channel, valid Direct/Organic session channel, or Unattributed
+      for orders without an assignment. Never infer Direct/Organic from unmatched
+      orders.
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values: *id002
+  - name: objective
+    description: Source campaign objective.
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - Sales
+          - Traffic
+          - Awareness
+  - name: start_date
+    description: Inclusive London campaign start date.
+    data_tests:
+    - not_null
+  - name: end_date
+    description: Inclusive London campaign end date.
+    data_tests:
+    - not_null
+  - name: lifetime_budget_gbp
+    description: Fixed campaign lifetime media budget, counted once in summary. Repeated
+      on daily rows for context; never sum across days.
+    data_tests:
+    - not_null
+  - name: cost_coverage
+    description: platform_media_only for paid scopes and overview; not_available for
+      Direct, Organic and Unattributed. Zero spend does not establish missing cost
+      coverage.
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - platform_media_only
+          - not_available
+  - name: acquisition_basis
+    description: Always first_observed_2025_snapshot. Acquisition uses only available
+      2025 purchase history, not verified lifetime new customers.
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - first_observed_2025_snapshot
+  - name: spend_gbp
+    description: Recorded GBP platform media spend, aggregated independently of sessions/orders;
+      excludes fees, taxes, credits and unrecorded channel costs.
+    data_tests:
+    - not_null
+  - name: impressions
+    description: Recorded ad exposures, summed once per ad grain.
+    data_tests:
+    - not_null
+  - name: clicks
+    description: Recorded comparable outbound ad clicks, summed once per ad grain.
+    data_tests:
+    - not_null
+  - name: valid_sessions
+    description: All valid supplied sessions, including anonymous paid sessions; Direct/Organic
+      stay in their own channel. No order-based reclassification.
+    data_tests:
+    - not_null
+  - name: placed_orders
+    description: All recorded order attempts once, including cancelled and fully refunded
+      orders.
+    data_tests:
+    - not_null
+  - name: attributed_placed_orders
+    description: All-status placed orders with a campaign assignment. Not the commercially
+      eligible attributed conversion measure.
+    data_tests:
+    - not_null
+  - name: unattributed_placed_orders
+    description: All-status placed orders without a campaign assignment; retained
+      even when commercially ineligible.
+    data_tests:
+    - not_null
+  - name: eligible_conversions
+    description: Completed or partially_refunded orders with positive net value. Includes
+      both attributed and unattributed outcomes at overview scope.
+    data_tests:
+    - not_null
+  - name: attributed_orders
+    description: Commercially eligible orders assigned to a campaign; campaign/paid-channel
+      conversion numerator.
+    data_tests:
+    - not_null
+  - name: unattributed_eligible_orders
+    description: Commercially eligible orders without campaign assignment; overall
+      website conversion numerator includes these.
+    data_tests:
+    - not_null
+  - name: first_observed_acquisitions
+    description: Customers whose earliest eligible order across all available snapshot
+      history falls in this period/scope; each customer counted once.
+    data_tests:
+    - not_null
+  - name: attributed_first_observed_acquisitions
+    description: First observed acquisitions with paid campaign assignment; denominator
+      for matching period media-only CAC.
+    data_tests:
+    - not_null
+  - name: unattributed_first_observed_acquisitions
+    description: First observed acquisitions without assignment. Never reassign them
+      using later paid orders.
+    data_tests:
+    - not_null
+  - name: raw_gross_order_amount_gbp
+    description: All-status original merchandise amount, including cancelled attempts;
+      audit measure, not governed gross revenue.
+    data_tests:
+    - not_null
+  - name: cancellation_gross_amount_gbp
+    description: Original gross value of cancelled attempts, excluded from gross merchandise
+      revenue; equals cancellation reversals in this fixed source.
+    data_tests:
+    - not_null
+  - name: gross_merchandise_revenue_gbp
+    description: Original merchandise value of completed, partially_refunded and refunded
+      sales, excluding cancelled attempts. Not accounting revenue.
+    data_tests:
+    - not_null
+  - name: sales_refunds_gbp
+    description: Positive source deductions for non-cancelled sales, including partial
+      and full refunds; final snapshot at original order time.
+    data_tests:
+    - not_null
+  - name: cancellation_reversals_gbp
+    description: Source deductions for cancelled attempts only; bookkeeping reversal,
+      not evidence of a cash refund.
+    data_tests:
+    - not_null
+  - name: net_revenue_gbp
+    description: Non-cancelled sales net amount, including signed/zero values. Gross
+      merchandise revenue minus sales refunds, without subtracting refunds twice.
+    data_tests:
+    - not_null
+  - name: raw_net_order_amount_gbp
+    description: All-status source net amount; raw gross minus sales refunds minus
+      cancellation reversals. Audit reconciliation.
+    data_tests:
+    - not_null
+  - name: attributed_gross_merchandise_revenue_gbp
+    description: Original merchandise value of completed, partially_refunded and refunded
+      sales, excluding cancelled attempts. Not accounting revenue. Restricted to attributed
+      orders across revenue-eligible statuses (cancellation reversals use cancelled
+      status).
+    data_tests:
+    - not_null
+  - name: unattributed_gross_merchandise_revenue_gbp
+    description: Original merchandise value of completed, partially_refunded and refunded
+      sales, excluding cancelled attempts. Not accounting revenue. Restricted to unattributed
+      orders across revenue-eligible statuses (cancellation reversals use cancelled
+      status).
+    data_tests:
+    - not_null
+  - name: attributed_sales_refunds_gbp
+    description: Positive source deductions for non-cancelled sales, including partial
+      and full refunds; final snapshot at original order time. Restricted to attributed
+      orders across revenue-eligible statuses (cancellation reversals use cancelled
+      status).
+    data_tests:
+    - not_null
+  - name: unattributed_sales_refunds_gbp
+    description: Positive source deductions for non-cancelled sales, including partial
+      and full refunds; final snapshot at original order time. Restricted to unattributed
+      orders across revenue-eligible statuses (cancellation reversals use cancelled
+      status).
+    data_tests:
+    - not_null
+  - name: attributed_cancellation_reversals_gbp
+    description: Source deductions for cancelled attempts only; bookkeeping reversal,
+      not evidence of a cash refund. Restricted to attributed orders across revenue-eligible
+      statuses (cancellation reversals use cancelled status).
+    data_tests:
+    - not_null
+  - name: unattributed_cancellation_reversals_gbp
+    description: Source deductions for cancelled attempts only; bookkeeping reversal,
+      not evidence of a cash refund. Restricted to unattributed orders across revenue-eligible
+      statuses (cancellation reversals use cancelled status).
+    data_tests:
+    - not_null
+  - name: attributed_net_revenue_gbp
+    description: Non-cancelled sales net amount, including signed/zero values. Gross
+      merchandise revenue minus sales refunds, without subtracting refunds twice.
+      Restricted to attributed orders across revenue-eligible statuses (cancellation
+      reversals use cancelled status).
+    data_tests:
+    - not_null
+  - name: unattributed_net_revenue_gbp
+    description: Non-cancelled sales net amount, including signed/zero values. Gross
+      merchandise revenue minus sales refunds, without subtracting refunds twice.
+      Restricted to unattributed orders across revenue-eligible statuses (cancellation
+      reversals use cancelled status).
+    data_tests:
+    - not_null
+  - name: allocated_budget_gbp
+    description: Lifetime campaign budget allocated uniformly across inclusive active
+      days; additive across days/campaigns. Monthly totals are allocations, not approved
+      monthly budgets; floating precision may require tolerance.
+    data_tests:
+    - not_null
+  - name: negative_input_count
+    description: Internal diagnostic count of negative media rows, orders (including
+      associated line anomalies), or campaign-budget days. Not a count of distinct
+      errors; >0 drives a flag.
+    data_tests:
+    - not_null
+  - name: ctr_pct
+    description: 100 * total clicks / total impressions; NULL for zero/missing denominator.
+      Recompute from components when rolling up.
+  - name: cpc_gbp
+    description: Recorded media spend / clicks in GBP; NULL for zero/missing denominator.
+  - name: conversion_rate_pct
+    description: 'Campaign/paid channel: 100 * attributed eligible orders / valid
+      classified sessions. Overview: 100 * all eligible orders / all valid sessions.
+      Direct/Organic/Unattributed channel rates are NULL. Period order-to-session
+      rate, potentially above 100%.'
+  - name: gross_roas
+    description: Attributed gross merchandise revenue / media spend, a multiple. Overview
+      excludes unattributed revenue from this numerator. NULL for zero spend or absent
+      channel cost coverage.
+  - name: net_roas
+    description: Attributed net merchandise revenue / media spend, a multiple. NULL
+      for zero spend or absent channel cost coverage; not profit or causal return.
+  - name: media_only_cac_gbp
+    description: Period media spend / period attributed first observed acquisitions.
+      NULL for zero denominator or unavailable channel costs. Neither lifetime, fully
+      loaded nor spend-cohort CAC.
+  - name: attribution_rate_pct
+    description: 100 * attributed eligible orders / all eligible orders at row scope;
+      NULL with no eligible orders. Campaign/paid scopes are necessarily 100% when
+      defined; overview measures overall coverage.
+  - name: budget_utilisation_pct
+    description: 'Percent: daily campaign cumulative spend / lifetime budget; summary
+      full spend / lifetime budget; monthly spend / allocated active-day budget. NULL
+      for zero denominator.'
+  - name: budget_pacing_pct
+    description: 'Percent: daily campaign cumulative spend / expected cumulative spend;
+      completed-horizon summary utilisation; monthly spend / allocated monthly budget.
+      NULL for zero denominator.'
+  - name: flag_spend_without_eligible_attributed_orders
+    description: Period recorded spend > 0 and attributed eligible orders = 0. Includes
+      spend-only campaigns; not a causal waste claim.
+    data_tests:
+    - not_null
+  - name: flag_budget_overspend
+    description: Budget utilisation >100%; false when undefined. Daily compares cumulative
+      spend with lifetime budget; monthly compares period allocation.
+    data_tests:
+    - not_null
+  - name: flag_ahead_of_budget_pacing
+    description: Budget pacing >100%; false when undefined. Straight-line monitoring
+      convention.
+    data_tests:
+    - not_null
+  - name: flag_approaching_budget
+    description: Budget utilisation >=90% and <=100%; false when undefined. Adopted
+      monitoring threshold.
+    data_tests:
+    - not_null
+  - name: flag_unexpected_negative_inputs
+    description: True if negative media, budget, order or order-line inputs were detected.
+      Values are preserved, not clamped.
+    data_tests:
+    - not_null
+  - name: flag_incomplete_attribution
+    description: Unattributed placed orders >0 at row scope. False on campaign scopes
+      cannot establish global completeness; inspect monthly overview.
+    data_tests:
+    - not_null
+- name: mart_marketing__channel_monthly
+  description: 'Business mart: London reporting month x marketing channel, including
+    Direct/Organic sessions and a separate Unattributed outcome bucket. Non-paid cost
+    coverage is unknown; their CAC/ROAS/conversion rate are NULL. Budget is active-day
+    allocation.'
+  data_tests:
+  - marketing_unique_grain:
+      arguments:
+        columns:
+        - reporting_month
+        - marketing_channel
+  - marketing_mart_invariants:
+      arguments:
+        scope: channel
+        budget_kind: monthly
+  columns:
+  - name: reporting_month
+    description: First day of the Europe/London reporting month.
+    data_tests:
+    - not_null
+  - name: marketing_channel
+    description: Paid campaign channel, valid Direct/Organic session channel, or Unattributed
+      for orders without an assignment. Never infer Direct/Organic from unmatched
+      orders.
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values: *id001
+  - name: cost_coverage
+    description: platform_media_only for paid scopes and overview; not_available for
+      Direct, Organic and Unattributed. Zero spend does not establish missing cost
+      coverage.
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - platform_media_only
+          - not_available
+  - name: acquisition_basis
+    description: Always first_observed_2025_snapshot. Acquisition uses only available
+      2025 purchase history, not verified lifetime new customers.
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - first_observed_2025_snapshot
+  - name: spend_gbp
+    description: Recorded GBP platform media spend, aggregated independently of sessions/orders;
+      excludes fees, taxes, credits and unrecorded channel costs.
+    data_tests:
+    - not_null
+  - name: impressions
+    description: Recorded ad exposures, summed once per ad grain.
+    data_tests:
+    - not_null
+  - name: clicks
+    description: Recorded comparable outbound ad clicks, summed once per ad grain.
+    data_tests:
+    - not_null
+  - name: valid_sessions
+    description: All valid supplied sessions, including anonymous paid sessions; Direct/Organic
+      stay in their own channel. No order-based reclassification.
+    data_tests:
+    - not_null
+  - name: placed_orders
+    description: All recorded order attempts once, including cancelled and fully refunded
+      orders.
+    data_tests:
+    - not_null
+  - name: attributed_placed_orders
+    description: All-status placed orders with a campaign assignment. Not the commercially
+      eligible attributed conversion measure.
+    data_tests:
+    - not_null
+  - name: unattributed_placed_orders
+    description: All-status placed orders without a campaign assignment; retained
+      even when commercially ineligible.
+    data_tests:
+    - not_null
+  - name: eligible_conversions
+    description: Completed or partially_refunded orders with positive net value. Includes
+      both attributed and unattributed outcomes at overview scope.
+    data_tests:
+    - not_null
+  - name: attributed_orders
+    description: Commercially eligible orders assigned to a campaign; campaign/paid-channel
+      conversion numerator.
+    data_tests:
+    - not_null
+  - name: unattributed_eligible_orders
+    description: Commercially eligible orders without campaign assignment; overall
+      website conversion numerator includes these.
+    data_tests:
+    - not_null
+  - name: first_observed_acquisitions
+    description: Customers whose earliest eligible order across all available snapshot
+      history falls in this period/scope; each customer counted once.
+    data_tests:
+    - not_null
+  - name: attributed_first_observed_acquisitions
+    description: First observed acquisitions with paid campaign assignment; denominator
+      for matching period media-only CAC.
+    data_tests:
+    - not_null
+  - name: unattributed_first_observed_acquisitions
+    description: First observed acquisitions without assignment. Never reassign them
+      using later paid orders.
+    data_tests:
+    - not_null
+  - name: raw_gross_order_amount_gbp
+    description: All-status original merchandise amount, including cancelled attempts;
+      audit measure, not governed gross revenue.
+    data_tests:
+    - not_null
+  - name: cancellation_gross_amount_gbp
+    description: Original gross value of cancelled attempts, excluded from gross merchandise
+      revenue; equals cancellation reversals in this fixed source.
+    data_tests:
+    - not_null
+  - name: gross_merchandise_revenue_gbp
+    description: Original merchandise value of completed, partially_refunded and refunded
+      sales, excluding cancelled attempts. Not accounting revenue.
+    data_tests:
+    - not_null
+  - name: sales_refunds_gbp
+    description: Positive source deductions for non-cancelled sales, including partial
+      and full refunds; final snapshot at original order time.
+    data_tests:
+    - not_null
+  - name: cancellation_reversals_gbp
+    description: Source deductions for cancelled attempts only; bookkeeping reversal,
+      not evidence of a cash refund.
+    data_tests:
+    - not_null
+  - name: net_revenue_gbp
+    description: Non-cancelled sales net amount, including signed/zero values. Gross
+      merchandise revenue minus sales refunds, without subtracting refunds twice.
+    data_tests:
+    - not_null
+  - name: raw_net_order_amount_gbp
+    description: All-status source net amount; raw gross minus sales refunds minus
+      cancellation reversals. Audit reconciliation.
+    data_tests:
+    - not_null
+  - name: attributed_gross_merchandise_revenue_gbp
+    description: Original merchandise value of completed, partially_refunded and refunded
+      sales, excluding cancelled attempts. Not accounting revenue. Restricted to attributed
+      orders across revenue-eligible statuses (cancellation reversals use cancelled
+      status).
+    data_tests:
+    - not_null
+  - name: unattributed_gross_merchandise_revenue_gbp
+    description: Original merchandise value of completed, partially_refunded and refunded
+      sales, excluding cancelled attempts. Not accounting revenue. Restricted to unattributed
+      orders across revenue-eligible statuses (cancellation reversals use cancelled
+      status).
+    data_tests:
+    - not_null
+  - name: attributed_sales_refunds_gbp
+    description: Positive source deductions for non-cancelled sales, including partial
+      and full refunds; final snapshot at original order time. Restricted to attributed
+      orders across revenue-eligible statuses (cancellation reversals use cancelled
+      status).
+    data_tests:
+    - not_null
+  - name: unattributed_sales_refunds_gbp
+    description: Positive source deductions for non-cancelled sales, including partial
+      and full refunds; final snapshot at original order time. Restricted to unattributed
+      orders across revenue-eligible statuses (cancellation reversals use cancelled
+      status).
+    data_tests:
+    - not_null
+  - name: attributed_cancellation_reversals_gbp
+    description: Source deductions for cancelled attempts only; bookkeeping reversal,
+      not evidence of a cash refund. Restricted to attributed orders across revenue-eligible
+      statuses (cancellation reversals use cancelled status).
+    data_tests:
+    - not_null
+  - name: unattributed_cancellation_reversals_gbp
+    description: Source deductions for cancelled attempts only; bookkeeping reversal,
+      not evidence of a cash refund. Restricted to unattributed orders across revenue-eligible
+      statuses (cancellation reversals use cancelled status).
+    data_tests:
+    - not_null
+  - name: attributed_net_revenue_gbp
+    description: Non-cancelled sales net amount, including signed/zero values. Gross
+      merchandise revenue minus sales refunds, without subtracting refunds twice.
+      Restricted to attributed orders across revenue-eligible statuses (cancellation
+      reversals use cancelled status).
+    data_tests:
+    - not_null
+  - name: unattributed_net_revenue_gbp
+    description: Non-cancelled sales net amount, including signed/zero values. Gross
+      merchandise revenue minus sales refunds, without subtracting refunds twice.
+      Restricted to unattributed orders across revenue-eligible statuses (cancellation
+      reversals use cancelled status).
+    data_tests:
+    - not_null
+  - name: allocated_budget_gbp
+    description: Lifetime campaign budget allocated uniformly across inclusive active
+      days; additive across days/campaigns. Monthly totals are allocations, not approved
+      monthly budgets; floating precision may require tolerance.
+    data_tests:
+    - not_null
+  - name: negative_input_count
+    description: Internal diagnostic count of negative media rows, orders (including
+      associated line anomalies), or campaign-budget days. Not a count of distinct
+      errors; >0 drives a flag.
+    data_tests:
+    - not_null
+  - name: ctr_pct
+    description: 100 * total clicks / total impressions; NULL for zero/missing denominator.
+      Recompute from components when rolling up.
+  - name: cpc_gbp
+    description: Recorded media spend / clicks in GBP; NULL for zero/missing denominator.
+  - name: conversion_rate_pct
+    description: 'Campaign/paid channel: 100 * attributed eligible orders / valid
+      classified sessions. Overview: 100 * all eligible orders / all valid sessions.
+      Direct/Organic/Unattributed channel rates are NULL. Period order-to-session
+      rate, potentially above 100%.'
+  - name: gross_roas
+    description: Attributed gross merchandise revenue / media spend, a multiple. Overview
+      excludes unattributed revenue from this numerator. NULL for zero spend or absent
+      channel cost coverage.
+  - name: net_roas
+    description: Attributed net merchandise revenue / media spend, a multiple. NULL
+      for zero spend or absent channel cost coverage; not profit or causal return.
+  - name: media_only_cac_gbp
+    description: Period media spend / period attributed first observed acquisitions.
+      NULL for zero denominator or unavailable channel costs. Neither lifetime, fully
+      loaded nor spend-cohort CAC.
+  - name: attribution_rate_pct
+    description: 100 * attributed eligible orders / all eligible orders at row scope;
+      NULL with no eligible orders. Campaign/paid scopes are necessarily 100% when
+      defined; overview measures overall coverage.
+  - name: budget_utilisation_pct
+    description: 'Percent: daily campaign cumulative spend / lifetime budget; summary
+      full spend / lifetime budget; monthly spend / allocated active-day budget. NULL
+      for zero denominator.'
+  - name: budget_pacing_pct
+    description: 'Percent: daily campaign cumulative spend / expected cumulative spend;
+      completed-horizon summary utilisation; monthly spend / allocated monthly budget.
+      NULL for zero denominator.'
+  - name: flag_spend_without_eligible_attributed_orders
+    description: Period recorded spend > 0 and attributed eligible orders = 0. Includes
+      spend-only campaigns; not a causal waste claim.
+    data_tests:
+    - not_null
+  - name: flag_budget_overspend
+    description: Budget utilisation >100%; false when undefined. Daily compares cumulative
+      spend with lifetime budget; monthly compares period allocation.
+    data_tests:
+    - not_null
+  - name: flag_ahead_of_budget_pacing
+    description: Budget pacing >100%; false when undefined. Straight-line monitoring
+      convention.
+    data_tests:
+    - not_null
+  - name: flag_approaching_budget
+    description: Budget utilisation >=90% and <=100%; false when undefined. Adopted
+      monitoring threshold.
+    data_tests:
+    - not_null
+  - name: flag_unexpected_negative_inputs
+    description: True if negative media, budget, order or order-line inputs were detected.
+      Values are preserved, not clamped.
+    data_tests:
+    - not_null
+  - name: flag_incomplete_attribution
+    description: Unattributed placed orders >0 at row scope. False on campaign scopes
+      cannot establish global completeness; inspect monthly overview.
+    data_tests:
+    - not_null
+- name: mart_marketing__monthly_overview
+  description: 'Business mart: London reporting month including all website outcomes.
+    Overall conversion includes unattributed eligible orders; CAC and ROAS use only
+    paid-attributed acquisitions/revenue. Separate assigned/unassigned monetary and
+    count components reconcile to website totals. All acquisitions are first observed
+    in the 2025 snapshot.'
+  data_tests:
+  - marketing_unique_grain:
+      arguments:
+        columns:
+        - reporting_month
+  - marketing_mart_invariants:
+      arguments:
+        scope: overview
+        budget_kind: monthly
+  columns:
+  - name: reporting_month
+    description: First day of the Europe/London reporting month.
+    data_tests:
+    - not_null
+    - unique
+  - name: cost_coverage
+    description: platform_media_only for paid scopes and overview; not_available for
+      Direct, Organic and Unattributed. Zero spend does not establish missing cost
+      coverage.
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - platform_media_only
+          - not_available
+  - name: acquisition_basis
+    description: Always first_observed_2025_snapshot. Acquisition uses only available
+      2025 purchase history, not verified lifetime new customers.
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - first_observed_2025_snapshot
+  - name: spend_gbp
+    description: Recorded GBP platform media spend, aggregated independently of sessions/orders;
+      excludes fees, taxes, credits and unrecorded channel costs.
+    data_tests:
+    - not_null
+  - name: impressions
+    description: Recorded ad exposures, summed once per ad grain.
+    data_tests:
+    - not_null
+  - name: clicks
+    description: Recorded comparable outbound ad clicks, summed once per ad grain.
+    data_tests:
+    - not_null
+  - name: valid_sessions
+    description: All valid supplied sessions, including anonymous paid sessions; Direct/Organic
+      stay in their own channel. No order-based reclassification.
+    data_tests:
+    - not_null
+  - name: placed_orders
+    description: All recorded order attempts once, including cancelled and fully refunded
+      orders.
+    data_tests:
+    - not_null
+  - name: attributed_placed_orders
+    description: All-status placed orders with a campaign assignment. Not the commercially
+      eligible attributed conversion measure.
+    data_tests:
+    - not_null
+  - name: unattributed_placed_orders
+    description: All-status placed orders without a campaign assignment; retained
+      even when commercially ineligible.
+    data_tests:
+    - not_null
+  - name: eligible_conversions
+    description: Completed or partially_refunded orders with positive net value. Includes
+      both attributed and unattributed outcomes at overview scope.
+    data_tests:
+    - not_null
+  - name: attributed_orders
+    description: Commercially eligible orders assigned to a campaign; campaign/paid-channel
+      conversion numerator.
+    data_tests:
+    - not_null
+  - name: unattributed_eligible_orders
+    description: Commercially eligible orders without campaign assignment; overall
+      website conversion numerator includes these.
+    data_tests:
+    - not_null
+  - name: first_observed_acquisitions
+    description: Customers whose earliest eligible order across all available snapshot
+      history falls in this period/scope; each customer counted once.
+    data_tests:
+    - not_null
+  - name: attributed_first_observed_acquisitions
+    description: First observed acquisitions with paid campaign assignment; denominator
+      for matching period media-only CAC.
+    data_tests:
+    - not_null
+  - name: unattributed_first_observed_acquisitions
+    description: First observed acquisitions without assignment. Never reassign them
+      using later paid orders.
+    data_tests:
+    - not_null
+  - name: raw_gross_order_amount_gbp
+    description: All-status original merchandise amount, including cancelled attempts;
+      audit measure, not governed gross revenue.
+    data_tests:
+    - not_null
+  - name: cancellation_gross_amount_gbp
+    description: Original gross value of cancelled attempts, excluded from gross merchandise
+      revenue; equals cancellation reversals in this fixed source.
+    data_tests:
+    - not_null
+  - name: gross_merchandise_revenue_gbp
+    description: Original merchandise value of completed, partially_refunded and refunded
+      sales, excluding cancelled attempts. Not accounting revenue.
+    data_tests:
+    - not_null
+  - name: sales_refunds_gbp
+    description: Positive source deductions for non-cancelled sales, including partial
+      and full refunds; final snapshot at original order time.
+    data_tests:
+    - not_null
+  - name: cancellation_reversals_gbp
+    description: Source deductions for cancelled attempts only; bookkeeping reversal,
+      not evidence of a cash refund.
+    data_tests:
+    - not_null
+  - name: net_revenue_gbp
+    description: Non-cancelled sales net amount, including signed/zero values. Gross
+      merchandise revenue minus sales refunds, without subtracting refunds twice.
+    data_tests:
+    - not_null
+  - name: raw_net_order_amount_gbp
+    description: All-status source net amount; raw gross minus sales refunds minus
+      cancellation reversals. Audit reconciliation.
+    data_tests:
+    - not_null
+  - name: attributed_gross_merchandise_revenue_gbp
+    description: Original merchandise value of completed, partially_refunded and refunded
+      sales, excluding cancelled attempts. Not accounting revenue. Restricted to attributed
+      orders across revenue-eligible statuses (cancellation reversals use cancelled
+      status).
+    data_tests:
+    - not_null
+  - name: unattributed_gross_merchandise_revenue_gbp
+    description: Original merchandise value of completed, partially_refunded and refunded
+      sales, excluding cancelled attempts. Not accounting revenue. Restricted to unattributed
+      orders across revenue-eligible statuses (cancellation reversals use cancelled
+      status).
+    data_tests:
+    - not_null
+  - name: attributed_sales_refunds_gbp
+    description: Positive source deductions for non-cancelled sales, including partial
+      and full refunds; final snapshot at original order time. Restricted to attributed
+      orders across revenue-eligible statuses (cancellation reversals use cancelled
+      status).
+    data_tests:
+    - not_null
+  - name: unattributed_sales_refunds_gbp
+    description: Positive source deductions for non-cancelled sales, including partial
+      and full refunds; final snapshot at original order time. Restricted to unattributed
+      orders across revenue-eligible statuses (cancellation reversals use cancelled
+      status).
+    data_tests:
+    - not_null
+  - name: attributed_cancellation_reversals_gbp
+    description: Source deductions for cancelled attempts only; bookkeeping reversal,
+      not evidence of a cash refund. Restricted to attributed orders across revenue-eligible
+      statuses (cancellation reversals use cancelled status).
+    data_tests:
+    - not_null
+  - name: unattributed_cancellation_reversals_gbp
+    description: Source deductions for cancelled attempts only; bookkeeping reversal,
+      not evidence of a cash refund. Restricted to unattributed orders across revenue-eligible
+      statuses (cancellation reversals use cancelled status).
+    data_tests:
+    - not_null
+  - name: attributed_net_revenue_gbp
+    description: Non-cancelled sales net amount, including signed/zero values. Gross
+      merchandise revenue minus sales refunds, without subtracting refunds twice.
+      Restricted to attributed orders across revenue-eligible statuses (cancellation
+      reversals use cancelled status).
+    data_tests:
+    - not_null
+  - name: unattributed_net_revenue_gbp
+    description: Non-cancelled sales net amount, including signed/zero values. Gross
+      merchandise revenue minus sales refunds, without subtracting refunds twice.
+      Restricted to unattributed orders across revenue-eligible statuses (cancellation
+      reversals use cancelled status).
+    data_tests:
+    - not_null
+  - name: allocated_budget_gbp
+    description: Lifetime campaign budget allocated uniformly across inclusive active
+      days; additive across days/campaigns. Monthly totals are allocations, not approved
+      monthly budgets; floating precision may require tolerance.
+    data_tests:
+    - not_null
+  - name: negative_input_count
+    description: Internal diagnostic count of negative media rows, orders (including
+      associated line anomalies), or campaign-budget days. Not a count of distinct
+      errors; >0 drives a flag.
+    data_tests:
+    - not_null
+  - name: ctr_pct
+    description: 100 * total clicks / total impressions; NULL for zero/missing denominator.
+      Recompute from components when rolling up.
+  - name: cpc_gbp
+    description: Recorded media spend / clicks in GBP; NULL for zero/missing denominator.
+  - name: conversion_rate_pct
+    description: 'Campaign/paid channel: 100 * attributed eligible orders / valid
+      classified sessions. Overview: 100 * all eligible orders / all valid sessions.
+      Direct/Organic/Unattributed channel rates are NULL. Period order-to-session
+      rate, potentially above 100%.'
+  - name: gross_roas
+    description: Attributed gross merchandise revenue / media spend, a multiple. Overview
+      excludes unattributed revenue from this numerator. NULL for zero spend or absent
+      channel cost coverage.
+  - name: net_roas
+    description: Attributed net merchandise revenue / media spend, a multiple. NULL
+      for zero spend or absent channel cost coverage; not profit or causal return.
+  - name: media_only_cac_gbp
+    description: Period media spend / period attributed first observed acquisitions.
+      NULL for zero denominator or unavailable channel costs. Neither lifetime, fully
+      loaded nor spend-cohort CAC.
+  - name: attribution_rate_pct
+    description: 100 * attributed eligible orders / all eligible orders at row scope;
+      NULL with no eligible orders. Campaign/paid scopes are necessarily 100% when
+      defined; overview measures overall coverage.
+  - name: budget_utilisation_pct
+    description: 'Percent: daily campaign cumulative spend / lifetime budget; summary
+      full spend / lifetime budget; monthly spend / allocated active-day budget. NULL
+      for zero denominator.'
+  - name: budget_pacing_pct
+    description: 'Percent: daily campaign cumulative spend / expected cumulative spend;
+      completed-horizon summary utilisation; monthly spend / allocated monthly budget.
+      NULL for zero denominator.'
+  - name: flag_spend_without_eligible_attributed_orders
+    description: Period recorded spend > 0 and attributed eligible orders = 0. Includes
+      spend-only campaigns; not a causal waste claim.
+    data_tests:
+    - not_null
+  - name: flag_budget_overspend
+    description: Budget utilisation >100%; false when undefined. Daily compares cumulative
+      spend with lifetime budget; monthly compares period allocation.
+    data_tests:
+    - not_null
+  - name: flag_ahead_of_budget_pacing
+    description: Budget pacing >100%; false when undefined. Straight-line monitoring
+      convention.
+    data_tests:
+    - not_null
+  - name: flag_approaching_budget
+    description: Budget utilisation >=90% and <=100%; false when undefined. Adopted
+      monitoring threshold.
+    data_tests:
+    - not_null
+  - name: flag_unexpected_negative_inputs
+    description: True if negative media, budget, order or order-line inputs were detected.
+      Values are preserved, not clamped.
+    data_tests:
+    - not_null
+  - name: flag_incomplete_attribution
+    description: Unattributed placed orders >0 at row scope. False on campaign scopes
+      cannot establish global completeness; inspect monthly overview.
+    data_tests:
+    - not_null
+unit_tests:
+- name: governed_statuses_signed_values_and_london_dates
+  model: int_marketing__governed_orders
+  given:
+  - input: ref('int_marketing__orders_attributed')
+    rows:
+    - order_id: completed
+      customer_id: c
+      order_timestamp: '2025-03-31 23:30:00+00'
+      status: completed
+      gross_order_amount_gbp: 100
+      refund_amount_gbp: 0
+      net_order_amount_gbp: 100
+      attribution_status: attributed
+      campaign_id: campaign
+      channel: Google Paid Search
+    - order_id: partial
+      customer_id: c
+      order_timestamp: '2025-01-31 23:30:00+00'
+      status: partially_refunded
+      gross_order_amount_gbp: 100
+      refund_amount_gbp: 40
+      net_order_amount_gbp: 60
+      attribution_status: attributed
+      campaign_id: campaign
+      channel: Google Paid Search
+    - order_id: cancel
+      customer_id: c
+      order_timestamp: '2025-06-01 00:00:00+00'
+      status: cancelled
+      gross_order_amount_gbp: 100
+      refund_amount_gbp: 100
+      net_order_amount_gbp: 0
+      attribution_status: unattributed
+      campaign_id: null
+      channel: null
+    - order_id: refund
+      customer_id: c
+      order_timestamp: '2025-06-01 00:00:00+00'
+      status: refunded
+      gross_order_amount_gbp: 100
+      refund_amount_gbp: 100
+      net_order_amount_gbp: 0
+      attribution_status: attributed
+      campaign_id: campaign
+      channel: Google Paid Search
+    - order_id: zero
+      customer_id: c
+      order_timestamp: '2025-06-01 00:00:00+00'
+      status: completed
+      gross_order_amount_gbp: 0
+      refund_amount_gbp: 0
+      net_order_amount_gbp: 0
+      attribution_status: unattributed
+      campaign_id: null
+      channel: null
+    - order_id: negative
+      customer_id: c
+      order_timestamp: '2025-06-01 00:00:00+00'
+      status: completed
+      gross_order_amount_gbp: -10
+      refund_amount_gbp: 0
+      net_order_amount_gbp: -10
+      attribution_status: unattributed
+      campaign_id: null
+      channel: null
+    - order_id: line_negative
+      customer_id: c
+      order_timestamp: '2025-06-01 00:00:00+00'
+      status: completed
+      gross_order_amount_gbp: 10
+      refund_amount_gbp: 0
+      net_order_amount_gbp: 10
+      attribution_status: attributed
+      campaign_id: campaign
+      channel: Google Paid Search
+  - input: ref('stg_marketing__order_items')
+    rows:
+    - order_id: completed
+      quantity: 1
+      unit_price_gbp: 1
+      gross_line_amount_gbp: 1
+      refund_amount_gbp: 0
+      net_line_amount_gbp: 1
+    - order_id: partial
+      quantity: 1
+      unit_price_gbp: 1
+      gross_line_amount_gbp: 1
+      refund_amount_gbp: 0
+      net_line_amount_gbp: 1
+    - order_id: cancel
+      quantity: 1
+      unit_price_gbp: 1
+      gross_line_amount_gbp: 1
+      refund_amount_gbp: 0
+      net_line_amount_gbp: 1
+    - order_id: refund
+      quantity: 1
+      unit_price_gbp: 1
+      gross_line_amount_gbp: 1
+      refund_amount_gbp: 0
+      net_line_amount_gbp: 1
+    - order_id: zero
+      quantity: 1
+      unit_price_gbp: 1
+      gross_line_amount_gbp: 1
+      refund_amount_gbp: 0
+      net_line_amount_gbp: 1
+    - order_id: negative
+      quantity: 1
+      unit_price_gbp: 1
+      gross_line_amount_gbp: 1
+      refund_amount_gbp: 0
+      net_line_amount_gbp: 1
+    - order_id: line_negative
+      quantity: 1
+      unit_price_gbp: 1
+      gross_line_amount_gbp: 1
+      refund_amount_gbp: 0
+      net_line_amount_gbp: 1
+    - order_id: line_negative
+      quantity: -1
+      unit_price_gbp: 1
+      gross_line_amount_gbp: -1
+      refund_amount_gbp: 0
+      net_line_amount_gbp: -1
+  expect:
+    rows:
+    - order_id: completed
+      commercially_eligible: true
+      revenue_scope: true
+      negative_input_count: 0
+      reporting_date: '2025-04-01'
+      marketing_channel: Google Paid Search
+    - order_id: partial
+      commercially_eligible: true
+      revenue_scope: true
+      negative_input_count: 0
+      reporting_date: '2025-01-31'
+      marketing_channel: Google Paid Search
+    - order_id: cancel
+      commercially_eligible: false
+      revenue_scope: false
+      negative_input_count: 0
+      reporting_date: '2025-06-01'
+      marketing_channel: Unattributed
+    - order_id: refund
+      commercially_eligible: false
+      revenue_scope: true
+      negative_input_count: 0
+      reporting_date: '2025-06-01'
+      marketing_channel: Google Paid Search
+    - order_id: zero
+      commercially_eligible: false
+      revenue_scope: true
+      negative_input_count: 0
+      reporting_date: '2025-06-01'
+      marketing_channel: Unattributed
+    - order_id: negative
+      commercially_eligible: false
+      revenue_scope: true
+      negative_input_count: 1
+      reporting_date: '2025-06-01'
+      marketing_channel: Unattributed
+    - order_id: line_negative
+      commercially_eligible: true
+      revenue_scope: true
+      negative_input_count: 1
+      reporting_date: '2025-06-01'
+      marketing_channel: Google Paid Search
+- name: first_observed_acquisition_ties_and_unattributed_retention
+  model: int_marketing__first_observed_acquisitions
+  given:
+  - input: ref('int_marketing__governed_orders')
+    rows:
+    - customer_id: c
+      order_id: ORD-000002
+      order_timestamp: '2025-03-31 23:30:00+00'
+      reporting_date: '2025-04-01'
+      campaign_id: later
+      marketing_channel: Google Paid Search
+      is_attributed: true
+      commercially_eligible: true
+    - customer_id: c
+      order_id: ORD-000001
+      order_timestamp: '2025-03-31 23:30:00+00'
+      reporting_date: '2025-04-01'
+      campaign_id: null
+      marketing_channel: Unattributed
+      is_attributed: false
+      commercially_eligible: true
+    - customer_id: c
+      order_id: ORD-000000
+      order_timestamp: '2025-01-01 00:00:00+00'
+      reporting_date: '2025-01-01'
+      campaign_id: cancelled
+      marketing_channel: Google Paid Search
+      is_attributed: true
+      commercially_eligible: false
+    - customer_id: c
+      order_id: ORD-000003
+      order_timestamp: '2025-04-01 01:00:00+00'
+      reporting_date: '2025-04-01'
+      campaign_id: later
+      marketing_channel: Google Paid Search
+      is_attributed: true
+      commercially_eligible: true
+  expect:
+    rows:
+    - customer_id: c
+      acquisition_order_id: ORD-000001
+      reporting_date: '2025-04-01'
+      campaign_id: null
+      marketing_channel: Unattributed
+      is_attributed: false
+      acquisition_basis: first_observed_2025_snapshot
