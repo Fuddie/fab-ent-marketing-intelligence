@@ -1,0 +1,5 @@
+{
+  "datasource": "duckdb",
+  "url": "../data/generated",
+  "format": "duckdb"
+}

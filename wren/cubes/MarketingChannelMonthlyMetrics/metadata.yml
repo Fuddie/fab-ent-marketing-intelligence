@@ -1,0 +1,470 @@
+name: MarketingChannelMonthlyMetrics
+base_object: MarketingChannelMonthly
+properties:
+  displayName: Marketing ChannelMonthly
+  description: One row per Europe/London reporting month and channel. Includes paid, Direct, Organic and
+    Unattributed. Unmatched orders cannot be inferred to belong to Direct or Organic. Governed GBP metrics
+    for a complete fixed 2025 synthetic snapshot. Acquisition is first observed, not verified lifetime
+    new customers.
+  grain: reporting_month, marketing_channel
+measures:
+- name: total_spend_gbp
+  expression: SUM(spend_gbp)
+  type: DECIMAL(38, 2)
+  properties:
+    displayName: Spend (GBP)
+    description: Recorded GBP platform media spend, aggregated independently of sessions/orders; excludes
+      fees, taxes, credits and unrecorded channel costs.
+    currency: GBP
+    semantic_role: measure
+    aggregation: sum
+- name: total_impressions
+  expression: SUM(impressions)
+  type: INT128
+  properties:
+    displayName: Impressions
+    description: Recorded ad exposures, summed once per ad grain.
+    semantic_role: measure
+    aggregation: sum
+- name: total_clicks
+  expression: SUM(clicks)
+  type: INT128
+  properties:
+    displayName: Clicks
+    description: Recorded comparable outbound ad clicks, summed once per ad grain.
+    semantic_role: measure
+    aggregation: sum
+- name: total_valid_sessions
+  expression: SUM(valid_sessions)
+  type: INT128
+  properties:
+    displayName: Valid Sessions
+    description: All valid supplied sessions, including anonymous paid sessions; Direct/Organic stay in
+      their own channel. No order-based reclassification.
+    semantic_role: measure
+    aggregation: sum
+- name: total_placed_orders
+  expression: SUM(placed_orders)
+  type: INT128
+  properties:
+    displayName: Placed Orders
+    description: All recorded order attempts once, including cancelled and fully refunded orders.
+    semantic_role: measure
+    aggregation: sum
+- name: total_attributed_placed_orders
+  expression: SUM(attributed_placed_orders)
+  type: INT128
+  properties:
+    displayName: Attributed Placed Orders
+    description: All-status placed orders with a campaign assignment. Not the commercially eligible attributed
+      conversion measure.
+    semantic_role: measure
+    aggregation: sum
+- name: total_unattributed_placed_orders
+  expression: SUM(unattributed_placed_orders)
+  type: INT128
+  properties:
+    displayName: Unattributed Placed Orders
+    description: All-status placed orders without a campaign assignment; retained even when commercially
+      ineligible.
+    semantic_role: measure
+    aggregation: sum
+- name: total_eligible_conversions
+  expression: SUM(eligible_conversions)
+  type: INT128
+  properties:
+    displayName: Eligible Conversions
+    description: Completed or partially_refunded orders with positive net value. Includes both attributed
+      and unattributed outcomes at overview scope.
+    semantic_role: measure
+    aggregation: sum
+- name: total_attributed_orders
+  expression: SUM(attributed_orders)
+  type: INT128
+  properties:
+    displayName: Attributed Orders
+    description: Commercially eligible orders assigned to a campaign; campaign/paid-channel conversion
+      numerator.
+    semantic_role: measure
+    aggregation: sum
+- name: total_unattributed_eligible_orders
+  expression: SUM(unattributed_eligible_orders)
+  type: INT128
+  properties:
+    displayName: Unattributed Eligible Orders
+    description: Commercially eligible orders without campaign assignment; overall website conversion
+      numerator includes these.
+    semantic_role: measure
+    aggregation: sum
+- name: total_first_observed_acquisitions
+  expression: SUM(first_observed_acquisitions)
+  type: INT128
+  properties:
+    displayName: First Observed Acquisitions
+    description: Customers whose earliest eligible order across all available snapshot history falls in
+      this period/scope; each customer counted once.
+    semantic_role: measure
+    aggregation: sum
+- name: total_attributed_first_observed_acquisitions
+  expression: SUM(attributed_first_observed_acquisitions)
+  type: INT128
+  properties:
+    displayName: Attributed First Observed Acquisitions
+    description: First observed acquisitions with paid campaign assignment; denominator for matching period
+      media-only CAC.
+    semantic_role: measure
+    aggregation: sum
+- name: total_unattributed_first_observed_acquisitions
+  expression: SUM(unattributed_first_observed_acquisitions)
+  type: INT128
+  properties:
+    displayName: Unattributed First Observed Acquisitions
+    description: First observed acquisitions without assignment. Never reassign them using later paid
+      orders.
+    semantic_role: measure
+    aggregation: sum
+- name: total_raw_gross_order_amount_gbp
+  expression: SUM(raw_gross_order_amount_gbp)
+  type: DECIMAL(38, 2)
+  properties:
+    displayName: Raw Gross Order Amount (GBP)
+    description: All-status original merchandise amount, including cancelled attempts; audit measure,
+      not governed gross revenue.
+    currency: GBP
+    semantic_role: measure
+    aggregation: sum
+- name: total_cancellation_gross_amount_gbp
+  expression: SUM(cancellation_gross_amount_gbp)
+  type: DECIMAL(38, 2)
+  properties:
+    displayName: Cancellation Gross Amount (GBP)
+    description: Original gross value of cancelled attempts, excluded from gross merchandise revenue;
+      equals cancellation reversals in this fixed source.
+    currency: GBP
+    semantic_role: measure
+    aggregation: sum
+- name: total_gross_merchandise_revenue_gbp
+  expression: SUM(gross_merchandise_revenue_gbp)
+  type: DECIMAL(38, 2)
+  properties:
+    displayName: Gross Merchandise Revenue (GBP)
+    description: Original merchandise value of completed, partially_refunded and refunded sales, excluding
+      cancelled attempts. Not accounting revenue.
+    currency: GBP
+    semantic_role: measure
+    aggregation: sum
+- name: total_sales_refunds_gbp
+  expression: SUM(sales_refunds_gbp)
+  type: DECIMAL(38, 2)
+  properties:
+    displayName: Sales Refunds (GBP)
+    description: Positive source deductions for non-cancelled sales, including partial and full refunds;
+      final snapshot at original order time.
+    currency: GBP
+    semantic_role: measure
+    aggregation: sum
+- name: total_cancellation_reversals_gbp
+  expression: SUM(cancellation_reversals_gbp)
+  type: DECIMAL(38, 2)
+  properties:
+    displayName: Cancellation Reversals (GBP)
+    description: Source deductions for cancelled attempts only; bookkeeping reversal, not evidence of
+      a cash refund.
+    currency: GBP
+    semantic_role: measure
+    aggregation: sum
+- name: total_net_revenue_gbp
+  expression: SUM(net_revenue_gbp)
+  type: DECIMAL(38, 2)
+  properties:
+    displayName: Net Revenue (GBP)
+    description: Non-cancelled sales net amount, including signed/zero values. Gross merchandise revenue
+      minus sales refunds, without subtracting refunds twice.
+    currency: GBP
+    semantic_role: measure
+    aggregation: sum
+- name: total_raw_net_order_amount_gbp
+  expression: SUM(raw_net_order_amount_gbp)
+  type: DECIMAL(38, 2)
+  properties:
+    displayName: Raw Net Order Amount (GBP)
+    description: All-status source net amount; raw gross minus sales refunds minus cancellation reversals.
+      Audit reconciliation.
+    currency: GBP
+    semantic_role: measure
+    aggregation: sum
+- name: total_attributed_gross_merchandise_revenue_gbp
+  expression: SUM(attributed_gross_merchandise_revenue_gbp)
+  type: DECIMAL(38, 2)
+  properties:
+    displayName: Attributed Gross Merchandise Revenue (GBP)
+    description: Original merchandise value of completed, partially_refunded and refunded sales, excluding
+      cancelled attempts. Not accounting revenue. Restricted to attributed orders across revenue-eligible
+      statuses (cancellation reversals use cancelled status).
+    currency: GBP
+    semantic_role: measure
+    aggregation: sum
+- name: total_unattributed_gross_merchandise_revenue_gbp
+  expression: SUM(unattributed_gross_merchandise_revenue_gbp)
+  type: DECIMAL(38, 2)
+  properties:
+    displayName: Unattributed Gross Merchandise Revenue (GBP)
+    description: Original merchandise value of completed, partially_refunded and refunded sales, excluding
+      cancelled attempts. Not accounting revenue. Restricted to unattributed orders across revenue-eligible
+      statuses (cancellation reversals use cancelled status).
+    currency: GBP
+    semantic_role: measure
+    aggregation: sum
+- name: total_attributed_sales_refunds_gbp
+  expression: SUM(attributed_sales_refunds_gbp)
+  type: DECIMAL(38, 2)
+  properties:
+    displayName: Attributed Sales Refunds (GBP)
+    description: Positive source deductions for non-cancelled sales, including partial and full refunds;
+      final snapshot at original order time. Restricted to attributed orders across revenue-eligible statuses
+      (cancellation reversals use cancelled status).
+    currency: GBP
+    semantic_role: measure
+    aggregation: sum
+- name: total_unattributed_sales_refunds_gbp
+  expression: SUM(unattributed_sales_refunds_gbp)
+  type: DECIMAL(38, 2)
+  properties:
+    displayName: Unattributed Sales Refunds (GBP)
+    description: Positive source deductions for non-cancelled sales, including partial and full refunds;
+      final snapshot at original order time. Restricted to unattributed orders across revenue-eligible
+      statuses (cancellation reversals use cancelled status).
+    currency: GBP
+    semantic_role: measure
+    aggregation: sum
+- name: total_attributed_cancellation_reversals_gbp
+  expression: SUM(attributed_cancellation_reversals_gbp)
+  type: DECIMAL(38, 2)
+  properties:
+    displayName: Attributed Cancellation Reversals (GBP)
+    description: Source deductions for cancelled attempts only; bookkeeping reversal, not evidence of
+      a cash refund. Restricted to attributed orders across revenue-eligible statuses (cancellation reversals
+      use cancelled status).
+    currency: GBP
+    semantic_role: measure
+    aggregation: sum
+- name: total_unattributed_cancellation_reversals_gbp
+  expression: SUM(unattributed_cancellation_reversals_gbp)
+  type: DECIMAL(38, 2)
+  properties:
+    displayName: Unattributed Cancellation Reversals (GBP)
+    description: Source deductions for cancelled attempts only; bookkeeping reversal, not evidence of
+      a cash refund. Restricted to unattributed orders across revenue-eligible statuses (cancellation
+      reversals use cancelled status).
+    currency: GBP
+    semantic_role: measure
+    aggregation: sum
+- name: total_attributed_net_revenue_gbp
+  expression: SUM(attributed_net_revenue_gbp)
+  type: DECIMAL(38, 2)
+  properties:
+    displayName: Attributed Net Revenue (GBP)
+    description: Non-cancelled sales net amount, including signed/zero values. Gross merchandise revenue
+      minus sales refunds, without subtracting refunds twice. Restricted to attributed orders across revenue-eligible
+      statuses (cancellation reversals use cancelled status).
+    currency: GBP
+    semantic_role: measure
+    aggregation: sum
+- name: total_unattributed_net_revenue_gbp
+  expression: SUM(unattributed_net_revenue_gbp)
+  type: DECIMAL(38, 2)
+  properties:
+    displayName: Unattributed Net Revenue (GBP)
+    description: Non-cancelled sales net amount, including signed/zero values. Gross merchandise revenue
+      minus sales refunds, without subtracting refunds twice. Restricted to unattributed orders across
+      revenue-eligible statuses (cancellation reversals use cancelled status).
+    currency: GBP
+    semantic_role: measure
+    aggregation: sum
+- name: total_allocated_budget_gbp
+  expression: SUM(allocated_budget_gbp)
+  type: DOUBLE
+  properties:
+    displayName: Allocated Budget (GBP)
+    description: Lifetime campaign budget allocated uniformly across inclusive active days; additive across
+      days/campaigns. Monthly totals are allocations, not approved monthly budgets; floating precision
+      may require tolerance.
+    currency: GBP
+    semantic_role: measure
+    aggregation: sum
+- name: total_negative_input_count
+  expression: SUM(negative_input_count)
+  type: INT128
+  properties:
+    displayName: Negative Input Count
+    description: Internal diagnostic count of negative media rows, orders (including associated line anomalies),
+      or campaign-budget days. Not a count of distinct errors; >0 drives a flag.
+    semantic_role: measure
+    aggregation: sum
+- name: ctr_pct
+  expression: 100.0 * SUM(clicks) / NULLIF(SUM(impressions), 0)
+  type: DOUBLE
+  properties:
+    displayName: Ctr (%)
+    description: 100 * total clicks / total impressions; NULL for zero/missing denominator. Recompute
+      from components when rolling up. Calculated from aggregated components; zero/missing denominator
+      gives NULL.
+- name: cpc_gbp
+  expression: SUM(spend_gbp) / NULLIF(SUM(clicks), 0)
+  type: DOUBLE
+  properties:
+    displayName: Cpc (GBP)
+    description: Recorded media spend / clicks in GBP; NULL for zero/missing denominator. Calculated from
+      aggregated components; zero/missing denominator gives NULL.
+    currency: GBP
+- name: conversion_rate_pct
+  expression: CASE WHEN MIN(CASE WHEN cost_coverage = 'platform_media_only' THEN 1 ELSE 0 END) = 1 THEN
+    100.0 * SUM(attributed_orders) / NULLIF(SUM(valid_sessions), 0) END
+  type: DOUBLE
+  properties:
+    displayName: Conversion Rate (%)
+    description: 'Campaign/paid channel: 100 * attributed eligible orders / valid classified sessions.
+      Overview: 100 * all eligible orders / all valid sessions. Direct/Organic/Unattributed channel rates
+      are NULL. Period order-to-session rate, potentially above 100%. Calculated from aggregated components;
+      zero/missing denominator gives NULL.'
+- name: gross_roas
+  expression: CASE WHEN MIN(CASE WHEN cost_coverage = 'platform_media_only' THEN 1 ELSE 0 END) = 1 THEN
+    SUM(attributed_gross_merchandise_revenue_gbp) / NULLIF(SUM(spend_gbp), 0) END
+  type: DOUBLE
+  properties:
+    displayName: Gross Roas
+    description: Attributed gross merchandise revenue / media spend, a multiple. Overview excludes unattributed
+      revenue from this numerator. NULL for zero spend or absent channel cost coverage. Calculated from
+      aggregated components; zero/missing denominator gives NULL.
+- name: net_roas
+  expression: CASE WHEN MIN(CASE WHEN cost_coverage = 'platform_media_only' THEN 1 ELSE 0 END) = 1 THEN
+    SUM(attributed_net_revenue_gbp) / NULLIF(SUM(spend_gbp), 0) END
+  type: DOUBLE
+  properties:
+    displayName: Net Roas
+    description: Attributed net merchandise revenue / media spend, a multiple. NULL for zero spend or
+      absent channel cost coverage; not profit or causal return. Calculated from aggregated components;
+      zero/missing denominator gives NULL.
+- name: media_only_cac_gbp
+  expression: CASE WHEN MIN(CASE WHEN cost_coverage = 'platform_media_only' THEN 1 ELSE 0 END) = 1 THEN
+    SUM(spend_gbp) / NULLIF(SUM(attributed_first_observed_acquisitions), 0) END
+  type: DOUBLE
+  properties:
+    displayName: Media Only Cac (GBP)
+    description: Period media spend / period attributed first observed acquisitions. NULL for zero denominator
+      or unavailable channel costs. Neither lifetime, fully loaded nor spend-cohort CAC. Calculated from
+      aggregated components; zero/missing denominator gives NULL.
+    currency: GBP
+- name: attribution_rate_pct
+  expression: 100.0 * SUM(attributed_orders) / NULLIF(SUM(eligible_conversions), 0)
+  type: DOUBLE
+  properties:
+    displayName: Attribution Rate (%)
+    description: 100 * attributed eligible orders / all eligible orders at row scope; NULL with no eligible
+      orders. Campaign/paid scopes are necessarily 100% when defined; overview measures overall coverage.
+      Calculated from aggregated components; zero/missing denominator gives NULL.
+- name: budget_utilisation_pct
+  expression: 100.0 * SUM(spend_gbp) / NULLIF(SUM(allocated_budget_gbp), 0)
+  type: DOUBLE
+  properties:
+    displayName: Budget Utilisation (%)
+    description: 'Percent: daily campaign cumulative spend / lifetime budget; summary full spend / lifetime
+      budget; monthly spend / allocated active-day budget. NULL for zero denominator. Calculated from
+      aggregated components; zero/missing denominator gives NULL.'
+- name: budget_pacing_pct
+  expression: 100.0 * SUM(spend_gbp) / NULLIF(SUM(allocated_budget_gbp), 0)
+  type: DOUBLE
+  properties:
+    displayName: Budget Pacing (%)
+    description: 'Percent: daily campaign cumulative spend / expected cumulative spend; completed-horizon
+      summary utilisation; monthly spend / allocated monthly budget. NULL for zero denominator. Calculated
+      from aggregated components; zero/missing denominator gives NULL.'
+dimensions:
+- name: marketing_channel
+  expression: marketing_channel
+  type: TEXT
+  properties:
+    displayName: Marketing Channel
+    description: Paid campaign channel, valid Direct/Organic session channel, or Unattributed for orders
+      without an assignment. Never infer Direct/Organic from unmatched orders.
+    semantic_role: dimension
+    aggregation: none
+- name: cost_coverage
+  expression: cost_coverage
+  type: TEXT
+  properties:
+    displayName: Cost Coverage
+    description: platform_media_only for paid scopes and overview; not_available for Direct, Organic and
+      Unattributed. Zero spend does not establish missing cost coverage.
+    semantic_role: dimension
+    aggregation: none
+- name: acquisition_basis
+  expression: acquisition_basis
+  type: TEXT
+  properties:
+    displayName: Acquisition Basis
+    description: Always first_observed_2025_snapshot. Acquisition uses only available 2025 purchase history,
+      not verified lifetime new customers.
+    semantic_role: dimension
+    aggregation: none
+- name: flag_spend_without_eligible_attributed_orders
+  expression: flag_spend_without_eligible_attributed_orders
+  type: BOOLEAN
+  properties:
+    displayName: Flag Spend Without Eligible Attributed Orders
+    description: Period recorded spend > 0 and attributed eligible orders = 0. Includes spend-only campaigns;
+      not a causal waste claim.
+    semantic_role: dimension
+    aggregation: none
+- name: flag_budget_overspend
+  expression: flag_budget_overspend
+  type: BOOLEAN
+  properties:
+    displayName: Flag Budget Overspend
+    description: Budget utilisation >100%; false when undefined. Daily compares cumulative spend with
+      lifetime budget; monthly compares period allocation.
+    semantic_role: dimension
+    aggregation: none
+- name: flag_ahead_of_budget_pacing
+  expression: flag_ahead_of_budget_pacing
+  type: BOOLEAN
+  properties:
+    displayName: Flag Ahead Of Budget Pacing
+    description: Budget pacing >100%; false when undefined. Straight-line monitoring convention.
+    semantic_role: dimension
+    aggregation: none
+- name: flag_approaching_budget
+  expression: flag_approaching_budget
+  type: BOOLEAN
+  properties:
+    displayName: Flag Approaching Budget
+    description: Budget utilisation >=90% and <=100%; false when undefined. Adopted monitoring threshold.
+    semantic_role: dimension
+    aggregation: none
+- name: flag_unexpected_negative_inputs
+  expression: flag_unexpected_negative_inputs
+  type: BOOLEAN
+  properties:
+    displayName: Flag Unexpected Negative Inputs
+    description: True if negative media, budget, order or order-line inputs were detected. Values are
+      preserved, not clamped.
+    semantic_role: dimension
+    aggregation: none
+- name: flag_incomplete_attribution
+  expression: flag_incomplete_attribution
+  type: BOOLEAN
+  properties:
+    displayName: Flag Incomplete Attribution
+    description: Unattributed placed orders >0 at row scope. False on campaign scopes cannot establish
+      global completeness; inspect monthly overview.
+    semantic_role: dimension
+    aggregation: none
+time_dimensions:
+- name: reporting_month
+  expression: reporting_month
+  type: DATE
+  properties:
+    displayName: Reporting Month
+    description: First day of the Europe/London reporting month.
+    semantic_role: dimension
+    aggregation: none

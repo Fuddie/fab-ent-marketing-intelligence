@@ -24,3 +24,17 @@ profiles.yml
 *.db
 *.db.wal
 *.db.tmp/
+
+# Local Wren configuration, credentials, generated context and caches
+.wren/
+.env
+.env.*
+wren/.local/
+wren/connection_info.json
+wren/connection*.local.json
+wren/profiles.yml
+wren/.cache/
+wren/.lancedb/
+wren/*.log
+wren/cache/
+wren/credentials*.json

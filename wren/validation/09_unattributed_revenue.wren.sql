@@ -1,0 +1,1 @@
+SELECT SUM(unattributed_eligible_orders) AS unattributed_eligible_orders, SUM(unattributed_gross_merchandise_revenue_gbp) AS unattributed_gross_merchandise_revenue_gbp, SUM(unattributed_sales_refunds_gbp) AS unattributed_sales_refunds_gbp, SUM(unattributed_net_revenue_gbp) AS unattributed_net_revenue_gbp FROM MarketingMonthlyOverview;

@@ -1,0 +1,1 @@
+wrenai[duckdb]==0.15.0

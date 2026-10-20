@@ -1,0 +1,52 @@
+[
+  {
+    "id": "01_total_spend",
+    "question": "What is total marketing spend?",
+    "model": "MarketingMonthlyOverview"
+  },
+  {
+    "id": "02_ctr_cpc",
+    "question": "What are overall CTR and CPC?",
+    "model": "MarketingMonthlyOverview"
+  },
+  {
+    "id": "03_top_campaigns",
+    "question": "Which five campaigns have the highest net ROAS?",
+    "model": "MarketingCampaignSummary"
+  },
+  {
+    "id": "04_spend_without_orders",
+    "question": "Which campaigns spent money without eligible attributed orders?",
+    "model": "MarketingCampaignSummary"
+  },
+  {
+    "id": "05_over_budget",
+    "question": "Which campaigns exceeded their lifetime budget?",
+    "model": "MarketingCampaignSummary"
+  },
+  {
+    "id": "06_monthly",
+    "question": "What is monthly spend and net revenue?",
+    "model": "MarketingMonthlyOverview"
+  },
+  {
+    "id": "07_channels",
+    "question": "How does performance compare by channel?",
+    "model": "MarketingChannelMonthly"
+  },
+  {
+    "id": "08_cac_acquisitions",
+    "question": "What are overall paid CAC and first-observed acquisitions?",
+    "model": "MarketingMonthlyOverview"
+  },
+  {
+    "id": "09_unattributed_revenue",
+    "question": "How much eligible revenue is unattributed? Revenue-eligible sales scope; see validation notes.",
+    "model": "MarketingMonthlyOverview"
+  },
+  {
+    "id": "10_best_month",
+    "question": "Which month had the strongest net ROAS?",
+    "model": "MarketingMonthlyOverview"
+  }
+]

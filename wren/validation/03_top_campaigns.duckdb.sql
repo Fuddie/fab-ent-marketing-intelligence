@@ -1,0 +1,1 @@
+SELECT campaign_id, campaign_name, SUM(attributed_net_revenue_gbp) / NULLIF(SUM(spend_gbp), 0) AS net_roas FROM "fab_ent"."raw_marts"."mart_marketing__campaign_summary" GROUP BY campaign_id, campaign_name ORDER BY net_roas DESC NULLS LAST, campaign_id ASC LIMIT 5;

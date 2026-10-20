@@ -1,0 +1,1 @@
+SELECT campaign_id, campaign_name, spend_gbp, lifetime_budget_gbp, 100.0 * spend_gbp / NULLIF(lifetime_budget_gbp, 0) AS budget_utilisation_pct, flag_budget_overspend FROM "fab_ent"."raw_marts"."mart_marketing__campaign_summary" WHERE spend_gbp > lifetime_budget_gbp ORDER BY budget_utilisation_pct DESC NULLS LAST, campaign_id ASC;

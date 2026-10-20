@@ -1,0 +1,1 @@
+SELECT CAST(reporting_month AS VARCHAR) AS reporting_month, SUM(spend_gbp) AS spend_gbp, SUM(net_revenue_gbp) AS net_revenue_gbp FROM "fab_ent"."raw_marts"."mart_marketing__monthly_overview" GROUP BY reporting_month ORDER BY reporting_month ASC;

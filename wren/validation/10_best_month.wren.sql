@@ -1,0 +1,1 @@
+SELECT CAST(reporting_month AS VARCHAR) AS reporting_month, SUM(attributed_net_revenue_gbp) / NULLIF(SUM(spend_gbp), 0) AS net_roas FROM MarketingMonthlyOverview GROUP BY reporting_month ORDER BY net_roas DESC NULLS LAST, reporting_month ASC LIMIT 1;

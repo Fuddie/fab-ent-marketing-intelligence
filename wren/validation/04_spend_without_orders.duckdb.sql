@@ -1,0 +1,1 @@
+SELECT campaign_id, campaign_name, spend_gbp, attributed_orders, flag_spend_without_eligible_attributed_orders FROM "fab_ent"."raw_marts"."mart_marketing__campaign_summary" WHERE spend_gbp > 0 AND attributed_orders = 0 ORDER BY campaign_id ASC;

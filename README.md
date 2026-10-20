@@ -4,19 +4,19 @@ Synthetic UK fashion marketing data for the fixed 2025 reporting period, in GBP.
 Read [PROJECT_BRIEF.md](PROJECT_BRIEF.md), [METRIC_CONTRACT.md](METRIC_CONTRACT.md)
 and [DATA_DICTIONARY.md](DATA_DICTIONARY.md) for scope, metric policies and fields.
 
-## Intended architecture
+## Architecture
 
 Raw marketing CSVs -> dbt transformations -> DuckDB analytics tables -> Wren AI
 semantic layer -> browser-based marketing AI dashboard.
 
-dbt will transform the seeded raw data into analytics tables in DuckDB. Wren AI
-will provide the semantic layer over those tables for consistent, read-only
-answers in the browser-based marketing AI dashboard.
+dbt transforms the seeded raw data into governed analytics tables in DuckDB.
+Wren provides a tested semantic layer for read-only local queries. A future
+browser dashboard can consume those semantics.
 
 Phase 1 loads and validates the raw CSV seeds in DuckDB. Phase 2 adds the clean
 staging layer. Phase 3 adds tested order attribution. Phase 4 adds governed
-marketing marts. The Wren AI
-semantic layer and the browser-based dashboard remain future work.
+marketing marts. Phase 5 connects these marts to a tested local Wren semantic
+layer. The browser dashboard and natural-language service remain future work.
 
 ## Phase 1: dbt + DuckDB seeds
 
@@ -328,3 +328,154 @@ order-to-session conversion can exceed 100% because of multiple orders and
 cross-period attribution; it is not a unique-session probability. Missing feeds
 are not detected by zero-activity flags. Wren definitions and dashboard code are
 not part of Phase 4.
+
+## Phase 5: Wren semantic layer
+
+The current architecture is CSV seeds -> dbt staging -> tested attribution ->
+governed dbt marts in DuckDB -> Wren models and aggregate metric cubes -> local
+semantic SQL. The browser dashboard and natural-language service are not built.
+No dbt metric definitions changed for this phase.
+
+The dedicated [wren/](wren/README.md) project keeps its YAML outside dbt's model,
+seed and test paths. Wren CLI **0.15.0** and project schema version **5** were
+validated using the installed help, bundled documentation and runtime behaviour.
+The physical catalog is **fab_ent**, the schema is **raw_marts**. Wren's internal
+namespace, `wren.public`, is separate from the physical mapping.
+
+| Wren model | Governed relation in `fab_ent.raw_marts` | Grain | Rows |
+| --- | --- | --- | ---: |
+| `MarketingCampaignDaily` | `mart_marketing__campaign_daily` | London date + campaign | 3,022 |
+| `MarketingCampaignSummary` | `mart_marketing__campaign_summary` | Campaign, full observed snapshot | 24 |
+| `MarketingChannelMonthly` | `mart_marketing__channel_monthly` | London month + channel | 72 |
+| `MarketingMonthlyOverview` | `mart_marketing__monthly_overview` | London month, all website outcomes | 12 |
+
+Every model has a corresponding `Marketing…Metrics` cube. Additive cube measure
+names start with `total_` (for example, `total_spend_gbp`). Calculated measures
+include CTR, CPC, conversion rate, gross/net ROAS, media-only CAC, attribution
+rate and budget utilisation/pacing. They divide aggregated numerators by
+aggregated denominators, returning NULL for zero/missing denominators. Money is
+labelled **GBP**, rates ending `_pct` are percentages, and ROAS is a multiple.
+Dates, categorical dimensions, cost coverage, acquisition basis and boolean
+quality flags retain their documented meaning. All physical mart fields remain
+available; no seeds or internal supporting tables are semantic models.
+
+Daily lifetime budget, cumulative spend and expected cumulative budget are
+non-additive across dates. Daily budget utilisation/pacing are exposed at the
+exact mart row grain and omitted from the daily aggregation cube. Summary
+budgets count once per campaign; monthly budgets are active-day allocations,
+not approved monthly budgets. Stored ratios and flags describe their original
+row grain. Never average stored ratios. There are deliberately no relationships
+between differently aggregated marts; choose one model per question.
+
+### Local Wren setup (Windows PowerShell)
+
+Complete the dbt setup above first. Run from the repository root. Use an isolated
+Wren environment to preserve the dbt dependency pins:
+
+```powershell
+python -m venv wren/.venv
+.\wren\.venv\Scripts\python.exe -m pip install -r wren/requirements.txt
+.\wren\.venv\Scripts\python.exe -m pip check
+$WrenExe = (Resolve-Path .\wren\.venv\Scripts\wren.exe).Path
+$env:PYTHONIOENCODING = 'utf-8'
+$env:PYTHONUTF8 = '1'
+& $WrenExe --version
+if (-not (Test-Path wren/connection_info.json)) {
+    Copy-Item wren/connection_info.json.example wren/connection_info.json
+}
+```
+
+The safe example specifies `datasource: duckdb`, `format: duckdb` and directory
+`../data/generated`. **Always run Wren queries with `wren/` as the working
+directory**: relative connection URLs resolve from the process working directory,
+not the connection file's location. This connector discovers `.duckdb` files in
+the directory and attaches them **READ_ONLY** under filename-stem catalog names.
+Keep only the intended `fab_ent.duckdb` there. The explicit connection file avoids
+the globally active Wren/Jaffle profile. No credentials or server are required.
+Local connection information, environments, Wren targets/reports, databases,
+logs and caches are ignored by Git. Do not put an absolute local path in tracked
+project YAML. The semantic definitions are not a database access-control boundary.
+
+```powershell
+Push-Location wren
+try {
+    & $WrenExe context validate --path . --strict
+    & $WrenExe context build --path .
+    & $WrenExe query --mdl target/mdl.json --connection-file connection_info.json `
+        --sql (Get-Content validation/02_ctr_cpc.wren.sql -Raw) --output json --quiet
+    & $WrenExe cube query --mdl target/mdl.json --connection-file connection_info.json `
+        --cube MarketingMonthlyOverviewMetrics `
+        --measures total_spend_gbp,ctr_pct,cpc_gbp,net_roas,media_only_cac_gbp --output json
+} finally {
+    Pop-Location
+}
+```
+
+Stop if any command fails. An existing 0.15.0 executable can also be assigned to
+`$WrenExe`; no machine-specific installation path is needed in Git.
+
+### Validation and example questions
+
+Run the complete reproducible validation from the repository root:
+
+```powershell
+.\.venv\Scripts\python.exe -B scripts/validate_wren.py --wren-exe $WrenExe
+git diff --check
+git status --short
+```
+
+The validator first runs full `dbt build --profiles-dir .dbt`, then all four
+independent seed/staging/attribution/mart validators. It validates Wren strictly,
+builds the context, executes every saved semantic query through the Wren CLI,
+and executes a separate direct DuckDB query using a read-only connection.
+`--skip-dbt` is available only when the full current dbt validation has already
+passed in the same session. There is no default result limit. See
+[comparison policy and recorded answers](wren/validation/README.md).
+
+All ten required questions have paired, reviewable `.wren.sql` and `.duckdb.sql`
+files in [wren/validation](wren/validation/cases.json):
+
+1. What is total marketing spend?
+2. What are overall CTR and CPC?
+3. Which five campaigns have the highest net ROAS?
+4. Which campaigns spent money without eligible attributed orders?
+5. Which campaigns exceeded their lifetime budget?
+6. What is monthly spend and net revenue?
+7. How does performance compare by channel?
+8. What are overall paid CAC and first-observed acquisitions?
+9. How much eligible revenue is unattributed?
+10. Which month had the strongest net ROAS?
+
+The broader suite compares all 3,130 exposed mart rows, calculated composite
+keys, every cube measure at overall and grouped scopes, and NULL ratios on
+empty selections. Integers, fixed-scale decimals, booleans, strings and NULL
+positions match exactly. Floating values satisfy
+`abs(actual - expected) <= max(1e-8, 1e-10 * max(abs(actual), abs(expected)))`.
+Rows, duplicate multiplicity, column order and deterministic result ordering
+must match. Raw CLI outputs, generated cube semantic SQL, independent reference
+SQL and a summary are written only to ignored `wren/target/validation/`.
+
+### Semantic limitations
+
+Acquisition means **first observed in the fixed 2025 snapshot**, not verified
+lifetime new customers. Earliest eligible order is selected across available
+history before period filtering. Period paid CAC uses 759 attributed acquisitions,
+not all 1,174 acquisitions, and includes only recorded media costs.
+
+ROAS uses attributed revenue, while overview net revenue includes unmatched
+sales. "Eligible revenue" in example 9 means the governed **revenue-eligible sales
+scope**, including fully refunded sales; it does not mean gross revenue from
+conversion-eligible orders. Those two policies differ. The four marts do not
+provide a separate gross-revenue amount filtered to positive-net conversions.
+Unattributed governed net revenue is GBP 124,481.50; never infer it belongs to
+Direct or Organic. Those channels and Unattributed retain NULL conversion,
+ROAS and CAC where coverage is unavailable. Use the overview for overall rates;
+the channel cube suppresses cost-dependent rates for mixed paid/unpaid groups.
+
+The fixed snapshot assumes complete feeds and has no pre-2025 history or
+post-2025 conversion tail. Final-status refunds and cancellations restate original
+order periods. Refreshes can change prior conversion and acquisition histories.
+No cash-flow, profit, causal uplift or verified lifetime acquisition is implied.
+These limitations and the existing Phase 4 limitations apply to every semantic
+answer. Arbitrary SQL remains capable of misusing stored ratios; use the tested
+cube measures and [business rules](wren/knowledge/rules/marketing.md).
