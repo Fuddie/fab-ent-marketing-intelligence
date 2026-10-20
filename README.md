@@ -14,7 +14,7 @@ will provide the semantic layer over those tables for consistent, read-only
 answers in the browser-based marketing AI dashboard.
 
 Phase 1 loads and validates the raw CSV seeds in DuckDB. Phase 2 adds the clean
-staging layer. Attribution, intermediate models, reporting marts, the Wren AI
+staging layer. Phase 3 adds tested order attribution. Reporting marts, the Wren AI
 semantic layer and the browser-based dashboard remain future work.
 
 ## Phase 1: dbt + DuckDB seeds
@@ -151,3 +151,36 @@ and are independently checked in DuckDB:
 Gross minus refunds/reversals equals net exactly. These source amounts do not
 define attributed order amount, eligible orders or accounting revenue. Metric
 status and amount policies remain as documented in the metric contract.
+
+## Phase 3: seven-day order attribution
+
+`models/intermediate/marketing` contains two fully rebuilt tables in
+`raw_intermediate`: `int_marketing__order_attribution_candidates` audits every
+same-customer session (including exclusions), and `int_marketing__orders_attributed`
+keeps exactly one row per staging order. Only identified paid sessions with an
+existing campaign qualify in `[order_timestamp - 168 hours, order_timestamp)`
+using UTC instants. Latest timestamp wins, then lexically greatest session ID.
+Direct and campaignless Organic touches cannot overwrite a qualifying paid touch.
+Source and medium are split from the supplied `source_medium` classification.
+
+Every order status and all three source GBP amounts are preserved. Missing
+identity, timestamps or campaign never produce inferred assignments. Unattributed
+reasons follow the documented priority in the model YAML; the candidate table
+retains all exclusion details. Anonymous visits cannot be linked to an order,
+so orders with no matching identified visit report `no_customer_sessions`.
+No status-based commercial eligibility or revenue metric is defined here.
+
+After loading seeds and staging, run:
+
+```powershell
+.\.venv\Scripts\dbt.exe build --select +path:models/intermediate/marketing --profiles-dir .dbt
+.\.venv\Scripts\python.exe scripts/validate_attribution.py
+```
+
+The build includes key/reference checks, exact order-field and money conservation,
+assignment partition checks, an independent SQL winner check, all 12 documented
+fixtures, and unit coverage for missing data, exact boundaries and lexical ties.
+The read-only Python validator independently recomputes every assignment directly
+from raw CSVs and prints assignment counts, reasons, channels, fixtures and GBP
+reconciliation totals. Rebuild these tables to incorporate late-arriving data;
+no incremental attribution or reporting-period filter is applied.

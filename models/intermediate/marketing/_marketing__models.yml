@@ -1,0 +1,346 @@
+version: 2
+models:
+- name: int_marketing__order_attribution_candidates
+  description: 'Audit grain: one order and same-customer session pair, or one NULL-session
+    placeholder. No order amounts are copied here. Full available session history
+    exposes excluded touches. Rank eligible touches by latest UTC instant then greatest
+    lexical session ID.'
+  columns:
+  - name: order_id
+    description: Source order key; no status exclusions.
+  - name: customer_id
+    description: Exact source customer identity; never inferred.
+  - name: order_timestamp
+    description: UTC-aware purchase attempt instant.
+  - name: session_id
+    description: Selected or evaluated stable session identifier.
+  - name: campaign_id
+    description: Selected or evaluated source campaign identifier.
+  - name: source_medium
+    description: Unmodified session traffic classification.
+  - name: source
+    description: Source component split from source_medium at the literal separator
+      space/slash/space.
+  - name: medium
+    description: Medium component split from source_medium at the literal separator
+      space/slash/space.
+  - name: channel
+    description: Source session channel.
+  - name: interaction_timestamp
+    description: UTC-aware session start instant.
+  - name: attribution_window_start
+    description: Inclusive UTC lower boundary, exactly 168 elapsed hours before purchase.
+  - name: session_customer_id
+    description: Session identity for exact-match auditing.
+  - name: candidate_status
+    description: First exclusion reason in model CASE order, or eligible; full same-customer
+      history is retained, with a NULL-session placeholder when none exists.
+  - name: is_eligible
+    description: True only for an identified paid campaign session in the half-open
+      interval with a known campaign.
+  - name: eligible_rank
+    description: Eligible-only rank by interaction timestamp descending then lexical
+      session ID descending; NULL for excluded rows.
+  - name: is_winner
+    description: True exactly for eligible rank 1; false for every excluded row.
+- name: int_marketing__orders_attributed
+  description: Exactly one row per source order across all statuses. Last identified
+    paid non-direct campaign session in [purchase minus 168 hours, purchase), recomputed
+    on every build. No commercial KPI policy is applied.
+  columns:
+  - name: order_id
+    description: Source order key; no status exclusions.
+    data_tests:
+    - not_null
+    - unique
+  - name: customer_id
+    description: Exact source customer identity; never inferred.
+  - name: order_timestamp
+    description: UTC-aware purchase attempt instant.
+  - name: session_id
+    description: Selected or evaluated stable session identifier.
+    data_tests:
+    - relationships:
+        arguments:
+          to: ref('stg_marketing__web_sessions')
+          field: session_id
+  - name: campaign_id
+    description: Selected or evaluated source campaign identifier.
+    data_tests:
+    - relationships:
+        arguments:
+          to: ref('stg_marketing__campaigns')
+          field: campaign_id
+  - name: source_medium
+    description: Unmodified session traffic classification.
+  - name: source
+    description: Source component split from source_medium at the literal separator
+      space/slash/space.
+  - name: medium
+    description: Medium component split from source_medium at the literal separator
+      space/slash/space.
+  - name: channel
+    description: Source session channel.
+  - name: interaction_timestamp
+    description: UTC-aware session start instant.
+  - name: status
+    description: Unmodified order status; commercial eligibility remains unresolved.
+  - name: gross_order_amount_gbp
+    description: Unmodified DECIMAL(18,2) gross GBP amount, including cancelled attempts.
+  - name: refund_amount_gbp
+    description: Unmodified final snapshot refund/cancellation reversal GBP amount.
+  - name: net_order_amount_gbp
+    description: Unmodified source gross less reversal GBP amount; no revenue policy
+      inferred.
+  - name: attribution_status
+    description: 'Exhaustive assignment state: attributed or unattributed, across
+      all statuses.'
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - attributed
+          - unattributed
+  - name: unattributed_reason
+    description: 'NULL for attributed. Otherwise priority: missing order identity,
+      missing order time, no same-customer sessions, missing interaction time, unknown
+      campaign, missing campaign in window, then no eligible interaction in window.
+      A diagnostic, not proof of a unique cause; inspect candidates for all exclusions.'
+unit_tests:
+- name: attribution_missing_data_boundaries_and_ties
+  model: int_marketing__order_attribution_candidates
+  given:
+  - input: ref('stg_marketing__orders')
+    rows:
+    - order_id: '1'
+      customer_id: null
+      order_timestamp: '2025-02-08 12:00:00+00'
+    - order_id: '2'
+      customer_id: '2'
+      order_timestamp: null
+    - order_id: '3'
+      customer_id: '3'
+      order_timestamp: '2025-02-08 12:00:00+00'
+    - order_id: '4'
+      customer_id: '4'
+      order_timestamp: '2025-02-08 12:00:00+00'
+    - order_id: '5'
+      customer_id: '5'
+      order_timestamp: '2025-02-08 12:00:00+00'
+    - order_id: '6'
+      customer_id: '6'
+      order_timestamp: '2025-02-08 12:00:00+00'
+    - order_id: '7'
+      customer_id: '7'
+      order_timestamp: '2025-02-08 12:00:00+00'
+    - order_id: '8'
+      customer_id: '8'
+      order_timestamp: '2025-02-08 12:00:00+00'
+    - order_id: '9'
+      customer_id: '9'
+      order_timestamp: '2025-02-08 12:00:00+00'
+  - input: ref('stg_marketing__web_sessions')
+    rows:
+    - session_id: s2
+      customer_id: '2'
+      session_timestamp: '2025-02-07 12:00:00+00'
+      campaign_id: C
+      channel: Google Paid Search
+      source_medium: google / cpc
+    - session_id: s3
+      customer_id: '3'
+      session_timestamp: null
+      campaign_id: C
+      channel: Google Paid Search
+      source_medium: google / cpc
+    - session_id: s4
+      customer_id: '4'
+      session_timestamp: '2025-02-07 12:00:00+00'
+      campaign_id: null
+      channel: Google Paid Search
+      source_medium: google / cpc
+    - session_id: s5
+      customer_id: '5'
+      session_timestamp: '2025-02-07 12:00:00+00'
+      campaign_id: unknown
+      channel: Google Paid Search
+      source_medium: google / cpc
+    - session_id: s6
+      customer_id: '6'
+      session_timestamp: '2025-02-07 12:00:00+00'
+      campaign_id: C
+      channel: Direct
+      source_medium: google / cpc
+    - session_id: s7a
+      customer_id: '7'
+      session_timestamp: '2025-02-01 12:00:00+00'
+      campaign_id: C
+      channel: Google Paid Search
+      source_medium: google / cpc
+    - session_id: s7b
+      customer_id: '7'
+      session_timestamp: '2025-02-08 12:00:00+00'
+      campaign_id: C
+      channel: Google Paid Search
+      source_medium: google / cpc
+    - session_id: s8a
+      customer_id: '8'
+      session_timestamp: '2025-02-07 12:00:00+00'
+      campaign_id: C
+      channel: Google Paid Search
+      source_medium: google / cpc
+    - session_id: s8z
+      customer_id: '8'
+      session_timestamp: '2025-02-07 12:00:00+00'
+      campaign_id: C
+      channel: Google Paid Search
+      source_medium: google / cpc
+    - session_id: s9
+      customer_id: '9'
+      session_timestamp: '2025-02-01 11:59:59+00'
+      campaign_id: C
+      channel: Google Paid Search
+      source_medium: google / cpc
+  - input: ref('stg_marketing__campaigns')
+    rows:
+    - campaign_id: C
+  expect:
+    rows:
+    - order_id: '1'
+      session_id: null
+      candidate_status: missing_order_customer_id
+      is_winner: false
+    - order_id: '2'
+      session_id: s2
+      candidate_status: missing_order_timestamp
+      is_winner: false
+    - order_id: '3'
+      session_id: s3
+      candidate_status: missing_interaction_timestamp
+      is_winner: false
+    - order_id: '4'
+      session_id: s4
+      candidate_status: missing_campaign_id
+      is_winner: false
+    - order_id: '5'
+      session_id: s5
+      candidate_status: unknown_campaign_id
+      is_winner: false
+    - order_id: '6'
+      session_id: s6
+      candidate_status: direct_session
+      is_winner: false
+    - order_id: '7'
+      session_id: s7a
+      candidate_status: eligible
+      is_winner: true
+    - order_id: '7'
+      session_id: s7b
+      candidate_status: at_or_after_order
+      is_winner: false
+    - order_id: '8'
+      session_id: s8a
+      candidate_status: eligible
+      is_winner: false
+    - order_id: '8'
+      session_id: s8z
+      candidate_status: eligible
+      is_winner: true
+    - order_id: '9'
+      session_id: s9
+      candidate_status: before_lookback
+      is_winner: false
+- name: attribution_final_missing_data_reasons
+  model: int_marketing__orders_attributed
+  given:
+  - input: ref('stg_marketing__orders')
+    rows:
+    - order_id: edge-0
+      customer_id: null
+      order_timestamp: '2025-02-08 12:00:00+00'
+    - order_id: edge-1
+      customer_id: customer
+      order_timestamp: null
+    - order_id: edge-2
+      customer_id: customer
+      order_timestamp: '2025-02-08 12:00:00+00'
+    - order_id: edge-3
+      customer_id: customer
+      order_timestamp: '2025-02-08 12:00:00+00'
+    - order_id: edge-4
+      customer_id: customer
+      order_timestamp: '2025-02-08 12:00:00+00'
+    - order_id: edge-5
+      customer_id: customer
+      order_timestamp: '2025-02-08 12:00:00+00'
+    - order_id: edge-6
+      customer_id: customer
+      order_timestamp: '2025-02-08 12:00:00+00'
+  - input: ref('int_marketing__order_attribution_candidates')
+    rows:
+    - order_id: edge-0
+      session_id: null
+      is_winner: false
+      candidate_status: missing_order_customer_id
+    - order_id: edge-1
+      session_id: null
+      is_winner: false
+      candidate_status: missing_order_timestamp
+    - order_id: edge-2
+      session_id: null
+      is_winner: false
+      candidate_status: no_customer_sessions
+    - order_id: edge-3
+      session_id: s
+      is_winner: false
+      candidate_status: missing_interaction_timestamp
+    - order_id: edge-4
+      session_id: s
+      is_winner: false
+      candidate_status: missing_campaign_id
+    - order_id: edge-5
+      session_id: s
+      is_winner: false
+      candidate_status: unknown_campaign_id
+    - order_id: edge-6
+      session_id: s
+      is_winner: false
+      candidate_status: before_lookback
+  expect:
+    rows:
+    - order_id: edge-0
+      session_id: null
+      campaign_id: null
+      attribution_status: unattributed
+      unattributed_reason: missing_order_customer_id
+    - order_id: edge-1
+      session_id: null
+      campaign_id: null
+      attribution_status: unattributed
+      unattributed_reason: missing_order_timestamp
+    - order_id: edge-2
+      session_id: null
+      campaign_id: null
+      attribution_status: unattributed
+      unattributed_reason: no_customer_sessions
+    - order_id: edge-3
+      session_id: null
+      campaign_id: null
+      attribution_status: unattributed
+      unattributed_reason: missing_interaction_timestamp
+    - order_id: edge-4
+      session_id: null
+      campaign_id: null
+      attribution_status: unattributed
+      unattributed_reason: missing_campaign_id
+    - order_id: edge-5
+      session_id: null
+      campaign_id: null
+      attribution_status: unattributed
+      unattributed_reason: unknown_campaign_id
+    - order_id: edge-6
+      session_id: null
+      campaign_id: null
+      attribution_status: unattributed
+      unattributed_reason: no_eligible_interaction_in_window
