@@ -1,0 +1,25 @@
+campaign_id,campaign_name,channel,objective,start_date,end_date,budget_gbp
+CAM-0001,2025 Fashion Campaign 01,Meta Paid Social,Sales,2025-01-01,2025-12-31,13769.00
+CAM-0002,2025 Fashion Campaign 02,Google Paid Search,Traffic,2025-01-01,2025-12-31,13836.00
+CAM-0003,2025 Fashion Campaign 03,TikTok Paid Social,Awareness,2025-01-01,2025-12-31,10043.00
+CAM-0004,2025 Fashion Campaign 04,Meta Paid Social,Sales,2025-01-01,2025-03-31,5654.00
+CAM-0005,2025 Fashion Campaign 05,Google Paid Search,Traffic,2025-04-01,2025-06-29,4245.00
+CAM-0006,2025 Fashion Campaign 06,TikTok Paid Social,Awareness,2025-07-01,2025-09-28,6282.00
+CAM-0007,2025 Fashion Campaign 07,Meta Paid Social,Sales,2025-10-01,2025-12-29,10937.00
+CAM-0008,2025 Fashion Campaign 08,Google Paid Search,Traffic,2025-01-01,2025-03-31,7258.00
+CAM-0009,2025 Fashion Campaign 09,TikTok Paid Social,Awareness,2025-04-01,2025-06-29,4556.00
+CAM-0010,2025 Fashion Campaign 10,Meta Paid Social,Sales,2025-07-01,2025-09-28,12841.00
+CAM-0011,2025 Fashion Campaign 11,Google Paid Search,Traffic,2025-10-01,2025-12-29,6473.00
+CAM-0012,2025 Fashion Campaign 12,TikTok Paid Social,Awareness,2025-01-01,2025-03-31,4485.00
+CAM-0013,2025 Fashion Campaign 13,Meta Paid Social,Sales,2025-04-01,2025-06-29,11612.00
+CAM-0014,2025 Fashion Campaign 14,Google Paid Search,Traffic,2025-07-01,2025-09-28,13815.00
+CAM-0015,2025 Fashion Campaign 15,TikTok Paid Social,Awareness,2025-10-01,2025-12-29,12221.00
+CAM-0016,2025 Fashion Campaign 16,Meta Paid Social,Sales,2025-01-01,2025-03-31,7193.00
+CAM-0017,2025 Fashion Campaign 17,Google Paid Search,Traffic,2025-04-01,2025-06-29,4565.00
+CAM-0018,2025 Fashion Campaign 18,TikTok Paid Social,Awareness,2025-07-01,2025-09-28,9442.00
+CAM-0019,2025 Fashion Campaign 19,Meta Paid Social,Sales,2025-10-01,2025-12-29,8727.00
+CAM-0020,2025 Fashion Campaign 20,Google Paid Search,Traffic,2025-01-01,2025-03-31,8148.00
+CAM-0021,2025 Fashion Campaign 21,TikTok Paid Social,Awareness,2025-04-01,2025-06-29,13381.00
+CAM-0022,2025 Fashion Campaign 22,Meta Paid Social,Sales,2025-07-01,2025-09-28,7730.00
+CAM-0023,2025 Fashion Campaign 23,Google Paid Search,Traffic,2025-10-01,2025-12-29,7737.00
+CAM-0024,2025 Fashion Campaign 24,TikTok Paid Social,Awareness,2025-01-01,2025-03-31,5048.00

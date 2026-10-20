@@ -4,7 +4,7 @@
 
 ## Business context
 
-Fab ENT promotes live events and sells tickets, using Meta, Google, TikTok and email.
+Fab ENT is a fictional UK direct-to-consumer fashion brand. This portfolio uses a fixed, entirely synthetic dataset, not real customer data. Paid channels are Meta Paid Social, Google Paid Search and TikTok Paid Social; website traffic also includes Direct and Organic.
 
 
 
@@ -74,3 +74,11 @@ Wren must produce consistent, read-only answers.
 
 Another person must be able to reproduce the project from its documentation.
 
+
+## Synthetic source boundaries
+
+The fixed reporting period is 2025-01-01 through 2025-12-31, with GBP amounts, UTC raw timestamps and Europe/London reporting dates. Seven CSV sources include campaign budgets, daily media performance, sessions, customers, orders, order lines and products. See `DATA_DICTIONARY.md` for physical fields, reproducible generation, attribution fixtures and limitations.
+
+Campaigns have one paid channel and one lifetime budget each. Identified paid website sessions supply campaign interactions; Direct and Organic sessions have no campaign IDs. Customer IDs match exactly between orders and known sessions. Raw orders retain cancellations and final full/partial refunds; gross, refund/reversal and net amounts reconcile to order lines. Raw availability does not settle metric status eligibility or redefine attributed order amount as net revenue.
+
+History is limited to 2025, so customer acquisition is first observed rather than confirmed lifetime acquisition. No pre-period lookback or post-period conversion tail is supplied. Attribution demonstrates sequence, not marketing causation.

@@ -1,0 +1,12 @@
+﻿# Python caches and local environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Generated analytical/build outputs (raw CSV snapshot remains trackable)
+target/
+dbt_packages/
+logs/
+data/processed/

@@ -1,12 +1,12 @@
-﻿# Fab ENT business metric contract
+# Fab ENT business metric contract
 
-Authority: `PROJECT_BRIEF.md`. Confirmed rules are stated directly. **Decision required** marks unresolved business policy; **Assumption to validate** marks proposed implementation. Logical field descriptions below are not confirmed source column names.
+Authority: `PROJECT_BRIEF.md`. Confirmed rules are stated directly. **Decision required** marks unresolved business policy; **Assumption to validate** marks proposed implementation. Physical mappings for the fixed synthetic source are confirmed in `DATA_DICTIONARY.md`; remaining business policies are still marked below.
 
-**Provisional project decision** marks the agreed portfolio implementation policy, subject to later revision; it does not confirm source availability or physical mappings.
+**Provisional project decision** marks the agreed portfolio implementation policy, subject to later revision; source availability and physical mappings are separately established by the synthetic dictionary.
 
 ## 1. Table grain and expected primary key
 
-Existing grains are preserved. **Assumption to validate:** these logical keys identify rows uniquely; physical columns and relationship mappings require source validation.
+Existing grains are preserved. The synthetic generator and raw validator confirm these keys and relationships; see `DATA_DICTIONARY.md` for physical column names.
 
 | Table | Confirmed grain | Expected primary key (logical) |
 | --- | --- | --- |
@@ -16,14 +16,15 @@ Existing grains are preserved. **Assumption to validate:** these logical keys id
 | customers | One row per customer | Customer identifier |
 | orders | One row per order | Order identifier |
 | products | One row per product | Product identifier |
+| order_items | One row per order line | Order-line identifier |
 
-**Decision required:** canonical identifiers across platforms, customer identity matching between sessions and orders, and whether campaigns span channels. Product/order relationships are not established; do not assume one product per order.
+**Synthetic source confirmed:** stable prefixed canonical IDs; exact customer_id matching; one paid channel per campaign. order_items bridges orders and products at line grain; orders can contain multiple products.
 
 ## Metric conventions
 
 For sections 2–14, **Assumption to validate:** support daily and selected-period reporting by campaign/channel where the source permits. Use ad reporting date for spend/clicks/impressions, session start for sessions, purchase time for orders, and first qualifying purchase time for new customers. Attribution may connect purchases to interactions outside the selected period.
 
-“Eligible orders” means orders under the unresolved status policy in section 17. Aggregate numerator and denominator separately at matching scope before dividing; never average row-level ratios. Source measure availability and mappings require validation before publication.
+“Eligible orders” means orders under the unresolved status policy in section 17. Aggregate numerator and denominator separately at matching scope before dividing; never average row-level ratios. Source measure availability and mappings are documented for the synthetic snapshot; business policy and model validation remain required before publication.
 
 ## 2. Spend
 
@@ -31,7 +32,7 @@ For sections 2–14, **Assumption to validate:** support daily and selected-peri
 - **Formula:** sum recorded spend once per ad_performance row.
 - **Source grain:** date × campaign × channel in ad_performance.
 - **Reporting grain:** date/period × campaign and/or channel; overall total.
-- **Exclusions/safeguards:** never sum spend after joining individual sessions/orders. **Decision required:** included costs, email costs, fees, taxes, credits and currency. Missing cost coverage is unknown, not zero.
+- **Exclusions/safeguards:** never sum spend after joining individual sessions/orders. **Synthetic source confirmed:** GBP platform media spend only; fees, taxes, credits and email costs are absent. Missing cost coverage is unknown, not zero.
 
 ## 3. Impressions and clicks
 
@@ -39,7 +40,7 @@ For sections 2–14, **Assumption to validate:** support daily and selected-peri
 - **Formula:** sum impressions; sum clicks, once per source row.
 - **Source grain:** **Assumption to validate:** measures available at ad_performance grain.
 - **Reporting grain:** date/period × campaign and/or channel; overall total.
-- **Exclusions/safeguards:** **Decision required:** comparable platform click definitions and treatment of email. Do not substitute email opens for impressions or mix incompatible click types. Preserve missing values as unknown.
+- **Exclusions/safeguards:** **Synthetic source confirmed:** comparable synthetic outbound clicks and ad exposures; no email. Do not substitute email opens for impressions or mix incompatible click types. Preserve missing values as unknown.
 
 ## 4. CTR
 
@@ -63,7 +64,7 @@ For sections 2–14, **Assumption to validate:** support daily and selected-peri
 - **Formula:** count unique eligible order identifiers with one assigned campaign.
 - **Source grain:** orders with at most one attribution assignment per order.
 - **Reporting grain:** purchase date/period × assigned campaign/channel.
-- **Exclusions/safeguards:** exclude unattributed orders from campaign counts but retain them separately. Count orders, not tickets, products or customers; never assign an order twice.
+- **Exclusions/safeguards:** exclude unattributed orders from campaign counts but retain them separately. Count orders, not units, products or customers; never assign an order twice.
 
 ## 7. Attributed order amount / revenue
 
@@ -87,7 +88,7 @@ For sections 2–14, **Assumption to validate:** support daily and selected-peri
 - **Formula:** count unique session identifiers.
 - **Source grain:** web_sessions, one row per session.
 - **Reporting grain:** session-start date/period; campaign/channel where session classification exists.
-- **Exclusions/safeguards:** **Decision required:** bot/internal-traffic filters, session boundaries and campaign/channel classification. Keep direct and unknown traffic visible. Order attribution must not duplicate or reclassify sessions.
+- **Exclusions/safeguards:** **Synthetic source confirmed:** each supplied row is one valid website session, with no bot/internal traffic; paid campaign classification and campaignless Direct/Organic are explicit. Keep direct and unknown traffic visible. Order attribution must not duplicate or reclassify sessions.
 
 ## 10. Conversion rate
 
@@ -95,7 +96,7 @@ For sections 2–14, **Assumption to validate:** support daily and selected-peri
 - **Formula:** attributed eligible orders / eligible classified website sessions × 100%.
 - **Source grain:** separate order-attribution and session aggregates.
 - **Reporting grain:** matching period × campaign/channel; purchase dates for numerator and session-start dates for denominator under the proposed convention.
-- **Exclusions/safeguards:** **Provisional project decision:** exclude unattributed orders from campaign/channel numerators. Cross-period purchases, multiple orders per session and non-website interactions can distort this rate or make it exceed 100%; suppress misleading comparisons with mismatched coverage. Zero/missing denominators follow section 17. **Decision required:** source-dependent session eligibility/classification and the numerator scope for any overall rate.
+- **Exclusions/safeguards:** **Provisional project decision:** exclude unattributed orders from campaign/channel numerators. Cross-period purchases, multiple orders per session and non-website interactions can distort this rate or make it exceed 100%; suppress misleading comparisons with mismatched coverage. Zero/missing denominators follow section 17. **Synthetic source confirmed:** all supplied sessions are valid; paid campaign/channel classification is explicit. **Decision required:** numerator scope for any overall rate.
 
 ## 11. New customers
 
@@ -117,9 +118,9 @@ For sections 2–14, **Assumption to validate:** support daily and selected-peri
 
 - **Business meaning:** proportion of an approved campaign budget consumed.
 - **Formula:** spend within budget scope and dates / approved budget × 100%.
-- **Source grain:** ad_performance plus **Decision required:** budget source, amount, currency, dates, revisions and grain. No budget column is confirmed.
+- **Source grain:** ad_performance plus **Synthetic source confirmed:** campaigns supplies amount, GBP currency, inclusive dates and lifetime grain, without revisions. The synthetic source confirms campaigns.budget_gbp as a fixed lifetime GBP budget over inclusive start_date/end_date, without revisions.
 - **Reporting grain:** campaign × applicable budget period; channel only with channel-allocated budgets.
-- **Exclusions/safeguards:** match dates/currency; never repeat a budget per daily row. Zero/missing budget gives an undefined ratio. **Decision required:** lifetime versus periodic budgets, approaching-budget threshold and alert criteria.
+- **Exclusions/safeguards:** match dates/currency; never repeat a budget per daily row. Zero/missing budget gives an undefined ratio. **Synthetic source confirmed:** lifetime budgets. **Decision required:** approaching-budget threshold and alert criteria.
 
 ## 14. Campaigns spending without attributed orders
 
@@ -138,11 +139,11 @@ For sections 2–14, **Assumption to validate:** support daily and selected-peri
 **Provisional project decisions:**
 
 - Include interactions from exactly seven elapsed days before purchase; exclude interactions at or after purchase: purchase time minus seven elapsed 24-hour days <= interaction time < purchase time, after time normalization.
-- Rank eligible interactions by latest interaction timestamp, then stable session identifier as the deterministic tie-breaker. Do not split an order across campaigns. **Decision required:** physical session-key mapping and stable identifier ordering; eligible non-session interactions require a validated session-key mapping before this rule can be implemented for them.
+- Rank eligible interactions by latest interaction timestamp, then stable session identifier as the deterministic tie-breaker. Do not split an order across campaigns. **Synthetic source confirmed:** session_id is the key and lexically greatest ID wins; only website-session interactions are supplied.
 - Missing campaign, interaction timestamp or usable identity information leaves an order unattributed; do not infer a match.
 - Use full refreshes for late-arriving data in this portfolio implementation, recomputing attribution and dependent metrics from available history.
 
-**Decision required before implementation:** interaction sources/types, non-direct classification, customer identity matching, valid campaign linkage, timestamp precision, campaign/channel structure and channel assignment for multi-channel campaigns.
+**Synthetic source confirmed:** identified campaign-linked paid web_sessions are the only campaign interactions; customer_id joins exactly, timestamps have second precision, and campaigns each have one channel. Direct and Organic have no campaign. See section 19.
 
 Retain orders with no qualifying interaction or required matching information as unattributed. **Assumption to validate:** record reason flags for missing data and unresolved source issues within the unattributed bucket; never drop orders or manufacture assignments. Eligible order counts and amounts must reconcile to attributed plus unattributed totals without overlap.
 
@@ -154,7 +155,7 @@ Daily campaign spend could be repeated once for every matching order or customer
 - Reduce attribution candidates to at most one assignment per order before joining amounts. Distinct order counts cannot fix duplicated spend/amount sums. SUM(DISTINCT amount) is unsafe because different orders can have identical values.
 - Join dimensions only on validated unique keys. Check row counts and sums before/after joins; expose unmatched keys rather than silently losing them through inner joins.
 - Include date and channel when joining daily campaign aggregates. Do not repeat a measure without channel detail across channels. Retain spend-only, session-only and order-only groups.
-- **Decision required:** product/order bridge or line-item grain and allocation rules before product reporting; never copy full order amounts or campaign spend to every product.
+- **Synthetic source confirmed:** order_items provides the order/product bridge at line grain with reconciled amounts. **Decision required:** spend/session allocation rules before product reporting; never copy full order amounts or campaign spend to every product.
 - Aggregate budgets at their approved grain. Customer/order/product filters require an explicit spend/session allocation policy before publishing corresponding ratios.
 
 ## 17. Common handling rules
@@ -171,7 +172,7 @@ Daily campaign spend could be repeated once for every matching order or customer
 
 These are acceptance requirements; implementation depends on validated mappings and the decisions above.
 
-1. **Keys/grains:** non-null unique expected keys for all six tables, including the full ad_performance composite key; detect duplicates and orphan references where relationships exist.
+1. **Keys/grains:** non-null unique expected keys for all seven tables, including the full ad_performance composite key; detect duplicates and orphan references where relationships exist.
 2. **Validity/coverage:** profile missing measures, timestamps, identities and currencies; verify date coverage and ingestion freshness by channel. Assert negative raw values are preserved and flagged. **Decision required:** source-specific credit/reversal interpretation and completeness thresholds. Do not impose unsupported bounds such as clicks always <= impressions.
 3. **Attribution:** at most one campaign per order; verify identity, non-direct eligibility and absence of a more recent qualifying interaction. Assert inclusion at exactly seven elapsed days before purchase and exclusion at/after purchase. Cover direct-after-non-direct, no match, equal timestamps and cross-period lookback; verify the stable session-identifier tie-breaker and that missing campaign, interaction time or usable identity leaves the order unattributed.
 4. **Conservation:** eligible order counts and amounts equal attributed plus unattributed totals for identical filters/currencies. Campaign/channel subtotals must not count any order twice.
@@ -179,3 +180,15 @@ These are acceptance requirements; implementation depends on validated mappings 
 6. **Dashboard reconciliation:** independent SQL must match dashboard totals and campaign/channel results for spend, impressions, clicks, sessions, orders, amounts, new customers and every ratio. Calculate ratios from totals; assert NULL displayed as N/A for zero/missing denominators. Verify campaign/channel conversion excludes unattributed orders and uses eligible classified sessions at matching scope; test missing costs and spend without orders.
 7. **Acquisition/budgets:** each customer acquired at most once using available full history and approved ties; reconcile attributed/unattributed acquisitions. Validate budget scope, effective dates and currency; ensure daily joins do not multiply budgets.
 8. **Policy/reproducibility:** test approved timezone boundaries, currency conversion, cancellations and refunds. Verify full refreshes incorporate late-arriving data into attribution, first eligible orders and dependent metrics, and repeated refreshes on unchanged input produce identical results. Verify initial CAC uses period spend and customers acquired in that period. Record source mappings, decision versions, SQL, filters and refresh time for reproduction. Verify all six brief business questions and consistent, read-only Wren answers against these definitions.
+
+## 19. Confirmed synthetic source design
+
+This is fixed synthetic portfolio data for a fictional UK DTC fashion brand, not real customer data. `DATA_DICTIONARY.md` is the physical source specification; the reproducible generator and validator live in `scripts/`. The following resolves source-dependent questions above for this snapshot only; unresolved business decisions remain open.
+
+- **Coverage and currency:** 2025-01-01 through 2025-12-31; GBP only, exact pence, no FX. Media spend includes platform media cost only, excluding fees, taxes and credits. Synthetic impressions and outbound clicks are comparable by construction; no email campaigns or costs exist.
+- **Time:** raw timestamps are UTC to the second. Reporting timezone and daily ad dates are Europe/London, including BST. Seven-day windows use elapsed UTC time. No pre-2025 or post-2025 records exist; cross-month lookback is tested, cross-year coverage is unavailable.
+- **Sessions and attribution:** web_sessions is the sole interaction source. Identified paid sessions with valid campaign_id qualify; campaignless Direct and Organic visits do not claim a campaign. Every supplied session is valid, with no bots/internal traffic or event-level sessionisation. Stable session_id is the physical tie-breaker; sort descending after timestamp, taking the lexically greatest ID. Order/customer joins use exact customer_id. Blank session customer_id means anonymous and cannot match; blank campaign_id is valid for Direct/Organic. All order identities are known; no guests or merged IDs are modelled.
+- **Amounts and status:** orders.gross_order_amount_gbp is the available gross merchandise order value; orders.refund_amount_gbp includes cancellation reversals; orders.net_order_amount_gbp equals gross minus those adjustments. Each reconciles to corresponding order_items amounts. Statuses are completed, cancelled, partially_refunded and refunded. Adjustments are final snapshot amounts at original order grain; refund event time is unavailable. Shipping, VAT, discounts, fees and business costs are absent. Choosing eligible statuses and gross versus adjusted attributed amount remains a business decision; raw net is not automatically the contracted attributed amount.
+- **Budgets:** campaigns.budget_gbp is a single lifetime media budget per single-channel campaign, bounded by inclusive campaign dates, with no revisions. Approaching-budget thresholds and alert policies remain open.
+- **Customers:** only 2025 history is available; acquisition must be labelled first observed, not verified lifetime new. The first-eligible-order policy and simultaneous-order tie-breaking remain open.
+- **Validation scope:** the raw validator checks the seven source grains, references, date/channel alignment, monetary arithmetic and deterministic attribution fixtures. Its assignment diagnostic includes all statuses to test interaction matching, and is not a business attribution model or dashboard metric. Raw spend is non-negative by design; credit/reversal anomaly preservation is a future source concern. SQL/dbt, dashboard reconciliation, missing-feed tests and broader policy tests in section 18 remain future work.
