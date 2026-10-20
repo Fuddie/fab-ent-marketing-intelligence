@@ -10,3 +10,17 @@ target/
 dbt_packages/
 logs/
 data/processed/
+data/generated/
+
+# Local dbt profiles and telemetry
+.dbt/
+profiles.yml
+.user.yml
+
+# DuckDB databases, write-ahead logs and spill directories
+*.duckdb
+*.duckdb.wal
+*.duckdb.tmp/
+*.db
+*.db.wal
+*.db.tmp/

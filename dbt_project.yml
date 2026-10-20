@@ -1,0 +1,18 @@
+name: fab_ent_marketing_intelligence
+version: '1.0.0'
+config-version: 2
+profile: fab_ent_marketing_intelligence
+flags:
+  send_anonymous_usage_stats: false
+
+model-paths: [models]
+seed-paths: [data/raw]
+test-paths: [tests]
+macro-paths: [macros]
+analysis-paths: [analyses]
+snapshot-paths: [snapshots]
+clean-targets: [target, dbt_packages]
+
+seeds:
+  fab_ent_marketing_intelligence:
+    +quote_columns: true

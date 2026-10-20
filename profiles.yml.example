@@ -1,0 +1,11 @@
+fab_ent_marketing_intelligence:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: data/generated/fab_ent.duckdb
+      schema: raw
+      threads: 1
+      settings:
+        TimeZone: UTC
+

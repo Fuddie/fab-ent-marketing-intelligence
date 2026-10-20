@@ -1,0 +1,65 @@
+version: 2
+seeds:
+  - name: ad_performance
+    config:
+      column_types:
+        date: date
+        campaign_id: varchar
+        channel: varchar
+        spend_gbp: decimal(18,2)
+        impressions: bigint
+        clicks: bigint
+  - name: campaigns
+    config:
+      column_types:
+        campaign_id: varchar
+        campaign_name: varchar
+        channel: varchar
+        objective: varchar
+        start_date: date
+        end_date: date
+        budget_gbp: decimal(18,2)
+  - name: customers
+    config:
+      column_types:
+        customer_id: varchar
+        created_at: timestamptz
+  - name: order_items
+    config:
+      column_types:
+        order_item_id: varchar
+        order_id: varchar
+        product_id: varchar
+        quantity: bigint
+        unit_price_gbp: decimal(18,2)
+        gross_line_amount_gbp: decimal(18,2)
+        refund_amount_gbp: decimal(18,2)
+        net_line_amount_gbp: decimal(18,2)
+  - name: orders
+    config:
+      column_types:
+        order_id: varchar
+        order_timestamp: timestamptz
+        customer_id: varchar
+        status: varchar
+        gross_order_amount_gbp: decimal(18,2)
+        refund_amount_gbp: decimal(18,2)
+        net_order_amount_gbp: decimal(18,2)
+  - name: products
+    config:
+      column_types:
+        product_id: varchar
+        product_name: varchar
+        category: varchar
+        unit_price_gbp: decimal(18,2)
+        currency: varchar
+  - name: web_sessions
+    config:
+      column_types:
+        session_id: varchar
+        session_timestamp: timestamptz
+        customer_id: varchar
+        campaign_id: varchar
+        channel: varchar
+        source_medium: varchar
+        device: varchar

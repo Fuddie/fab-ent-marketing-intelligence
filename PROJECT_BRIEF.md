@@ -18,6 +18,12 @@ Campaign, website and order data are stored separately, making it difficult for 
 
 The marketing manager and channel owners will use the dashboard.
 
+## Intended architecture
+
+Raw marketing CSVs -> dbt transformations -> DuckDB analytics tables -> Wren AI semantic layer -> browser-based marketing AI dashboard.
+
+dbt will build the analytics tables in DuckDB. Wren AI will provide the semantic layer for consistent, read-only answers in the browser-based marketing AI dashboard. Phase 1 covers only raw CSV seed loading and validation; transformation models, analytics tables, Wren AI and the dashboard are future phases.
+
 
 
 ## Decisions
