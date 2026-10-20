@@ -1581,6 +1581,52 @@ models:
       cannot establish global completeness; inspect monthly overview.
     data_tests:
     - not_null
+- name: mart_marketing__campaign_monthly
+  description: One row per Europe/London reporting month and campaign, derived exclusively
+    from the governed campaign daily mart. Revenue restates purchase months; eligible
+    conversions and revenue retain separate contract scopes.
+  data_tests:
+  - marketing_unique_grain:
+      arguments:
+        columns:
+        - reporting_month
+        - campaign_id
+  columns:
+  - name: reporting_month
+    description: First day of the Europe/London reporting month.
+    data_tests:
+    - not_null
+  - name: campaign_id
+    description: Same definition as governed campaign daily, summed for additive measures.
+    data_tests:
+    - not_null
+  - name: campaign_name
+    description: Same definition as governed campaign daily, summed for additive measures.
+    data_tests:
+    - not_null
+  - name: marketing_channel
+    description: Same definition as governed campaign daily, summed for additive measures.
+    data_tests:
+    - not_null
+  - name: spend_gbp
+    description: Same definition as governed campaign daily, summed for additive measures.
+    data_tests:
+    - not_null
+  - name: eligible_conversions
+    description: Same definition as governed campaign daily, summed for additive measures.
+    data_tests:
+    - not_null
+  - name: attributed_gross_merchandise_revenue_gbp
+    description: Same definition as governed campaign daily, summed for additive measures.
+    data_tests:
+    - not_null
+  - name: attributed_net_revenue_gbp
+    description: Same definition as governed campaign daily, summed for additive measures.
+    data_tests:
+    - not_null
+  - name: net_roas
+    description: Governed daily measure rolled up to campaign month; net ROAS divides
+      monthly attributed net revenue by monthly spend.
 unit_tests:
 - name: governed_statuses_signed_values_and_london_dates
   model: int_marketing__governed_orders

@@ -214,3 +214,28 @@ This is fixed synthetic portfolio data for a fictional UK DTC fashion brand, not
 - **Budgets:** campaigns.budget_gbp is a single lifetime media budget per single-channel campaign, bounded by inclusive campaign dates, with no revisions. Approaching-budget thresholds and alert policies remain open.
 - **Customers:** only 2025 history is available; acquisition must be labelled first observed, not verified lifetime new. The first-eligible-order policy and simultaneous-order tie-breaking remain open.
 - **Validation scope:** the raw validator checks the seven source grains, references, date/channel alignment, monetary arithmetic and deterministic attribution fixtures. Its assignment diagnostic includes all statuses to test interaction matching, and is not a business attribution model or dashboard metric. Raw spend is non-negative by design; credit/reversal anomaly preservation is a future source concern. SQL/dbt, dashboard reconciliation, missing-feed tests and broader policy tests in section 18 remain future work.
+
+
+## Governed campaign-month serving grain
+
+`mart_marketing__campaign_monthly` / `MarketingCampaignMonthly` has one row per
+`reporting_month, campaign_id`, derived exclusively from the governed campaign
+daily mart. The reporting month is the first day of the calendar month of the
+already Europe/London reporting date; UTC timestamps are not truncated again.
+Campaign name and canonical marketing channel remain campaign dimensions.
+
+Spend, eligible conversions, attributed gross merchandise revenue and attributed
+net revenue sum the daily columns without changing eligibility or attribution.
+Gross revenue retains fully refunded sales and excludes cancellations; net revenue
+subtracts sales refunds once and restates the original purchase month. Conversion
+eligibility remains separate. Monthly net ROAS divides monthly attributed net
+revenue by monthly spend, returning NULL at zero spend. Further rollups divide
+summed components; never sum or average stored ROAS.
+
+Campaign revenue-generation rankings default to attributed net revenue. Campaign
+questions containing "per month", "monthly", or "each month" use this model.
+Top N uses ROW_NUMBER partitioned by reporting_month, ordered by attributed net
+revenue descending and campaign_id ascending, retaining rows <= N. Output sorts
+by month ascending and the same ranking keys. Months with fewer than N available
+campaigns return all available campaigns without fabricated rows. The full fixed
+snapshot has at least three campaigns every month. UI label: **Reporting month**.

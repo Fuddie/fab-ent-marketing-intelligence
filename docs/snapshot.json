@@ -5,6 +5,93 @@
   "duckdb_export_version": "1.5.6",
   "models": [
     {
+      "model": "MarketingCampaignMonthly",
+      "rows": 112,
+      "schema": [
+        {
+          "name": "reporting_month",
+          "type": "DATE"
+        },
+        {
+          "name": "campaign_id",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "campaign_name",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "marketing_channel",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "spend_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "eligible_conversions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "attributed_gross_merchandise_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_net_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "net_roas",
+          "type": "DOUBLE"
+        }
+      ],
+      "governed_schema": [
+        {
+          "name": "reporting_month",
+          "type": "DATE"
+        },
+        {
+          "name": "campaign_id",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "campaign_name",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "marketing_channel",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "spend_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "eligible_conversions",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "attributed_gross_merchandise_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_net_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "net_roas",
+          "type": "DOUBLE"
+        }
+      ],
+      "sha256": "be592d16dc4d2a9d0ab8ccb2e680bc5a80915e3b850d13081fab4942b9f485a3",
+      "bytes": 4467,
+      "keys": [
+        "reporting_month",
+        "campaign_id"
+      ],
+      "export_sql": "SELECT CAST(\"reporting_month\" AS VARCHAR) AS \"reporting_month\", \"campaign_id\", \"campaign_name\", \"marketing_channel\", \"spend_gbp\", \"eligible_conversions\", \"attributed_gross_merchandise_revenue_gbp\", \"attributed_net_revenue_gbp\", \"net_roas\" FROM MarketingCampaignMonthly ORDER BY reporting_month, campaign_id"
+    },
+    {
       "model": "MarketingCampaignDaily",
       "rows": 3022,
       "schema": [
@@ -1727,10 +1814,10 @@
       "export_sql": "SELECT CAST(\"reporting_month\" AS VARCHAR) AS \"reporting_month\", \"cost_coverage\", \"acquisition_basis\", \"spend_gbp\", \"impressions\", \"clicks\", \"valid_sessions\", \"placed_orders\", \"attributed_placed_orders\", \"unattributed_placed_orders\", \"eligible_conversions\", \"attributed_orders\", \"unattributed_eligible_orders\", \"first_observed_acquisitions\", \"attributed_first_observed_acquisitions\", \"unattributed_first_observed_acquisitions\", \"raw_gross_order_amount_gbp\", \"cancellation_gross_amount_gbp\", \"gross_merchandise_revenue_gbp\", \"sales_refunds_gbp\", \"cancellation_reversals_gbp\", \"net_revenue_gbp\", \"raw_net_order_amount_gbp\", \"attributed_gross_merchandise_revenue_gbp\", \"unattributed_gross_merchandise_revenue_gbp\", \"attributed_sales_refunds_gbp\", \"unattributed_sales_refunds_gbp\", \"attributed_cancellation_reversals_gbp\", \"unattributed_cancellation_reversals_gbp\", \"attributed_net_revenue_gbp\", \"unattributed_net_revenue_gbp\", \"allocated_budget_gbp\", \"negative_input_count\", \"ctr_pct\", \"cpc_gbp\", \"conversion_rate_pct\", \"gross_roas\", \"net_roas\", \"media_only_cac_gbp\", \"attribution_rate_pct\", \"budget_utilisation_pct\", \"budget_pacing_pct\", \"flag_spend_without_eligible_attributed_orders\", \"flag_budget_overspend\", \"flag_ahead_of_budget_pacing\", \"flag_approaching_budget\", \"flag_unexpected_negative_inputs\", \"flag_incomplete_attribution\" FROM MarketingMonthlyOverview ORDER BY reporting_month"
     }
   ],
-  "queries_sha256": "f2556b604f5276e75c0f6a793c76dc4f1fd09d325fcb90698ef842d42c1933ce",
+  "queries_sha256": "7ffd49807962cebd3070cbadb2b17d174cd9bb6dbe0f0d0071ebb23702c3eab0",
   "comparison": {
     "absolute": 1e-08,
     "relative": 1e-10
   },
-  "checks": "All exported rows, all fixed SQL queries and ten verified examples passed Wren versus direct DuckDB and typed Parquet parity."
+  "checks": "All exported rows, all fixed SQL queries and all saved verified examples passed Wren versus direct DuckDB and typed Parquet parity."
 }

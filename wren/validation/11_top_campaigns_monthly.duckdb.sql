@@ -1,0 +1,1 @@
+SELECT CAST(reporting_month AS VARCHAR) AS reporting_month, campaign_id, campaign_name, attributed_net_revenue_gbp FROM fab_ent.raw_marts.mart_marketing__campaign_monthly QUALIFY ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY attributed_net_revenue_gbp DESC, campaign_id ASC) <= 3 ORDER BY reporting_month ASC, attributed_net_revenue_gbp DESC, campaign_id ASC

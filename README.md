@@ -17,8 +17,8 @@ with no backend. Serve it over HTTP using the Phase 6 instructions below.
 Phase 1 loads and validates the raw CSV seeds in DuckDB. Phase 2 adds the clean
 staging layer. Phase 3 adds tested order attribution. Phase 4 adds governed
 marketing marts. Phase 5 connects these marts to a tested local Wren semantic
-layer. Phase 6 adds the browser dashboard; arbitrary natural-language handling
-remains future work.
+layer. Phase 6 adds the browser dashboard. Phase 7 adds local marketing questions
+and an explicit saved-example mode; see [Phase 7](#phase-7-ask-marketing-ai).
 
 ## Phase 1: dbt + DuckDB seeds
 
@@ -352,7 +352,7 @@ namespace, `wren.public`, is separate from the physical mapping.
 | `MarketingChannelMonthly` | `mart_marketing__channel_monthly` | London month + channel | 72 |
 | `MarketingMonthlyOverview` | `mart_marketing__monthly_overview` | London month, all website outcomes | 12 |
 
-Every model has a corresponding `Marketing…Metrics` cube. Additive cube measure
+Every model has a corresponding `Marketingâ€¦Metrics` cube. Additive cube measure
 names start with `total_` (for example, `total_spend_gbp`). Calculated measures
 include CTR, CPC, conversion rate, gross/net ROAS, media-only CAC, attribution
 rate and budget utilisation/pacing. They divide aggregated numerators by
@@ -486,9 +486,10 @@ cube measures and [business rules](wren/knowledge/rules/marketing.md).
 ## Phase 6: static marketing intelligence dashboard
 
 The complete saved dashboard lives under [docs/](docs/index.html). There is no
-backend, Power BI dependency, arbitrary question handling, or live feed. Its
-architecture is governed dbt marts → validated Wren semantic models → exported
-fixed ZSTD Parquet snapshots → DuckDB WebAssembly → interactive browser UI.
+backend dependency, Power BI dependency, or live feed. Phase 7 optionally adds a
+localhost question service. Its
+architecture is governed dbt marts â†’ validated Wren semantic models â†’ exported
+fixed ZSTD Parquet snapshots â†’ DuckDB WebAssembly â†’ interactive browser UI.
 The Python database remains ignored and is never shipped to the browser.
 
 The interface includes eight summary cards, monthly spend/revenue and net ROAS
@@ -531,7 +532,7 @@ when the revenue card includes unmatched sales. Paid CAC uses attributed
 first-observed acquisitions, not all acquisitions. Ratios divide summed
 components; stored row-level ratios are never averaged. Empty aggregates and
 zero denominators retain NULL and display N/A, while real zero amounts show
-£0.00. Direct/Organic/Unattributed cost-dependent ratios remain undefined.
+Â£0.00. Direct/Organic/Unattributed cost-dependent ratios remain undefined.
 
 ### Regenerate snapshots and run validations
 
@@ -549,7 +550,7 @@ $WrenExe = (Resolve-Path .\wren\.venv\Scripts\wren.exe).Path
 ```
 
 The first command runs the full dbt build and all four independent CSV-oracle
-validators, strict Wren validation/build and 27 semantic/direct comparisons.
+validators, strict Wren validation/build and 32 semantic/direct comparisons.
 The exporter re-executes complete model selections through Wren, compares each
 row with direct physical-mart DuckDB SQL, writes the **Wren-returned values** to
 typed Parquet, then re-reads and compares those files. Counts stored as HUGEINT
@@ -566,11 +567,11 @@ data available to every possible subset, rather than validating selected sample
 filters only.
 
 The dashboard validator compares the actual JS calculation functions against
-independent physical-mart SQL for **25,200 combinations**: 12 start months × 12
-end months × 7 channels × 25 campaigns. It checks cards, monthly/channel/campaign
+independent physical-mart SQL for **25,200 combinations**: 12 start months Ã— 12
+end months Ã— 7 channels Ã— 25 campaigns. It checks cards, monthly/channel/campaign
 results, stable top-five ordering, monitoring alerts and date-only context,
 including all empty selections. It also checks snapshot checksums, exact schemas
-and all 3,130 source rows, KPI grain reconciliations, NULLs, zero denominators,
+and all 3,242 source rows, KPI grain reconciliations, NULLs, zero denominators,
 formatting and HTML escaping. Counts and NULLs must match; numeric comparisons
 use absolute tolerance `1e-8`, relative tolerance `1e-10`, before display rounding.
 Money comes from fixed-scale DECIMAL, then uses browser numbers for presentation.
@@ -599,13 +600,13 @@ snapshot failures. Screenshots are saved under `docs/assets/screenshots/`.
 Generated intermediate test outputs stay in ignored `target/dashboard/`.
 Reviewable public evidence is in [snapshot.json](docs/snapshot.json),
 [validation.json](docs/validation.json) and
-[browser-validation.json](docs/browser-validation.json). The four Parquet files,
+[browser-validation.json](docs/browser-validation.json). The five Parquet files,
 UI source, manifests, verified answers and screenshots are intended static assets.
 
 ### Publish with GitHub Pages
 
 After reviewing and committing the intended changes yourself, open repository
-**Settings → Pages → Build and deployment → Deploy from a branch**. Select the
+**Settings â†’ Pages â†’ Build and deployment â†’ Deploy from a branch**. Select the
 desired branch and `/docs`, then Save. The dashboard uses relative URLs and needs
 no build step, backend, secrets, database file or special cross-origin isolation
 headers. `.nojekyll` keeps static assets untouched. This task does not commit,
@@ -631,3 +632,166 @@ zeros cannot diagnose missing feeds. Attribution is observational, not causal;
 these are merchandise/media measures, not profit, cash flow or fully loaded CAC.
 Public-CDN availability and modern WebAssembly browser support remain runtime
 dependencies. No governed dbt or Wren metric definitions were changed.
+
+
+## Phase 7: Ask Marketing AI
+
+The **Ask AI** navigation link opens the full experience at the bottom of the
+same dashboard. **Local questions** generates a new governed answer using a
+small Python service. **Verified examples** displays the existing ten saved,
+independently validated Wren answers without an AI request; these always use
+the complete snapshot and ignore dashboard filters. The modes, result badges
+and distinct section borders identify the answer source.
+
+After the existing dbt/Wren setup and validation, install the extra dependencies:
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements-ai.txt
+```
+
+Start the dashboard in one PowerShell terminal:
+
+```powershell
+.\.venv\Scripts\python.exe -m http.server 4173 --bind 127.0.0.1 --directory docs
+```
+
+Start the question service from the repository root in another terminal:
+
+```powershell
+# Use your installed Wren CLI 0.15.0 executable (a separate Wren environment).
+$env:WREN_EXE = (Resolve-Path .\wren\.venv\Scripts\wren.exe).Path
+$env:MARKETING_AI_MODEL = 'gpt-6-luna'
+$env:MARKETING_AI_REASONING = 'low'
+.\.venv\Scripts\python.exe -B scripts/marketing_ai.py
+```
+
+If Wren is installed elsewhere, set WREN_EXE to that executable instead. The
+service uses this repository's explicit `wren/target/mdl.json` and
+`wren/connection_info.json`; it does not use a global Wren profile. Open
+<http://127.0.0.1:4173/> (or <http://localhost:4173/>). Only these two dashboard
+origins are allowed. Service and health URL: <http://127.0.0.1:4174/health>.
+The service binds only to 127.0.0.1 and rejects unexpected Host/Origin headers.
+Stop it with Ctrl+C. No commit, push or hosting change is needed.
+
+Arbitrary questions work **only while the local service is running**. GitHub
+Pages hosts the static dashboard and verified examples only. A Pages origin
+cannot call this service. Dashboard analytics and saved answers remain available
+with the service stopped (the analytics engine still needs its public CDN).
+
+Install and authenticate the native Codex CLI before starting. No API key is
+required, read by this application, or exposed to the browser. Windows resolution
+prefers codex.exe, otherwise locates the native executable under the codex.cmd
+npm installation; it never executes the blocked codex.ps1 wrapper. Startup makes
+a real structured-output probe with the selected model/reasoning configuration
+and fails if it is unavailable. Availability depends on the authenticated account.
+The default gpt-6-luna / low configuration passed its structured-output Codex CLI smoke test. Set MARKETING_AI_MODEL to change the model; set MARKETING_AI_REASONING to change reasoning effort.
+The structured CLI approach follows [official OpenAI guidance](https://developers.openai.com/cookbook/examples/codex/build_iterative_repair_loops_with_codex).
+
+Local questions use your authenticated Codex CLI and send the question and
+allowlisted marketing semantic context to OpenAI. Limited result data may be
+sent by future explanation implementations; the current implementation builds
+its concise explanation directly from returned rows and does not send result
+rows to a second AI call. Normal Codex account usage limits apply. Shell, web,
+MCP, apps, plugins, hooks and other model tool features are disabled; the model
+only proposes structured SQL. Existing local authentication is retained.
+
+The supported scope is campaigns, channels, spend, impressions, clicks,
+sessions, eligible conversions, attribution, merchandise revenue, ROAS,
+media-only CAC, budgets, first-observed acquisitions and monthly performance.
+Unavailable data and unrelated questions are rejected. These measures do not
+establish profit, causal impact, cash flow or lifetime customer acquisition.
+
+**Use current dashboard filters** is off by default. Off means complete snapshot
+unless the question explicitly requests filters. On sends the exact active
+start/end reporting months, channel and campaign. The server validates those
+values against the governed snapshot inventory and injects predicates itself.
+Incompatible selections return no data. Campaign filters require CampaignDaily;
+channel filters require ChannelMonthly or CampaignDaily. Month filters cannot
+silently use lifetime CampaignSummary. Such incompatible plans are rejected.
+Filters, assumptions, model, duration, validation and executed semantic SQL are
+shown with each answer; question-specific filters are visible in SQL and notes.
+
+The service validates strict JSON output, parses SQL into an AST, permits one
+SELECT over exactly one of the five Wren models, and rejects joins, subqueries,
+CTEs, multiple statements, comments, external tables and functions outside a
+small allowlist. This blocks filesystem/network access and extension loading.
+Wren compiles and executes the checked semantic SQL against read-only governed
+marts. A separately timed read-only DuckDB subprocess executes the physical-mart
+equivalent, comparing every returned row, column, value, ordering and NULL with
+the existing comparison tolerances. Date transport is normalized using the
+oracle's actual DATE type. Failed parity withholds the answer. This proves
+execution parity, not that every possible natural-language interpretation or
+SQL metric composition is correct; inspect assumptions and SQL.
+
+There is one active request, a 90-second total execution deadline, a 500-character
+question limit and a maximum of 100 returned rows. Timeout kills the child process
+tree on Windows. Explanations contain only actual returned values. Browser table
+cells, SQL and messages are escaped. Empty results, NULLs, invalid questions,
+service failure, timeout and execution failures have explicit states.
+
+Successful answers are cached locally by exact trimmed question, semantic-context
+hash, governed snapshot fingerprint, filters, model and reasoning. The fingerprint
+reads only explicitly named raw CSVs, versioned semantic/dbt definitions and
+exported Parquet snapshots; it never scans or hashes generated DuckDB files.
+Changing governed inputs invalidates the cache; changing them during a request
+withholds the answer. Rebuild dbt/Wren and re-export snapshots together after a
+source change. The fingerprint cannot detect ungoverned manual edits made only
+to an ignored database. **Clear local cache** deletes only this service's cached
+answers. Logs, cache and schema runtime files live under ignored
+`target/marketing-ai/`; do not publish them. Detailed failures stay in the local
+log; browser execution failures show a safe message.
+
+Run the Phase 7 tests with the service/dashboard running where needed:
+
+```powershell
+.\.venv\Scripts\python.exe -B scripts/test_marketing_ai.py
+.\.venv\Scripts\python.exe -B scripts/test_marketing_ai_browser.py
+.\.venv\Scripts\python.exe -B scripts/test_marketing_ai_live.py
+```
+
+The live suite clears the local cache, makes five real requests and compares
+their results with separately authored direct DuckDB SQL, in addition to the
+service's all-column parity check. Its detailed evidence remains in ignored
+`target/marketing-ai/live-results.json`. See [Phase 7 validation](PHASE7_VALIDATION.md)
+for recorded outcomes. Existing Phase 6 tests still apply. No governed dbt or
+Wren metric definitions were changed.
+
+Ask Marketing AI answer presentation uses a single KPI card for one returned
+value and a summary with a responsive table for larger results. Currency,
+percentages, ROAS, counts and dates use business-friendly formatting; column
+units follow the validated SQL through aliases. Execution metadata is available
+under the collapsed **Technical details** section, with **Verified by Wren**
+visible above the answer. Saved Verified examples retain their existing layout.
+
+Additional presentation checks: `node --test scripts/test_answer.mjs`.
+Answer screenshots are in `docs/assets/screenshots/ask-{kpi,table}-{1440,390}.png`;
+these use deterministic browser fixtures rather than live AI answers.
+
+
+### Governed campaign-month rankings
+
+`MarketingCampaignMonthly` maps to `mart_marketing__campaign_monthly`, derived
+from the governed daily mart at Europe/London month/campaign grain (112 rows).
+It exposes campaign identity/channel, spend, eligible conversions, attributed
+gross/net revenue, and recomputed net ROAS. Campaign questions containing
+"per month", "monthly", or "each month" select it. The exact question
+"Top three campaigns based on revenue generation per month" uses attributed
+net revenue descending with campaign ID ascending to break ties: 36 rows,
+three for each of 12 months. The table displays **Reporting month**.
+
+See [validation and changed files](docs/CAMPAIGN_MONTHLY_VALIDATION.md),
+[direct result evidence](docs/campaign-monthly-validation.json), and
+[desktop](docs/assets/screenshots/ask-campaign-monthly-1440.png) /
+[mobile](docs/assets/screenshots/ask-campaign-monthly-390.png) previews.
+Wren validation and export were completed with the existing `WREN_EXE`: five models, 32 parity comparisons, five Parquet exports and 11 saved answers. The exact monthly ranking returns 36 rows, three in each of 12 months. Live AI remains blocked by Codex startup access denial; full dashboard browser validation remains blocked by the pinned public CDN fetch. See the validation report for exact results.
+
+```powershell
+.\.venv\Scripts\dbt.exe build --profiles-dir .dbt
+.\.venv\Scripts\python.exe -B scripts/test_campaign_monthly.py
+.\.venv\Scripts\python.exe -B scripts/test_campaign_monthly_browser.py
+# With Wren CLI installed:
+.\.venv\Scripts\python.exe -B scripts/validate_wren.py --wren-exe $WrenExe
+.\.venv\Scripts\python.exe -B scripts/export_dashboard.py --wren-exe $WrenExe
+# With the local AI service running:
+.\.venv\Scripts\python.exe -B scripts/test_campaign_monthly.py --live
+```

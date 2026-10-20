@@ -23,6 +23,7 @@ CASES = PROJECT / "validation"
 ABS_TOL = 1e-8
 REL_TOL = 1e-10
 MODELS = {
+    "MarketingCampaignMonthly": ("campaign_monthly", ["reporting_month", "campaign_id"]),
     "MarketingCampaignDaily": ("campaign_daily", ["reporting_date", "campaign_id"]),
     "MarketingCampaignSummary": ("campaign_summary", ["campaign_id"]),
     "MarketingChannelMonthly": ("channel_monthly", ["reporting_month", "marketing_channel"]),
@@ -103,7 +104,7 @@ def cube_oracle(suffix):
     }
     if suffix == "monthly_overview":
         formulas["conversion_rate_pct"] = "100.0 * SUM(eligible_conversions) / NULLIF(SUM(valid_sessions), 0)"
-    if suffix != "campaign_daily":
+    if suffix not in ("campaign_daily", "campaign_monthly"):
         budget = "lifetime_budget_gbp" if suffix == "campaign_summary" else "allocated_budget_gbp"
         for name in ("budget_utilisation_pct", "budget_pacing_pct"):
             formulas[name] = f"100.0 * SUM(spend_gbp) / NULLIF(SUM({budget}), 0)"
@@ -117,7 +118,7 @@ def cube_oracle(suffix):
 def main():
     sys.stdout.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--wren-exe", default=shutil.which("wren"))
+    parser.add_argument("--wren-exe", default=os.getenv("WREN_EXE") or shutil.which("wren"))
     parser.add_argument("--connection-file", type=Path, default=PROJECT / "connection_info.json")
     parser.add_argument("--skip-dbt", action="store_true", help="Only after full current dbt validation in this session")
     args = parser.parse_args()

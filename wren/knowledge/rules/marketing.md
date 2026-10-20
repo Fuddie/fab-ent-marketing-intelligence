@@ -1,7 +1,7 @@
 # Governed marketing query rules
 
 METRIC_CONTRACT.md in the repository root is the business authority. Use only
-the four Marketing models. Each maps directly to a governed dbt mart in
+the five Marketing models. Each maps directly to a governed dbt mart in
 fab_ent.raw_marts. Do not query seeds or supporting intermediate tables.
 
 Choose one fact model for each question. CampaignDaily is London date/campaign;
@@ -66,3 +66,5 @@ UTC lookback. Final-status refunds/cancellations restate original purchase perio
 No adjustment-event dates, cash flow, profit, VAT, shipping, fees, causal effect,
 missing-feed detection or verified lifetime customer acquisition are available.
 Zero-filled activity relies on the validated complete synthetic snapshot.
+
+CampaignMonthly is one row per Europe/London reporting month and campaign, rolled up from CampaignDaily. Campaign questions containing "per month", "monthly", or "each month" must use MarketingCampaignMonthly and reporting_month. Revenue generation defaults to attributed_net_revenue_gbp; gross revenue uses attributed_gross_merchandise_revenue_gbp. Top three per month uses QUALIFY ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY attributed_net_revenue_gbp DESC, campaign_id ASC) <= 3, then ORDER BY reporting_month, attributed_net_revenue_gbp DESC, campaign_id. Stored monthly net_roas is monthly attributed net revenue / NULLIF(monthly spend,0); recompute from summed components for further rollups.

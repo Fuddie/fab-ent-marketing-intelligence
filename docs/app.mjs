@@ -48,7 +48,7 @@ function update(){
     alerts('spend-alerts',result.spendAlerts,r=>`${cash(r.spend)} spend · 0 eligible attributed orders`);alerts('budget-alerts',result.budgetAlerts,r=>`${cash(r.spend)} spend / ${cash(r.budget)} allocation · ${pct(r.utilisation)}`);
     const g=result.global,share=g.attribution??0;
     $('attribution').innerHTML=`<div class="coverage"><div>Attributed eligible orders<strong>${count(g.attributed_orders)}</strong></div><div>Unattributed eligible orders<strong>${count(g.unmatched_orders)}</strong></div></div><div class="coverage-track" aria-hidden="true"><i style="width:${Math.max(0,Math.min(100,share))}%"></i></div><div class="coverage"><div>Attributed net revenue<strong>${cash(g.attributed_revenue)}</strong></div><div>Unattributed net revenue<strong>${cash(g.unmatched_revenue)}</strong></div></div><p class="muted">${pct(g.attribution)} of eligible orders attributed. Date-only website scope.</p>`;
-    $('quality').innerHTML=`<article><strong>Snapshot integrity verified</strong>${report.models.reduce((n,m)=>n+m.rows,0).toLocaleString('en-GB')} rows across four governed models. SHA-256 checked on load.</article><article><strong>Negative source indicators</strong>${count(k.negative_inputs)} in selected scope. Zero does not prove complete feeds.</article><article><strong>Acquisition history limited</strong>First observed in 2025 only. No verified lifetime customer history.</article>`;
+    $('quality').innerHTML=`<article><strong>Snapshot integrity verified</strong>${report.models.reduce((n,m)=>n+m.rows,0).toLocaleString('en-GB')} rows across ${report.models.length} governed models. SHA-256 checked on load.</article><article><strong>Negative source indicators</strong>${count(k.negative_inputs)} in selected scope. Zero does not prove complete feeds.</article><article><strong>Acquisition history limited</strong>First observed in 2025 only. No verified lifetime customer history.</article>`;
     $('status').textContent=k.rows?`Snapshot ready · ${month(f.start)} – ${month(f.end)} · ${count(k.conversions)} eligible conversions`:'No matching data. Adjust the filters or reset.';
     window.dashboardState={ready:true,filters:f,results:result};busy(false);
   }catch(e){failure(e);}
@@ -69,6 +69,7 @@ async function boot(){
     // Registration DDL is a fixed template recorded in snapshot metadata. Model names
     // are restricted to this allowlist, never interpolated from a control or feed.
     const models=['MarketingCampaignDaily','MarketingCampaignSummary','MarketingChannelMonthly','MarketingMonthlyOverview'];
+    if(report.models.some(m=>m.model==='MarketingCampaignMonthly'))models.push('MarketingCampaignMonthly');
     if(JSON.stringify(report.models.map(m=>m.model).sort())!==JSON.stringify([...models].sort()))throw new Error('Snapshot model inventory differs');
     for(const model of models){
       const response=await fetch(`data/${model}.parquet`);if(!response.ok)throw new Error(`Missing snapshot ${model} (HTTP ${response.status})`);

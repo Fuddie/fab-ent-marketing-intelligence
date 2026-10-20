@@ -1,0 +1,99 @@
+name: MarketingCampaignMonthlyMetrics
+base_object: MarketingCampaignMonthly
+properties:
+  displayName: Marketing Campaign Monthly
+  description: One row per Europe/London reporting month and campaign. Use for per
+    month, monthly, or each month campaign questions. Revenue generation means attributed
+    net revenue unless gross is explicitly requested.
+  grain: reporting_month, campaign_id
+measures:
+- name: total_spend_gbp
+  expression: SUM(spend_gbp)
+  type: DECIMAL(38, 2)
+  properties:
+    displayName: Spend (GBP)
+    description: Recorded GBP platform media spend, aggregated independently of sessions/orders;
+      excludes fees, taxes, credits and unrecorded channel costs.
+    currency: GBP
+    semantic_role: measure
+    aggregation: sum
+- name: total_eligible_conversions
+  expression: SUM(eligible_conversions)
+  type: INT128
+  properties:
+    displayName: Eligible Conversions
+    description: Completed or partially_refunded orders with positive net value. Includes
+      both attributed and unattributed outcomes at overview scope.
+    semantic_role: measure
+    aggregation: sum
+- name: total_attributed_gross_merchandise_revenue_gbp
+  expression: SUM(attributed_gross_merchandise_revenue_gbp)
+  type: DECIMAL(38, 2)
+  properties:
+    displayName: Attributed Gross Merchandise Revenue (GBP)
+    description: Original merchandise value of completed, partially_refunded and refunded
+      sales, excluding cancelled attempts. Not accounting revenue. Restricted to attributed
+      orders across revenue-eligible statuses (cancellation reversals use cancelled
+      status).
+    currency: GBP
+    semantic_role: measure
+    aggregation: sum
+- name: total_attributed_net_revenue_gbp
+  expression: SUM(attributed_net_revenue_gbp)
+  type: DECIMAL(38, 2)
+  properties:
+    displayName: Attributed Net Revenue (GBP)
+    description: Non-cancelled sales net amount, including signed/zero values. Gross
+      merchandise revenue minus sales refunds, without subtracting refunds twice.
+      Restricted to attributed orders across revenue-eligible statuses (cancellation
+      reversals use cancelled status).
+    currency: GBP
+    semantic_role: measure
+    aggregation: sum
+- name: net_roas
+  expression: SUM(attributed_net_revenue_gbp) / NULLIF(SUM(spend_gbp), 0)
+  type: DOUBLE
+  properties:
+    displayName: Net Roas
+    description: 'Attributed net merchandise revenue / media spend, a multiple. NULL
+      for zero spend or absent channel cost coverage; not profit or causal return.
+      Row-grain value only: never SUM or AVG; use the matching cube measure for rollups.'
+    semantic_role: measure
+    aggregation: none
+dimensions:
+- name: campaign_id
+  expression: campaign_id
+  type: TEXT
+  properties:
+    displayName: Campaign Id
+    description: Canonical single-channel campaign key; NULL only for campaignless
+      sessions or unmatched outcomes in internal daily facts.
+    semantic_role: dimension
+    aggregation: none
+- name: campaign_name
+  expression: campaign_name
+  type: TEXT
+  properties:
+    displayName: Campaign Name
+    description: Source fictional campaign name.
+    semantic_role: dimension
+    aggregation: none
+- name: marketing_channel
+  expression: marketing_channel
+  type: TEXT
+  properties:
+    displayName: Marketing Channel
+    description: Paid campaign channel, valid Direct/Organic session channel, or Unattributed
+      for orders without an assignment. Never infer Direct/Organic from unmatched
+      orders.
+    semantic_role: dimension
+    aggregation: none
+time_dimensions:
+- name: reporting_month
+  expression: reporting_month
+  type: DATE
+  properties:
+    displayName: Reporting month
+    description: First day of the Europe/London month of the governed reporting date.
+    semantic_role: dimension
+    aggregation: none

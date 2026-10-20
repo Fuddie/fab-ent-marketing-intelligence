@@ -41,7 +41,7 @@ def main():
                         try:assert abs(float(a[col])-float(value))<=max(1e-8,1e-10*abs(float(value))),(key,col,a[col],value)
                         except (ValueError,TypeError):assert a[col]==value,(key,col)
         assert page.locator('#kpis .kpi').count()==8
-        assert page.locator('#questions > details').count()==10
+        assert page.locator('#questions > details').count()==len(json.loads((ROOT/'docs/verified.json').read_text(encoding='utf-8')))
         assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
         page.screenshot(path=str(shots/'desktop.png'),full_page=True)
         # Browser-level interaction covers every channel/campaign pair; the
@@ -97,8 +97,9 @@ def main():
             assert failed.locator('#dashboard').is_hidden()
             assert failed.locator('#retry').is_enabled()
             assert 'No substitute KPI values' in failed.locator('#error-message').inner_text()
+            failed.get_by_label('Verified examples',exact=True).check()
             failed.wait_for_selector('#questions > details',timeout=10000)
-            assert failed.locator('#questions > details').count()==10
+            assert failed.locator('#questions > details').count()==len(json.loads((ROOT/'docs/verified.json').read_text(encoding='utf-8')))
             context.close()
         browser.close()
     (ROOT/'docs/browser-validation.json').write_text(json.dumps({'status':'PASS','browser':'installed Google Chrome, headless Playwright 1.56.0','viewports':[1440,390,320,768],'checks':['actual WASM rows versus native DuckDB','175 channel/campaign interactions','empty and reversed ranges','NULL and zero currency display','keyboard controls','unsafe HTML injection','no document overflow','missing CDN','missing snapshot','saved examples independent of engine errors'],'screenshots':['assets/screenshots/desktop.png','assets/screenshots/mobile.png']},indent=2)+'\n',encoding='utf-8')

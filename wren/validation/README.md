@@ -97,3 +97,5 @@ monthly website net revenue includes unattributed sales. These are fixed-snapsho
 media/merchandise measures, not profit or causal effect. First observed is based
 only on 2025 history. Final statuses restate original order dates and there is
 no post-2025 conversion tail or verified lifetime acquisition history.
+
+Campaign-month extension: case `11_top_campaigns_monthly` adds the exact ranking question. The validator now compares five models, all monthly rows, their calculated key, and the new cube overall and by channel: 32 Wren/direct comparisons. See [current monthly validation](../../docs/CAMPAIGN_MONTHLY_VALIDATION.md) for execution status; the original Phase 5 evidence above predates this extension.

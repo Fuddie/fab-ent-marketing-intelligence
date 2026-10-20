@@ -9,7 +9,7 @@
     "relative": 1e-10
   },
   "ordering": "Complete grouping keys ascending; campaign ranking uses net ROAS descending NULLS LAST, then campaign_id ascending.",
-  "schemas_and_rows": "3022 / 24 / 72 / 12; every typed row matches governed marts including stored NULLs.",
+  "schemas_and_rows": "112 / 3022 / 24 / 72 / 12; every typed row matches governed marts including stored NULLs.",
   "registration_ddl": "CREATE VIEW \"{allowlisted_model}\" AS SELECT * FROM read_parquet('{allowlisted_model}.parquet'); local snapshot setup only, not a semantic business query.",
   "baseline_kpis": {
     "spend": 189198.54,
@@ -21,12 +21,12 @@
     "paid_acquisitions": 759,
     "unmatched_orders": 789,
     "unmatched_revenue": 124481.5,
-    "budget": 209997.99999999997,
+    "budget": 209998,
     "negative_inputs": 0,
     "rows": 12,
     "roas": 1.2097133519106436,
     "cac": 249.27343873517788,
     "attribution": 64.5870736086176,
-    "utilisation": 90.0954009085801
+    "utilisation": 90.09540090858007
   }
 }

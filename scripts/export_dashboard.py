@@ -1,11 +1,12 @@
 """Export Wren-returned rows to typed Parquet, proving equality with governed marts.
 
-Run validate_wren.py first. This script re-executes all four model exports and
+Run validate_wren.py first. This script re-executes all five model exports and
 every fixed dashboard query through Wren; a direct DuckDB connection is the oracle.
 """
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import shutil
 
@@ -15,12 +16,12 @@ from validate_wren import ROOT, PROJECT, MODELS, run, records, compare, referenc
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--wren-exe', default=shutil.which('wren'), required=not shutil.which('wren'))
+    parser.add_argument('--wren-exe', default=os.getenv('WREN_EXE') or shutil.which('wren'), required=not (os.getenv('WREN_EXE') or shutil.which('wren')))
     args = parser.parse_args()
     exe = str(Path(args.wren_exe).resolve())
     require(run([exe,'--version']) == 'wrenai 0.15.0', 'Wren version drift')
     evidence = json.loads((PROJECT/'target/validation/summary.json').read_text())
-    require(len(evidence['checks']) == 27 and all(c['status']=='PASS' for c in evidence['checks']), 'Run Wren validation first')
+    require(len(evidence['checks']) >= 32 and all(c['status']=='PASS' for c in evidence['checks']), 'Run Wren validation first')
     out = ROOT/'docs/data'
     out.mkdir(parents=True, exist_ok=True)
     report=ROOT/'target/dashboard'
@@ -73,11 +74,11 @@ def main():
     def save(path,value):
         path.write_text(json.dumps(value,indent=2,default=str)+'\n',encoding='utf-8')
     save(ROOT/'docs/verified.json',verified)
-    save(ROOT/'docs/snapshot.json',{'snapshot':'fixed_2025_synthetic','reporting_timezone':'Europe/London','wren_version':'0.15.0','duckdb_export_version':duckdb.__version__,'models':snapshots,'queries_sha256':hashlib.sha256((ROOT/'docs/queries.json').read_bytes()).hexdigest(),'comparison':manifest['tolerance'],'checks':'All exported rows, all fixed SQL queries and ten verified examples passed Wren versus direct DuckDB and typed Parquet parity.'})
+    save(ROOT/'docs/snapshot.json',{'snapshot':'fixed_2025_synthetic','reporting_timezone':'Europe/London','wren_version':'0.15.0','duckdb_export_version':duckdb.__version__,'models':snapshots,'queries_sha256':hashlib.sha256((ROOT/'docs/queries.json').read_bytes()).hexdigest(),'comparison':manifest['tolerance'],'checks':'All exported rows, all fixed SQL queries and all saved verified examples passed Wren versus direct DuckDB and typed Parquet parity.'})
     report=ROOT/'target/dashboard'
     report.mkdir(parents=True,exist_ok=True)
     save(report/'query-results.json',query_results)
-    print('PASS: four Wren outputs -> typed ZSTD Parquet; four dashboard queries; ten saved verified answers')
+    print(f'PASS: {len(snapshots)} Wren outputs -> typed ZSTD Parquet; {len(query_results)} dashboard queries; {len(verified)} saved verified answers')
 
 
 if __name__=='__main__':

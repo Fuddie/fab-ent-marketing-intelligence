@@ -48,5 +48,9 @@
     "id": "10_best_month",
     "question": "Which month had the strongest net ROAS?",
     "model": "MarketingMonthlyOverview"
+  },
+  {
+    "id": "11_top_campaigns_monthly",
+    "question": "Top three campaigns based on revenue generation per month"
   }
 ]

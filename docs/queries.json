@@ -1,7 +1,7 @@
 {
   "version": 1,
   "registration_ddl": "CREATE VIEW \"{allowlisted_model}\" AS SELECT * FROM read_parquet('{allowlisted_model}.parquet')",
-  "registration_policy": "Local engine setup only. Four allowlisted model identifiers; no controls or data labels enter SQL. Each view exposes precisely one checked snapshot. This DDL has no Wren business-query equivalent.",
+  "registration_policy": "Local engine setup only. Five allowlisted model identifiers; no controls or data labels enter SQL. Each view exposes precisely one checked snapshot. This DDL has no Wren business-query equivalent.",
   "policy": "Fixed SQL, no user SQL. Filter and aggregate additive results in metrics.mjs. All ratios divide summed components; NULL denominators remain NULL. Each query reads one grain only.",
   "ordering": "Complete grouping keys ascending; campaign ranking uses net ROAS descending NULLS LAST, then campaign_id ascending.",
   "tolerance": {"absolute": 1e-8, "relative": 1e-10},
