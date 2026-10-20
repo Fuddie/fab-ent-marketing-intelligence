@@ -1,0 +1,340 @@
+[
+  {
+    "id": "01_total_spend",
+    "question": "What is total marketing spend?",
+    "model": "MarketingMonthlyOverview",
+    "answer": [
+      {
+        "spend_gbp": "189198.54"
+      }
+    ],
+    "semantic_sql": "SELECT SUM(spend_gbp) AS spend_gbp FROM MarketingMonthlyOverview;\n",
+    "direct_sql": "SELECT SUM(spend_gbp) AS spend_gbp FROM \"fab_ent\".\"raw_marts\".\"mart_marketing__monthly_overview\";\n"
+  },
+  {
+    "id": "02_ctr_cpc",
+    "question": "What are overall CTR and CPC?",
+    "model": "MarketingMonthlyOverview",
+    "answer": [
+      {
+        "ctr_pct": "2.113077273",
+        "cpc_gbp": "0.3306435541"
+      }
+    ],
+    "semantic_sql": "SELECT 100.0 * SUM(clicks) / NULLIF(SUM(impressions), 0) AS ctr_pct, SUM(spend_gbp) / NULLIF(SUM(clicks), 0) AS cpc_gbp FROM MarketingMonthlyOverview;\n",
+    "direct_sql": "SELECT 100.0 * SUM(clicks) / NULLIF(SUM(impressions), 0) AS ctr_pct, SUM(spend_gbp) / NULLIF(SUM(clicks), 0) AS cpc_gbp FROM \"fab_ent\".\"raw_marts\".\"mart_marketing__monthly_overview\";\n"
+  },
+  {
+    "id": "03_top_campaigns",
+    "question": "Which five campaigns have the highest net ROAS?",
+    "model": "MarketingCampaignSummary",
+    "answer": [
+      {
+        "campaign_id": "CAM-0001",
+        "campaign_name": "2025 Fashion Campaign 01",
+        "net_roas": "2.810855303"
+      },
+      {
+        "campaign_id": "CAM-0005",
+        "campaign_name": "2025 Fashion Campaign 05",
+        "net_roas": "2.5108755399"
+      },
+      {
+        "campaign_id": "CAM-0003",
+        "campaign_name": "2025 Fashion Campaign 03",
+        "net_roas": "2.4349760316"
+      },
+      {
+        "campaign_id": "CAM-0002",
+        "campaign_name": "2025 Fashion Campaign 02",
+        "net_roas": "2.2409006968"
+      },
+      {
+        "campaign_id": "CAM-0009",
+        "campaign_name": "2025 Fashion Campaign 09",
+        "net_roas": "2.063213345"
+      }
+    ],
+    "semantic_sql": "SELECT campaign_id, campaign_name, SUM(attributed_net_revenue_gbp) / NULLIF(SUM(spend_gbp), 0) AS net_roas FROM MarketingCampaignSummary GROUP BY campaign_id, campaign_name ORDER BY net_roas DESC NULLS LAST, campaign_id ASC LIMIT 5;\n",
+    "direct_sql": "SELECT campaign_id, campaign_name, SUM(attributed_net_revenue_gbp) / NULLIF(SUM(spend_gbp), 0) AS net_roas FROM \"fab_ent\".\"raw_marts\".\"mart_marketing__campaign_summary\" GROUP BY campaign_id, campaign_name ORDER BY net_roas DESC NULLS LAST, campaign_id ASC LIMIT 5;\n"
+  },
+  {
+    "id": "04_spend_without_orders",
+    "question": "Which campaigns spent money without eligible attributed orders?",
+    "model": "MarketingCampaignSummary",
+    "answer": [
+      {
+        "campaign_id": "CAM-0023",
+        "campaign_name": "2025 Fashion Campaign 23",
+        "spend_gbp": "8665.44",
+        "attributed_orders": "0",
+        "flag_spend_without_eligible_attributed_orders": true
+      },
+      {
+        "campaign_id": "CAM-0024",
+        "campaign_name": "2025 Fashion Campaign 24",
+        "spend_gbp": "3281.20",
+        "attributed_orders": "0",
+        "flag_spend_without_eligible_attributed_orders": true
+      }
+    ],
+    "semantic_sql": "SELECT campaign_id, campaign_name, spend_gbp, attributed_orders, flag_spend_without_eligible_attributed_orders FROM MarketingCampaignSummary WHERE spend_gbp > 0 AND attributed_orders = 0 ORDER BY campaign_id ASC;\n",
+    "direct_sql": "SELECT campaign_id, campaign_name, spend_gbp, attributed_orders, flag_spend_without_eligible_attributed_orders FROM \"fab_ent\".\"raw_marts\".\"mart_marketing__campaign_summary\" WHERE spend_gbp > 0 AND attributed_orders = 0 ORDER BY campaign_id ASC;\n"
+  },
+  {
+    "id": "05_over_budget",
+    "question": "Which campaigns exceeded their lifetime budget?",
+    "model": "MarketingCampaignSummary",
+    "answer": [
+      {
+        "campaign_id": "CAM-0003",
+        "campaign_name": "2025 Fashion Campaign 03",
+        "spend_gbp": "11248.16",
+        "lifetime_budget_gbp": "10043.00",
+        "budget_utilisation_pct": "112.0",
+        "flag_budget_overspend": true
+      },
+      {
+        "campaign_id": "CAM-0007",
+        "campaign_name": "2025 Fashion Campaign 07",
+        "spend_gbp": "12249.44",
+        "lifetime_budget_gbp": "10937.00",
+        "budget_utilisation_pct": "112.0",
+        "flag_budget_overspend": true
+      },
+      {
+        "campaign_id": "CAM-0011",
+        "campaign_name": "2025 Fashion Campaign 11",
+        "spend_gbp": "7249.76",
+        "lifetime_budget_gbp": "6473.00",
+        "budget_utilisation_pct": "112.0",
+        "flag_budget_overspend": true
+      },
+      {
+        "campaign_id": "CAM-0015",
+        "campaign_name": "2025 Fashion Campaign 15",
+        "spend_gbp": "13687.52",
+        "lifetime_budget_gbp": "12221.00",
+        "budget_utilisation_pct": "112.0",
+        "flag_budget_overspend": true
+      },
+      {
+        "campaign_id": "CAM-0019",
+        "campaign_name": "2025 Fashion Campaign 19",
+        "spend_gbp": "9774.24",
+        "lifetime_budget_gbp": "8727.00",
+        "budget_utilisation_pct": "112.0",
+        "flag_budget_overspend": true
+      },
+      {
+        "campaign_id": "CAM-0023",
+        "campaign_name": "2025 Fashion Campaign 23",
+        "spend_gbp": "8665.44",
+        "lifetime_budget_gbp": "7737.00",
+        "budget_utilisation_pct": "112.0",
+        "flag_budget_overspend": true
+      }
+    ],
+    "semantic_sql": "SELECT campaign_id, campaign_name, spend_gbp, lifetime_budget_gbp, 100.0 * spend_gbp / NULLIF(lifetime_budget_gbp, 0) AS budget_utilisation_pct, flag_budget_overspend FROM MarketingCampaignSummary WHERE spend_gbp > lifetime_budget_gbp ORDER BY budget_utilisation_pct DESC NULLS LAST, campaign_id ASC;\n",
+    "direct_sql": "SELECT campaign_id, campaign_name, spend_gbp, lifetime_budget_gbp, 100.0 * spend_gbp / NULLIF(lifetime_budget_gbp, 0) AS budget_utilisation_pct, flag_budget_overspend FROM \"fab_ent\".\"raw_marts\".\"mart_marketing__campaign_summary\" WHERE spend_gbp > lifetime_budget_gbp ORDER BY budget_utilisation_pct DESC NULLS LAST, campaign_id ASC;\n"
+  },
+  {
+    "id": "06_monthly",
+    "question": "What is monthly spend and net revenue?",
+    "model": "MarketingMonthlyOverview",
+    "answer": [
+      {
+        "reporting_month": "2025-01-01",
+        "spend_gbp": "11150.37",
+        "net_revenue_gbp": "22498.00"
+      },
+      {
+        "reporting_month": "2025-02-01",
+        "spend_gbp": "10570.53",
+        "net_revenue_gbp": "29802.00"
+      },
+      {
+        "reporting_month": "2025-03-01",
+        "spend_gbp": "11486.11",
+        "net_revenue_gbp": "34549.00"
+      },
+      {
+        "reporting_month": "2025-04-01",
+        "spend_gbp": "12400.65",
+        "net_revenue_gbp": "30355.00"
+      },
+      {
+        "reporting_month": "2025-05-01",
+        "spend_gbp": "12702.52",
+        "net_revenue_gbp": "27038.00"
+      },
+      {
+        "reporting_month": "2025-06-01",
+        "spend_gbp": "12260.95",
+        "net_revenue_gbp": "32968.00"
+      },
+      {
+        "reporting_month": "2025-07-01",
+        "spend_gbp": "19489.54",
+        "net_revenue_gbp": "28669.00"
+      },
+      {
+        "reporting_month": "2025-08-01",
+        "spend_gbp": "20462.01",
+        "net_revenue_gbp": "29571.50"
+      },
+      {
+        "reporting_month": "2025-09-01",
+        "spend_gbp": "18301.52",
+        "net_revenue_gbp": "24710.50"
+      },
+      {
+        "reporting_month": "2025-10-01",
+        "spend_gbp": "20469.56",
+        "net_revenue_gbp": "30263.50"
+      },
+      {
+        "reporting_month": "2025-11-01",
+        "spend_gbp": "20204.00",
+        "net_revenue_gbp": "32478.50"
+      },
+      {
+        "reporting_month": "2025-12-01",
+        "spend_gbp": "19700.78",
+        "net_revenue_gbp": "30454.50"
+      }
+    ],
+    "semantic_sql": "SELECT CAST(reporting_month AS VARCHAR) AS reporting_month, SUM(spend_gbp) AS spend_gbp, SUM(net_revenue_gbp) AS net_revenue_gbp FROM MarketingMonthlyOverview GROUP BY reporting_month ORDER BY reporting_month ASC;\n",
+    "direct_sql": "SELECT CAST(reporting_month AS VARCHAR) AS reporting_month, SUM(spend_gbp) AS spend_gbp, SUM(net_revenue_gbp) AS net_revenue_gbp FROM \"fab_ent\".\"raw_marts\".\"mart_marketing__monthly_overview\" GROUP BY reporting_month ORDER BY reporting_month ASC;\n"
+  },
+  {
+    "id": "07_channels",
+    "question": "How does performance compare by channel?",
+    "model": "MarketingChannelMonthly",
+    "answer": [
+      {
+        "marketing_channel": "Direct",
+        "cost_coverage": "not_available",
+        "spend_gbp": "0.00",
+        "valid_sessions": "2765",
+        "attributed_orders": "0",
+        "net_revenue_gbp": "0.00",
+        "ctr_pct": null,
+        "cpc_gbp": null,
+        "conversion_rate_pct": null,
+        "net_roas": null,
+        "media_only_cac_gbp": null
+      },
+      {
+        "marketing_channel": "Google Paid Search",
+        "cost_coverage": "platform_media_only",
+        "spend_gbp": "59634.58",
+        "valid_sessions": "3199",
+        "attributed_orders": "469",
+        "net_revenue_gbp": "75990.50",
+        "ctr_pct": "2.1712427494",
+        "cpc_gbp": "0.3038549883",
+        "conversion_rate_pct": "14.6608315098",
+        "net_roas": "1.2742690566",
+        "media_only_cac_gbp": "234.7818110236"
+      },
+      {
+        "marketing_channel": "Meta Paid Social",
+        "cost_coverage": "platform_media_only",
+        "spend_gbp": "69569.56",
+        "valid_sessions": "3649",
+        "attributed_orders": "533",
+        "net_revenue_gbp": "82643.50",
+        "ctr_pct": "2.0844284262",
+        "cpc_gbp": "0.3723224139",
+        "conversion_rate_pct": "14.606741573",
+        "net_roas": "1.1879261562",
+        "media_only_cac_gbp": "253.9035036496"
+      },
+      {
+        "marketing_channel": "Organic",
+        "cost_coverage": "not_available",
+        "spend_gbp": "0.00",
+        "valid_sessions": "2266",
+        "attributed_orders": "0",
+        "net_revenue_gbp": "0.00",
+        "ctr_pct": null,
+        "cpc_gbp": null,
+        "conversion_rate_pct": null,
+        "net_roas": null,
+        "media_only_cac_gbp": null
+      },
+      {
+        "marketing_channel": "TikTok Paid Social",
+        "cost_coverage": "platform_media_only",
+        "spend_gbp": "59994.40",
+        "valid_sessions": "3121",
+        "attributed_orders": "437",
+        "net_revenue_gbp": "70242.00",
+        "ctr_pct": "2.0834455761",
+        "cpc_gbp": "0.3172628239",
+        "conversion_rate_pct": "14.0019224607",
+        "net_roas": "1.1708092755",
+        "media_only_cac_gbp": "259.716017316"
+      },
+      {
+        "marketing_channel": "Unattributed",
+        "cost_coverage": "not_available",
+        "spend_gbp": "0.00",
+        "valid_sessions": "0",
+        "attributed_orders": "0",
+        "net_revenue_gbp": "124481.50",
+        "ctr_pct": null,
+        "cpc_gbp": null,
+        "conversion_rate_pct": null,
+        "net_roas": null,
+        "media_only_cac_gbp": null
+      }
+    ],
+    "semantic_sql": "SELECT marketing_channel, cost_coverage, SUM(spend_gbp) AS spend_gbp, SUM(valid_sessions) AS valid_sessions, SUM(attributed_orders) AS attributed_orders, SUM(net_revenue_gbp) AS net_revenue_gbp,\n100.0 * SUM(clicks) / NULLIF(SUM(impressions), 0) AS ctr_pct,\nSUM(spend_gbp) / NULLIF(SUM(clicks), 0) AS cpc_gbp,\nCASE WHEN cost_coverage = 'platform_media_only' THEN 100.0 * SUM(attributed_orders) / NULLIF(SUM(valid_sessions), 0) END AS conversion_rate_pct,\nCASE WHEN cost_coverage = 'platform_media_only' THEN SUM(attributed_net_revenue_gbp) / NULLIF(SUM(spend_gbp), 0) END AS net_roas,\nCASE WHEN cost_coverage = 'platform_media_only' THEN SUM(spend_gbp) / NULLIF(SUM(attributed_first_observed_acquisitions), 0) END AS media_only_cac_gbp\nFROM MarketingChannelMonthly GROUP BY marketing_channel, cost_coverage ORDER BY marketing_channel ASC;\n",
+    "direct_sql": "SELECT marketing_channel, cost_coverage, SUM(spend_gbp) AS spend_gbp, SUM(valid_sessions) AS valid_sessions, SUM(attributed_orders) AS attributed_orders, SUM(net_revenue_gbp) AS net_revenue_gbp,\n100.0 * SUM(clicks) / NULLIF(SUM(impressions), 0) AS ctr_pct,\nSUM(spend_gbp) / NULLIF(SUM(clicks), 0) AS cpc_gbp,\nCASE WHEN cost_coverage = 'platform_media_only' THEN 100.0 * SUM(attributed_orders) / NULLIF(SUM(valid_sessions), 0) END AS conversion_rate_pct,\nCASE WHEN cost_coverage = 'platform_media_only' THEN SUM(attributed_net_revenue_gbp) / NULLIF(SUM(spend_gbp), 0) END AS net_roas,\nCASE WHEN cost_coverage = 'platform_media_only' THEN SUM(spend_gbp) / NULLIF(SUM(attributed_first_observed_acquisitions), 0) END AS media_only_cac_gbp\nFROM \"fab_ent\".\"raw_marts\".\"mart_marketing__channel_monthly\" GROUP BY marketing_channel, cost_coverage ORDER BY marketing_channel ASC;\n"
+  },
+  {
+    "id": "08_cac_acquisitions",
+    "question": "What are overall paid CAC and first-observed acquisitions?",
+    "model": "MarketingMonthlyOverview",
+    "answer": [
+      {
+        "media_only_cac_gbp": "249.2734387352",
+        "first_observed_acquisitions": "1174",
+        "attributed_first_observed_acquisitions": "759",
+        "unattributed_first_observed_acquisitions": "415"
+      }
+    ],
+    "semantic_sql": "SELECT SUM(spend_gbp) / NULLIF(SUM(attributed_first_observed_acquisitions), 0) AS media_only_cac_gbp, SUM(first_observed_acquisitions) AS first_observed_acquisitions, SUM(attributed_first_observed_acquisitions) AS attributed_first_observed_acquisitions, SUM(unattributed_first_observed_acquisitions) AS unattributed_first_observed_acquisitions FROM MarketingMonthlyOverview;\n",
+    "direct_sql": "SELECT SUM(spend_gbp) / NULLIF(SUM(attributed_first_observed_acquisitions), 0) AS media_only_cac_gbp, SUM(first_observed_acquisitions) AS first_observed_acquisitions, SUM(attributed_first_observed_acquisitions) AS attributed_first_observed_acquisitions, SUM(unattributed_first_observed_acquisitions) AS unattributed_first_observed_acquisitions FROM \"fab_ent\".\"raw_marts\".\"mart_marketing__monthly_overview\";\n"
+  },
+  {
+    "id": "09_unattributed_revenue",
+    "question": "How much eligible revenue is unattributed? Revenue-eligible sales scope; see validation notes.",
+    "model": "MarketingMonthlyOverview",
+    "answer": [
+      {
+        "unattributed_eligible_orders": "789",
+        "unattributed_gross_merchandise_revenue_gbp": "140830.00",
+        "unattributed_sales_refunds_gbp": "16348.50",
+        "unattributed_net_revenue_gbp": "124481.50"
+      }
+    ],
+    "semantic_sql": "SELECT SUM(unattributed_eligible_orders) AS unattributed_eligible_orders, SUM(unattributed_gross_merchandise_revenue_gbp) AS unattributed_gross_merchandise_revenue_gbp, SUM(unattributed_sales_refunds_gbp) AS unattributed_sales_refunds_gbp, SUM(unattributed_net_revenue_gbp) AS unattributed_net_revenue_gbp FROM MarketingMonthlyOverview;\n",
+    "direct_sql": "SELECT SUM(unattributed_eligible_orders) AS unattributed_eligible_orders, SUM(unattributed_gross_merchandise_revenue_gbp) AS unattributed_gross_merchandise_revenue_gbp, SUM(unattributed_sales_refunds_gbp) AS unattributed_sales_refunds_gbp, SUM(unattributed_net_revenue_gbp) AS unattributed_net_revenue_gbp FROM \"fab_ent\".\"raw_marts\".\"mart_marketing__monthly_overview\";\n"
+  },
+  {
+    "id": "10_best_month",
+    "question": "Which month had the strongest net ROAS?",
+    "model": "MarketingMonthlyOverview",
+    "answer": [
+      {
+        "reporting_month": "2025-06-01",
+        "net_roas": "2.026596634"
+      }
+    ],
+    "semantic_sql": "SELECT CAST(reporting_month AS VARCHAR) AS reporting_month, SUM(attributed_net_revenue_gbp) / NULLIF(SUM(spend_gbp), 0) AS net_roas FROM MarketingMonthlyOverview GROUP BY reporting_month ORDER BY net_roas DESC NULLS LAST, reporting_month ASC LIMIT 1;\n",
+    "direct_sql": "SELECT CAST(reporting_month AS VARCHAR) AS reporting_month, SUM(attributed_net_revenue_gbp) / NULLIF(SUM(spend_gbp), 0) AS net_roas FROM \"fab_ent\".\"raw_marts\".\"mart_marketing__monthly_overview\" GROUP BY reporting_month ORDER BY net_roas DESC NULLS LAST, reporting_month ASC LIMIT 1;\n"
+  }
+]

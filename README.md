@@ -6,17 +6,19 @@ and [DATA_DICTIONARY.md](DATA_DICTIONARY.md) for scope, metric policies and fiel
 
 ## Architecture
 
-Raw marketing CSVs -> dbt transformations -> DuckDB analytics tables -> Wren AI
-semantic layer -> browser-based marketing AI dashboard.
+Raw marketing CSVs -> governed dbt marts -> validated Wren semantic models ->
+exported fixed Parquet snapshots -> DuckDB WebAssembly -> browser dashboard.
 
 dbt transforms the seeded raw data into governed analytics tables in DuckDB.
-Wren provides a tested semantic layer for read-only local queries. A future
-browser dashboard can consume those semantics.
+Wren provides a tested semantic layer for read-only local queries and reproducible
+exports. The static [marketing dashboard](docs/index.html) consumes those exports
+with no backend. Serve it over HTTP using the Phase 6 instructions below.
 
 Phase 1 loads and validates the raw CSV seeds in DuckDB. Phase 2 adds the clean
 staging layer. Phase 3 adds tested order attribution. Phase 4 adds governed
 marketing marts. Phase 5 connects these marts to a tested local Wren semantic
-layer. The browser dashboard and natural-language service remain future work.
+layer. Phase 6 adds the browser dashboard; arbitrary natural-language handling
+remains future work.
 
 ## Phase 1: dbt + DuckDB seeds
 
@@ -333,7 +335,8 @@ not part of Phase 4.
 
 The current architecture is CSV seeds -> dbt staging -> tested attribution ->
 governed dbt marts in DuckDB -> Wren models and aggregate metric cubes -> local
-semantic SQL. The browser dashboard and natural-language service are not built.
+semantic SQL. Phase 6 adds the static browser dashboard; the natural-language
+service remains future work.
 No dbt metric definitions changed for this phase.
 
 The dedicated [wren/](wren/README.md) project keeps its YAML outside dbt's model,
@@ -479,3 +482,152 @@ No cash-flow, profit, causal uplift or verified lifetime acquisition is implied.
 These limitations and the existing Phase 4 limitations apply to every semantic
 answer. Arbitrary SQL remains capable of misusing stored ratios; use the tested
 cube measures and [business rules](wren/knowledge/rules/marketing.md).
+
+## Phase 6: static marketing intelligence dashboard
+
+The complete saved dashboard lives under [docs/](docs/index.html). There is no
+backend, Power BI dependency, arbitrary question handling, or live feed. Its
+architecture is governed dbt marts → validated Wren semantic models → exported
+fixed ZSTD Parquet snapshots → DuckDB WebAssembly → interactive browser UI.
+The Python database remains ignored and is never shipped to the browser.
+
+The interface includes eight summary cards, monthly spend/revenue and net ROAS
+charts, channel comparisons, campaign rankings, a campaign performance/budget
+table, spend-without-orders and budget alerts, website attribution coverage,
+data-quality indicators, metric definitions, and ten saved Wren-verified answers.
+Keyboard controls, visible focus, labelled chart values, scrollable data tables,
+responsive layouts and loading/empty/error states are included. Amounts use GBP;
+reporting dates use Europe/London. Saved examples ignore dashboard filters and
+are explicitly labelled **verified examples, not new AI responses**.
+
+![Desktop dashboard](docs/assets/screenshots/desktop.png)
+
+<details><summary>Mobile screenshot</summary>
+
+![Mobile dashboard](docs/assets/screenshots/mobile.png)
+
+</details>
+
+### Filter and metric scope
+
+Reporting-date boundaries are inclusive **whole months**, matching the lowest
+common website/channel reporting grain. There is no unsafe daily interpolation.
+All 12 start and 12 end choices are supported; reversed ranges show no matching
+data. Channel and campaign selections are intersected, so incompatible choices
+also return no data. Reset restores the full 2025 website view.
+
+With no dimension filter, cards and trends use the monthly overview, including
+unattributed sales. A channel selection uses channel-month outcomes. A campaign
+selection uses daily campaign facts rolled up by London month. Campaign outcomes
+are necessarily attributed; campaign-level attribution rates are not website
+completeness. The attribution context panel always follows **dates only**, as
+unmatched orders have no campaign. The lifetime budget context ignores dates,
+but respects channel/campaign selections, and is labelled accordingly.
+
+Budgets in selected-period cards, tables and alerts are active-day straight-line
+allocations, not approved monthly budgets. The separate lifetime table counts
+each campaign budget once. Net ROAS always uses **attributed** net revenue, even
+when the revenue card includes unmatched sales. Paid CAC uses attributed
+first-observed acquisitions, not all acquisitions. Ratios divide summed
+components; stored row-level ratios are never averaged. Empty aggregates and
+zero denominators retain NULL and display N/A, while real zero amounts show
+£0.00. Direct/Organic/Unattributed cost-dependent ratios remain undefined.
+
+### Regenerate snapshots and run validations
+
+Complete the existing dbt and Wren setup first. Use Wren CLI 0.15.0 in a separate
+environment, or pass the absolute path of an existing compatible executable.
+The export is deterministic for the same source data, semantic definitions and
+dependency versions; it does not regenerate synthetic sources or change metrics.
+
+```powershell
+$WrenExe = (Resolve-Path .\wren\.venv\Scripts\wren.exe).Path
+.\.venv\Scripts\python.exe -B scripts/validate_wren.py --wren-exe $WrenExe
+.\.venv\Scripts\python.exe -B scripts/export_dashboard.py --wren-exe $WrenExe
+.\.venv\Scripts\python.exe -B scripts/validate_dashboard.py
+.\.venv\Scripts\python.exe -m pip install -r requirements-dashboard.txt
+```
+
+The first command runs the full dbt build and all four independent CSV-oracle
+validators, strict Wren validation/build and 27 semantic/direct comparisons.
+The exporter re-executes complete model selections through Wren, compares each
+row with direct physical-mart DuckDB SQL, writes the **Wren-returned values** to
+typed Parquet, then re-reads and compares those files. Counts stored as HUGEINT
+in DuckDB use checked BIGINT casts because Parquet has no signed INT128 logical
+type; both schemas are recorded. All other types and NULLs are preserved.
+
+Every browser SQL query and the allowlisted registration DDL are reviewable in
+[docs/queries.json](docs/queries.json). The four fixed business queries each use
+one semantic model and are executed through Wren and compared with separate
+direct DuckDB SQL during export. The browser engine runs those fixed queries;
+[metrics.mjs](docs/metrics.mjs) filters their additive results and recomputes
+ratios. User input never generates SQL. Full semantic row parity proves the
+data available to every possible subset, rather than validating selected sample
+filters only.
+
+The dashboard validator compares the actual JS calculation functions against
+independent physical-mart SQL for **25,200 combinations**: 12 start months × 12
+end months × 7 channels × 25 campaigns. It checks cards, monthly/channel/campaign
+results, stable top-five ordering, monitoring alerts and date-only context,
+including all empty selections. It also checks snapshot checksums, exact schemas
+and all 3,130 source rows, KPI grain reconciliations, NULLs, zero denominators,
+formatting and HTML escaping. Counts and NULLs must match; numeric comparisons
+use absolute tolerance `1e-8`, relative tolerance `1e-10`, before display rounding.
+Money comes from fixed-scale DECIMAL, then uses browser numbers for presentation.
+Dimension rows sort ascending by complete keys. Rankings sort net ROAS descending,
+NULL last, then campaign ID ascending.
+
+### Run locally and inspect in a browser
+
+```powershell
+.\.venv\Scripts\python.exe -m http.server 4173 --bind 127.0.0.1 --directory docs
+```
+
+Open <http://127.0.0.1:4173/>. In another terminal, run the real-browser checks
+against that server (installed Google Chrome is required):
+
+```powershell
+.\.venv\Scripts\python.exe -B scripts/test_dashboard_browser.py
+git diff --check
+git status --short
+```
+
+The browser suite compares real WebAssembly query results with native DuckDB,
+exercises every channel/campaign pair, keyboard interaction, empty ranges, NULL
+display, hostile HTML labels, desktop/tablet/mobile overflow and missing CDN or
+snapshot failures. Screenshots are saved under `docs/assets/screenshots/`.
+Generated intermediate test outputs stay in ignored `target/dashboard/`.
+Reviewable public evidence is in [snapshot.json](docs/snapshot.json),
+[validation.json](docs/validation.json) and
+[browser-validation.json](docs/browser-validation.json). The four Parquet files,
+UI source, manifests, verified answers and screenshots are intended static assets.
+
+### Publish with GitHub Pages
+
+After reviewing and committing the intended changes yourself, open repository
+**Settings → Pages → Build and deployment → Deploy from a branch**. Select the
+desired branch and `/docs`, then Save. The dashboard uses relative URLs and needs
+no build step, backend, secrets, database file or special cross-origin isolation
+headers. `.nojekyll` keeps static assets untouched. This task does not commit,
+push, or enable hosting.
+
+### Runtime and snapshot limitations
+
+This is a **fixed 2025 synthetic snapshot, not a live feed**. The browser imports
+DuckDB WebAssembly **1.29.0** from the public jsDelivr CDN; workers and WASM files
+use the same pinned version. **Internet access is required** even though query
+execution happens locally. The engine may fetch its compatible Parquet extension
+from DuckDB's public extension host. Blocking the CDN or missing snapshot assets
+shows an explicit error and retry action, without invented KPI substitutes.
+Static files require HTTP(S), not `file://`. SHA-256 checks require a secure
+context (GitHub Pages HTTPS or localhost). No analytics data is sent to a Wren
+service. See the [pinned DuckDB-Wasm documentation](https://github.com/duckdb/duckdb-wasm/tree/v1.29.0)
+for browser/extension behavior.
+
+The acquisition history starts in 2025; there is no pre-2025 history, post-2025
+conversion tail, or verified lifetime acquisition status. Final refund/status
+values restate original order periods. Complete feeds are assumed, and observed
+zeros cannot diagnose missing feeds. Attribution is observational, not causal;
+these are merchandise/media measures, not profit, cash flow or fully loaded CAC.
+Public-CDN availability and modern WebAssembly browser support remain runtime
+dependencies. No governed dbt or Wren metric definitions were changed.

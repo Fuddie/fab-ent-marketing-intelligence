@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "browser": "installed Google Chrome, headless Playwright 1.56.0",
+  "viewports": [
+    1440,
+    390,
+    320,
+    768
+  ],
+  "checks": [
+    "actual WASM rows versus native DuckDB",
+    "175 channel/campaign interactions",
+    "empty and reversed ranges",
+    "NULL and zero currency display",
+    "keyboard controls",
+    "unsafe HTML injection",
+    "no document overflow",
+    "missing CDN",
+    "missing snapshot",
+    "saved examples independent of engine errors"
+  ],
+  "screenshots": [
+    "assets/screenshots/desktop.png",
+    "assets/screenshots/mobile.png"
+  ]
+}

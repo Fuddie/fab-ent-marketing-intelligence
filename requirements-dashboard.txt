@@ -1,0 +1,2 @@
+# Browser acceptance tests; install into the existing dbt environment.
+playwright==1.56.0

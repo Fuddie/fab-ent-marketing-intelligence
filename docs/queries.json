@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "registration_ddl": "CREATE VIEW \"{allowlisted_model}\" AS SELECT * FROM read_parquet('{allowlisted_model}.parquet')",
+  "registration_policy": "Local engine setup only. Four allowlisted model identifiers; no controls or data labels enter SQL. Each view exposes precisely one checked snapshot. This DDL has no Wren business-query equivalent.",
+  "policy": "Fixed SQL, no user SQL. Filter and aggregate additive results in metrics.mjs. All ratios divide summed components; NULL denominators remain NULL. Each query reads one grain only.",
+  "ordering": "Complete grouping keys ascending; campaign ranking uses net ROAS descending NULLS LAST, then campaign_id ascending.",
+  "tolerance": {"absolute": 1e-8, "relative": 1e-10},
+  "queries": [
+    {
+      "id": "campaigns",
+      "model": "MarketingCampaignDaily",
+      "sql": "SELECT CAST(CAST(date_trunc('month', reporting_date) AS DATE) AS VARCHAR) AS month, campaign_id, campaign_name, marketing_channel, SUM(spend_gbp) AS spend, SUM(net_revenue_gbp) AS revenue, SUM(attributed_net_revenue_gbp) AS attributed_revenue, SUM(eligible_conversions) AS conversions, SUM(attributed_orders) AS attributed_orders, SUM(first_observed_acquisitions) AS acquisitions, SUM(attributed_first_observed_acquisitions) AS paid_acquisitions, SUM(unattributed_eligible_orders) AS unmatched_orders, SUM(unattributed_net_revenue_gbp) AS unmatched_revenue, SUM(allocated_budget_gbp) AS budget, SUM(negative_input_count) AS negative_inputs FROM MarketingCampaignDaily GROUP BY 1, 2, 3, 4 ORDER BY 1, 2, 3, 4"
+    },
+    {
+      "id": "channels",
+      "model": "MarketingChannelMonthly",
+      "sql": "SELECT CAST(reporting_month AS VARCHAR) AS month, marketing_channel, spend_gbp AS spend, net_revenue_gbp AS revenue, attributed_net_revenue_gbp AS attributed_revenue, eligible_conversions AS conversions, attributed_orders, first_observed_acquisitions AS acquisitions, attributed_first_observed_acquisitions AS paid_acquisitions, unattributed_eligible_orders AS unmatched_orders, unattributed_net_revenue_gbp AS unmatched_revenue, allocated_budget_gbp AS budget, negative_input_count AS negative_inputs FROM MarketingChannelMonthly ORDER BY reporting_month, marketing_channel"
+    },
+    {
+      "id": "overview",
+      "model": "MarketingMonthlyOverview",
+      "sql": "SELECT CAST(reporting_month AS VARCHAR) AS month, spend_gbp AS spend, net_revenue_gbp AS revenue, attributed_net_revenue_gbp AS attributed_revenue, eligible_conversions AS conversions, attributed_orders, first_observed_acquisitions AS acquisitions, attributed_first_observed_acquisitions AS paid_acquisitions, unattributed_eligible_orders AS unmatched_orders, unattributed_net_revenue_gbp AS unmatched_revenue, allocated_budget_gbp AS budget, negative_input_count AS negative_inputs FROM MarketingMonthlyOverview ORDER BY reporting_month"
+    },
+    {
+      "id": "inventory",
+      "model": "MarketingCampaignSummary",
+      "sql": "SELECT campaign_id, campaign_name, marketing_channel, lifetime_budget_gbp, spend_gbp, attributed_orders, flag_budget_overspend FROM MarketingCampaignSummary ORDER BY campaign_id"
+    }
+  ]
+}

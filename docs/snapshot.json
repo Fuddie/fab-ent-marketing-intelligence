@@ -1,0 +1,1736 @@
+{
+  "snapshot": "fixed_2025_synthetic",
+  "reporting_timezone": "Europe/London",
+  "wren_version": "0.15.0",
+  "duckdb_export_version": "1.5.6",
+  "models": [
+    {
+      "model": "MarketingCampaignDaily",
+      "rows": 3022,
+      "schema": [
+        {
+          "name": "reporting_date",
+          "type": "DATE"
+        },
+        {
+          "name": "campaign_id",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "marketing_channel",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "spend_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "impressions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "clicks",
+          "type": "BIGINT"
+        },
+        {
+          "name": "valid_sessions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "placed_orders",
+          "type": "BIGINT"
+        },
+        {
+          "name": "attributed_placed_orders",
+          "type": "BIGINT"
+        },
+        {
+          "name": "unattributed_placed_orders",
+          "type": "BIGINT"
+        },
+        {
+          "name": "eligible_conversions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "attributed_orders",
+          "type": "BIGINT"
+        },
+        {
+          "name": "unattributed_eligible_orders",
+          "type": "BIGINT"
+        },
+        {
+          "name": "first_observed_acquisitions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "attributed_first_observed_acquisitions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "unattributed_first_observed_acquisitions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "raw_gross_order_amount_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "cancellation_gross_amount_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "gross_merchandise_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "sales_refunds_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "cancellation_reversals_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "net_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "raw_net_order_amount_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_gross_merchandise_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_gross_merchandise_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_sales_refunds_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_sales_refunds_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_cancellation_reversals_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_cancellation_reversals_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_net_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_net_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "allocated_budget_gbp",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "negative_input_count",
+          "type": "BIGINT"
+        },
+        {
+          "name": "campaign_name",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "objective",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "start_date",
+          "type": "DATE"
+        },
+        {
+          "name": "end_date",
+          "type": "DATE"
+        },
+        {
+          "name": "lifetime_budget_gbp",
+          "type": "DECIMAL(18,2)"
+        },
+        {
+          "name": "cost_coverage",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "acquisition_basis",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "cumulative_spend_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "expected_cumulative_spend_gbp",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "ctr_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "cpc_gbp",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "conversion_rate_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "gross_roas",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "net_roas",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "media_only_cac_gbp",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "attribution_rate_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "budget_utilisation_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "budget_pacing_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "flag_spend_without_eligible_attributed_orders",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_budget_overspend",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_ahead_of_budget_pacing",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_approaching_budget",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_unexpected_negative_inputs",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_incomplete_attribution",
+          "type": "BOOLEAN"
+        }
+      ],
+      "governed_schema": [
+        {
+          "name": "reporting_date",
+          "type": "DATE"
+        },
+        {
+          "name": "campaign_id",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "marketing_channel",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "spend_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "impressions",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "clicks",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "valid_sessions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "placed_orders",
+          "type": "BIGINT"
+        },
+        {
+          "name": "attributed_placed_orders",
+          "type": "BIGINT"
+        },
+        {
+          "name": "unattributed_placed_orders",
+          "type": "BIGINT"
+        },
+        {
+          "name": "eligible_conversions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "attributed_orders",
+          "type": "BIGINT"
+        },
+        {
+          "name": "unattributed_eligible_orders",
+          "type": "BIGINT"
+        },
+        {
+          "name": "first_observed_acquisitions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "attributed_first_observed_acquisitions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "unattributed_first_observed_acquisitions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "raw_gross_order_amount_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "cancellation_gross_amount_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "gross_merchandise_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "sales_refunds_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "cancellation_reversals_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "net_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "raw_net_order_amount_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_gross_merchandise_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_gross_merchandise_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_sales_refunds_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_sales_refunds_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_cancellation_reversals_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_cancellation_reversals_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_net_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_net_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "allocated_budget_gbp",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "negative_input_count",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "campaign_name",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "objective",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "start_date",
+          "type": "DATE"
+        },
+        {
+          "name": "end_date",
+          "type": "DATE"
+        },
+        {
+          "name": "lifetime_budget_gbp",
+          "type": "DECIMAL(18,2)"
+        },
+        {
+          "name": "cost_coverage",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "acquisition_basis",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "cumulative_spend_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "expected_cumulative_spend_gbp",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "ctr_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "cpc_gbp",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "conversion_rate_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "gross_roas",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "net_roas",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "media_only_cac_gbp",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "attribution_rate_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "budget_utilisation_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "budget_pacing_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "flag_spend_without_eligible_attributed_orders",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_budget_overspend",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_ahead_of_budget_pacing",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_approaching_budget",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_unexpected_negative_inputs",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_incomplete_attribution",
+          "type": "BOOLEAN"
+        }
+      ],
+      "sha256": "b4210a8f935448ac1fabbd5d69295d9c4357a5bb5ca6e69bca4e15fdb85a5ec9",
+      "bytes": 203296,
+      "keys": [
+        "reporting_date",
+        "campaign_id"
+      ],
+      "export_sql": "SELECT CAST(\"reporting_date\" AS VARCHAR) AS \"reporting_date\", \"campaign_id\", \"marketing_channel\", \"spend_gbp\", \"impressions\", \"clicks\", \"valid_sessions\", \"placed_orders\", \"attributed_placed_orders\", \"unattributed_placed_orders\", \"eligible_conversions\", \"attributed_orders\", \"unattributed_eligible_orders\", \"first_observed_acquisitions\", \"attributed_first_observed_acquisitions\", \"unattributed_first_observed_acquisitions\", \"raw_gross_order_amount_gbp\", \"cancellation_gross_amount_gbp\", \"gross_merchandise_revenue_gbp\", \"sales_refunds_gbp\", \"cancellation_reversals_gbp\", \"net_revenue_gbp\", \"raw_net_order_amount_gbp\", \"attributed_gross_merchandise_revenue_gbp\", \"unattributed_gross_merchandise_revenue_gbp\", \"attributed_sales_refunds_gbp\", \"unattributed_sales_refunds_gbp\", \"attributed_cancellation_reversals_gbp\", \"unattributed_cancellation_reversals_gbp\", \"attributed_net_revenue_gbp\", \"unattributed_net_revenue_gbp\", \"allocated_budget_gbp\", \"negative_input_count\", \"campaign_name\", \"objective\", CAST(\"start_date\" AS VARCHAR) AS \"start_date\", CAST(\"end_date\" AS VARCHAR) AS \"end_date\", \"lifetime_budget_gbp\", \"cost_coverage\", \"acquisition_basis\", \"cumulative_spend_gbp\", \"expected_cumulative_spend_gbp\", \"ctr_pct\", \"cpc_gbp\", \"conversion_rate_pct\", \"gross_roas\", \"net_roas\", \"media_only_cac_gbp\", \"attribution_rate_pct\", \"budget_utilisation_pct\", \"budget_pacing_pct\", \"flag_spend_without_eligible_attributed_orders\", \"flag_budget_overspend\", \"flag_ahead_of_budget_pacing\", \"flag_approaching_budget\", \"flag_unexpected_negative_inputs\", \"flag_incomplete_attribution\" FROM MarketingCampaignDaily ORDER BY reporting_date, campaign_id"
+    },
+    {
+      "model": "MarketingCampaignSummary",
+      "rows": 24,
+      "schema": [
+        {
+          "name": "campaign_id",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "campaign_name",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "marketing_channel",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "objective",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "start_date",
+          "type": "DATE"
+        },
+        {
+          "name": "end_date",
+          "type": "DATE"
+        },
+        {
+          "name": "lifetime_budget_gbp",
+          "type": "DECIMAL(18,2)"
+        },
+        {
+          "name": "cost_coverage",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "acquisition_basis",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "spend_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "impressions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "clicks",
+          "type": "BIGINT"
+        },
+        {
+          "name": "valid_sessions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "placed_orders",
+          "type": "BIGINT"
+        },
+        {
+          "name": "attributed_placed_orders",
+          "type": "BIGINT"
+        },
+        {
+          "name": "unattributed_placed_orders",
+          "type": "BIGINT"
+        },
+        {
+          "name": "eligible_conversions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "attributed_orders",
+          "type": "BIGINT"
+        },
+        {
+          "name": "unattributed_eligible_orders",
+          "type": "BIGINT"
+        },
+        {
+          "name": "first_observed_acquisitions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "attributed_first_observed_acquisitions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "unattributed_first_observed_acquisitions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "raw_gross_order_amount_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "cancellation_gross_amount_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "gross_merchandise_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "sales_refunds_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "cancellation_reversals_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "net_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "raw_net_order_amount_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_gross_merchandise_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_gross_merchandise_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_sales_refunds_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_sales_refunds_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_cancellation_reversals_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_cancellation_reversals_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_net_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_net_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "allocated_budget_gbp",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "negative_input_count",
+          "type": "BIGINT"
+        },
+        {
+          "name": "ctr_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "cpc_gbp",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "conversion_rate_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "gross_roas",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "net_roas",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "media_only_cac_gbp",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "attribution_rate_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "budget_utilisation_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "budget_pacing_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "flag_spend_without_eligible_attributed_orders",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_budget_overspend",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_ahead_of_budget_pacing",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_approaching_budget",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_unexpected_negative_inputs",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_incomplete_attribution",
+          "type": "BOOLEAN"
+        }
+      ],
+      "governed_schema": [
+        {
+          "name": "campaign_id",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "campaign_name",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "marketing_channel",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "objective",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "start_date",
+          "type": "DATE"
+        },
+        {
+          "name": "end_date",
+          "type": "DATE"
+        },
+        {
+          "name": "lifetime_budget_gbp",
+          "type": "DECIMAL(18,2)"
+        },
+        {
+          "name": "cost_coverage",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "acquisition_basis",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "spend_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "impressions",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "clicks",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "valid_sessions",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "placed_orders",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "attributed_placed_orders",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "unattributed_placed_orders",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "eligible_conversions",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "attributed_orders",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "unattributed_eligible_orders",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "first_observed_acquisitions",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "attributed_first_observed_acquisitions",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "unattributed_first_observed_acquisitions",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "raw_gross_order_amount_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "cancellation_gross_amount_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "gross_merchandise_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "sales_refunds_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "cancellation_reversals_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "net_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "raw_net_order_amount_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_gross_merchandise_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_gross_merchandise_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_sales_refunds_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_sales_refunds_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_cancellation_reversals_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_cancellation_reversals_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_net_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_net_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "allocated_budget_gbp",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "negative_input_count",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "ctr_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "cpc_gbp",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "conversion_rate_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "gross_roas",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "net_roas",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "media_only_cac_gbp",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "attribution_rate_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "budget_utilisation_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "budget_pacing_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "flag_spend_without_eligible_attributed_orders",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_budget_overspend",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_ahead_of_budget_pacing",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_approaching_budget",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_unexpected_negative_inputs",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_incomplete_attribution",
+          "type": "BOOLEAN"
+        }
+      ],
+      "sha256": "ac27894500bea52f1e19d62b70d8a309eb77f7bffb7b552609dcafb1b39ec91f",
+      "bytes": 14597,
+      "keys": [
+        "campaign_id"
+      ],
+      "export_sql": "SELECT \"campaign_id\", \"campaign_name\", \"marketing_channel\", \"objective\", CAST(\"start_date\" AS VARCHAR) AS \"start_date\", CAST(\"end_date\" AS VARCHAR) AS \"end_date\", \"lifetime_budget_gbp\", \"cost_coverage\", \"acquisition_basis\", \"spend_gbp\", \"impressions\", \"clicks\", \"valid_sessions\", \"placed_orders\", \"attributed_placed_orders\", \"unattributed_placed_orders\", \"eligible_conversions\", \"attributed_orders\", \"unattributed_eligible_orders\", \"first_observed_acquisitions\", \"attributed_first_observed_acquisitions\", \"unattributed_first_observed_acquisitions\", \"raw_gross_order_amount_gbp\", \"cancellation_gross_amount_gbp\", \"gross_merchandise_revenue_gbp\", \"sales_refunds_gbp\", \"cancellation_reversals_gbp\", \"net_revenue_gbp\", \"raw_net_order_amount_gbp\", \"attributed_gross_merchandise_revenue_gbp\", \"unattributed_gross_merchandise_revenue_gbp\", \"attributed_sales_refunds_gbp\", \"unattributed_sales_refunds_gbp\", \"attributed_cancellation_reversals_gbp\", \"unattributed_cancellation_reversals_gbp\", \"attributed_net_revenue_gbp\", \"unattributed_net_revenue_gbp\", \"allocated_budget_gbp\", \"negative_input_count\", \"ctr_pct\", \"cpc_gbp\", \"conversion_rate_pct\", \"gross_roas\", \"net_roas\", \"media_only_cac_gbp\", \"attribution_rate_pct\", \"budget_utilisation_pct\", \"budget_pacing_pct\", \"flag_spend_without_eligible_attributed_orders\", \"flag_budget_overspend\", \"flag_ahead_of_budget_pacing\", \"flag_approaching_budget\", \"flag_unexpected_negative_inputs\", \"flag_incomplete_attribution\" FROM MarketingCampaignSummary ORDER BY campaign_id"
+    },
+    {
+      "model": "MarketingChannelMonthly",
+      "rows": 72,
+      "schema": [
+        {
+          "name": "reporting_month",
+          "type": "DATE"
+        },
+        {
+          "name": "marketing_channel",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "cost_coverage",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "acquisition_basis",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "spend_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "impressions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "clicks",
+          "type": "BIGINT"
+        },
+        {
+          "name": "valid_sessions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "placed_orders",
+          "type": "BIGINT"
+        },
+        {
+          "name": "attributed_placed_orders",
+          "type": "BIGINT"
+        },
+        {
+          "name": "unattributed_placed_orders",
+          "type": "BIGINT"
+        },
+        {
+          "name": "eligible_conversions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "attributed_orders",
+          "type": "BIGINT"
+        },
+        {
+          "name": "unattributed_eligible_orders",
+          "type": "BIGINT"
+        },
+        {
+          "name": "first_observed_acquisitions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "attributed_first_observed_acquisitions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "unattributed_first_observed_acquisitions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "raw_gross_order_amount_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "cancellation_gross_amount_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "gross_merchandise_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "sales_refunds_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "cancellation_reversals_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "net_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "raw_net_order_amount_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_gross_merchandise_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_gross_merchandise_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_sales_refunds_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_sales_refunds_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_cancellation_reversals_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_cancellation_reversals_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_net_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_net_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "allocated_budget_gbp",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "negative_input_count",
+          "type": "BIGINT"
+        },
+        {
+          "name": "ctr_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "cpc_gbp",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "conversion_rate_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "gross_roas",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "net_roas",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "media_only_cac_gbp",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "attribution_rate_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "budget_utilisation_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "budget_pacing_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "flag_spend_without_eligible_attributed_orders",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_budget_overspend",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_ahead_of_budget_pacing",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_approaching_budget",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_unexpected_negative_inputs",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_incomplete_attribution",
+          "type": "BOOLEAN"
+        }
+      ],
+      "governed_schema": [
+        {
+          "name": "reporting_month",
+          "type": "DATE"
+        },
+        {
+          "name": "marketing_channel",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "cost_coverage",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "acquisition_basis",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "spend_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "impressions",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "clicks",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "valid_sessions",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "placed_orders",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "attributed_placed_orders",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "unattributed_placed_orders",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "eligible_conversions",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "attributed_orders",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "unattributed_eligible_orders",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "first_observed_acquisitions",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "attributed_first_observed_acquisitions",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "unattributed_first_observed_acquisitions",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "raw_gross_order_amount_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "cancellation_gross_amount_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "gross_merchandise_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "sales_refunds_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "cancellation_reversals_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "net_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "raw_net_order_amount_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_gross_merchandise_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_gross_merchandise_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_sales_refunds_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_sales_refunds_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_cancellation_reversals_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_cancellation_reversals_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_net_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_net_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "allocated_budget_gbp",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "negative_input_count",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "ctr_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "cpc_gbp",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "conversion_rate_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "gross_roas",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "net_roas",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "media_only_cac_gbp",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "attribution_rate_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "budget_utilisation_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "budget_pacing_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "flag_spend_without_eligible_attributed_orders",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_budget_overspend",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_ahead_of_budget_pacing",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_approaching_budget",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_unexpected_negative_inputs",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_incomplete_attribution",
+          "type": "BOOLEAN"
+        }
+      ],
+      "sha256": "950f62ae48432a9b807c4030585f354cf3c380e48cb972262830b32accf92d5c",
+      "bytes": 16849,
+      "keys": [
+        "reporting_month",
+        "marketing_channel"
+      ],
+      "export_sql": "SELECT CAST(\"reporting_month\" AS VARCHAR) AS \"reporting_month\", \"marketing_channel\", \"cost_coverage\", \"acquisition_basis\", \"spend_gbp\", \"impressions\", \"clicks\", \"valid_sessions\", \"placed_orders\", \"attributed_placed_orders\", \"unattributed_placed_orders\", \"eligible_conversions\", \"attributed_orders\", \"unattributed_eligible_orders\", \"first_observed_acquisitions\", \"attributed_first_observed_acquisitions\", \"unattributed_first_observed_acquisitions\", \"raw_gross_order_amount_gbp\", \"cancellation_gross_amount_gbp\", \"gross_merchandise_revenue_gbp\", \"sales_refunds_gbp\", \"cancellation_reversals_gbp\", \"net_revenue_gbp\", \"raw_net_order_amount_gbp\", \"attributed_gross_merchandise_revenue_gbp\", \"unattributed_gross_merchandise_revenue_gbp\", \"attributed_sales_refunds_gbp\", \"unattributed_sales_refunds_gbp\", \"attributed_cancellation_reversals_gbp\", \"unattributed_cancellation_reversals_gbp\", \"attributed_net_revenue_gbp\", \"unattributed_net_revenue_gbp\", \"allocated_budget_gbp\", \"negative_input_count\", \"ctr_pct\", \"cpc_gbp\", \"conversion_rate_pct\", \"gross_roas\", \"net_roas\", \"media_only_cac_gbp\", \"attribution_rate_pct\", \"budget_utilisation_pct\", \"budget_pacing_pct\", \"flag_spend_without_eligible_attributed_orders\", \"flag_budget_overspend\", \"flag_ahead_of_budget_pacing\", \"flag_approaching_budget\", \"flag_unexpected_negative_inputs\", \"flag_incomplete_attribution\" FROM MarketingChannelMonthly ORDER BY reporting_month, marketing_channel"
+    },
+    {
+      "model": "MarketingMonthlyOverview",
+      "rows": 12,
+      "schema": [
+        {
+          "name": "reporting_month",
+          "type": "DATE"
+        },
+        {
+          "name": "cost_coverage",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "acquisition_basis",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "spend_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "impressions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "clicks",
+          "type": "BIGINT"
+        },
+        {
+          "name": "valid_sessions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "placed_orders",
+          "type": "BIGINT"
+        },
+        {
+          "name": "attributed_placed_orders",
+          "type": "BIGINT"
+        },
+        {
+          "name": "unattributed_placed_orders",
+          "type": "BIGINT"
+        },
+        {
+          "name": "eligible_conversions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "attributed_orders",
+          "type": "BIGINT"
+        },
+        {
+          "name": "unattributed_eligible_orders",
+          "type": "BIGINT"
+        },
+        {
+          "name": "first_observed_acquisitions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "attributed_first_observed_acquisitions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "unattributed_first_observed_acquisitions",
+          "type": "BIGINT"
+        },
+        {
+          "name": "raw_gross_order_amount_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "cancellation_gross_amount_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "gross_merchandise_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "sales_refunds_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "cancellation_reversals_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "net_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "raw_net_order_amount_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_gross_merchandise_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_gross_merchandise_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_sales_refunds_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_sales_refunds_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_cancellation_reversals_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_cancellation_reversals_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_net_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_net_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "allocated_budget_gbp",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "negative_input_count",
+          "type": "BIGINT"
+        },
+        {
+          "name": "ctr_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "cpc_gbp",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "conversion_rate_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "gross_roas",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "net_roas",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "media_only_cac_gbp",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "attribution_rate_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "budget_utilisation_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "budget_pacing_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "flag_spend_without_eligible_attributed_orders",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_budget_overspend",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_ahead_of_budget_pacing",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_approaching_budget",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_unexpected_negative_inputs",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_incomplete_attribution",
+          "type": "BOOLEAN"
+        }
+      ],
+      "governed_schema": [
+        {
+          "name": "reporting_month",
+          "type": "DATE"
+        },
+        {
+          "name": "cost_coverage",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "acquisition_basis",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "spend_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "impressions",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "clicks",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "valid_sessions",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "placed_orders",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "attributed_placed_orders",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "unattributed_placed_orders",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "eligible_conversions",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "attributed_orders",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "unattributed_eligible_orders",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "first_observed_acquisitions",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "attributed_first_observed_acquisitions",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "unattributed_first_observed_acquisitions",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "raw_gross_order_amount_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "cancellation_gross_amount_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "gross_merchandise_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "sales_refunds_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "cancellation_reversals_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "net_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "raw_net_order_amount_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_gross_merchandise_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_gross_merchandise_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_sales_refunds_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_sales_refunds_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_cancellation_reversals_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_cancellation_reversals_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "attributed_net_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "unattributed_net_revenue_gbp",
+          "type": "DECIMAL(38,2)"
+        },
+        {
+          "name": "allocated_budget_gbp",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "negative_input_count",
+          "type": "HUGEINT"
+        },
+        {
+          "name": "ctr_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "cpc_gbp",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "conversion_rate_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "gross_roas",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "net_roas",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "media_only_cac_gbp",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "attribution_rate_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "budget_utilisation_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "budget_pacing_pct",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "flag_spend_without_eligible_attributed_orders",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_budget_overspend",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_ahead_of_budget_pacing",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_approaching_budget",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_unexpected_negative_inputs",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "flag_incomplete_attribution",
+          "type": "BOOLEAN"
+        }
+      ],
+      "sha256": "4b4f167331f89e9329bc3abba1aa2ba4e82246e2c2a5a7e6f1c5c8033d4ca0fa",
+      "bytes": 11545,
+      "keys": [
+        "reporting_month"
+      ],
+      "export_sql": "SELECT CAST(\"reporting_month\" AS VARCHAR) AS \"reporting_month\", \"cost_coverage\", \"acquisition_basis\", \"spend_gbp\", \"impressions\", \"clicks\", \"valid_sessions\", \"placed_orders\", \"attributed_placed_orders\", \"unattributed_placed_orders\", \"eligible_conversions\", \"attributed_orders\", \"unattributed_eligible_orders\", \"first_observed_acquisitions\", \"attributed_first_observed_acquisitions\", \"unattributed_first_observed_acquisitions\", \"raw_gross_order_amount_gbp\", \"cancellation_gross_amount_gbp\", \"gross_merchandise_revenue_gbp\", \"sales_refunds_gbp\", \"cancellation_reversals_gbp\", \"net_revenue_gbp\", \"raw_net_order_amount_gbp\", \"attributed_gross_merchandise_revenue_gbp\", \"unattributed_gross_merchandise_revenue_gbp\", \"attributed_sales_refunds_gbp\", \"unattributed_sales_refunds_gbp\", \"attributed_cancellation_reversals_gbp\", \"unattributed_cancellation_reversals_gbp\", \"attributed_net_revenue_gbp\", \"unattributed_net_revenue_gbp\", \"allocated_budget_gbp\", \"negative_input_count\", \"ctr_pct\", \"cpc_gbp\", \"conversion_rate_pct\", \"gross_roas\", \"net_roas\", \"media_only_cac_gbp\", \"attribution_rate_pct\", \"budget_utilisation_pct\", \"budget_pacing_pct\", \"flag_spend_without_eligible_attributed_orders\", \"flag_budget_overspend\", \"flag_ahead_of_budget_pacing\", \"flag_approaching_budget\", \"flag_unexpected_negative_inputs\", \"flag_incomplete_attribution\" FROM MarketingMonthlyOverview ORDER BY reporting_month"
+    }
+  ],
+  "queries_sha256": "f2556b604f5276e75c0f6a793c76dc4f1fd09d325fcb90698ef842d42c1933ce",
+  "comparison": {
+    "absolute": 1e-08,
+    "relative": 1e-10
+  },
+  "checks": "All exported rows, all fixed SQL queries and ten verified examples passed Wren versus direct DuckDB and typed Parquet parity."
+}
