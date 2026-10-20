@@ -1,0 +1,288 @@
+version: 2
+models:
+- name: stg_marketing__ad_performance
+  description: One row per source platform reporting date, campaign and channel; no derived performance
+    metrics.
+  columns:
+  - name: performance_date
+    description: Source London platform reporting date, renamed from date; not shifted from UTC.
+    data_tests:
+    - not_null
+  - name: campaign_id
+    description: Canonical source campaign identifier.
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('stg_marketing__campaigns')
+          field: campaign_id
+  - name: channel
+    description: Paid channel, matching the campaign.
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - Meta Paid Social
+          - Google Paid Search
+          - TikTok Paid Social
+  - name: spend_gbp
+    description: Recorded daily platform media spend in GBP; excludes fees, taxes and credits.
+    data_tests:
+    - not_null
+  - name: impressions
+    description: Recorded synthetic ad exposures.
+    data_tests:
+    - not_null
+  - name: clicks
+    description: Recorded synthetic outbound clicks; zero-click days are retained.
+    data_tests:
+    - not_null
+- name: stg_marketing__campaigns
+  description: One row per source campaign, with its single paid channel and fixed lifetime GBP budget
+    over inclusive campaign dates.
+  columns:
+  - name: campaign_id
+    description: Canonical source campaign identifier; preserved exactly.
+    data_tests:
+    - not_null
+    - unique
+  - name: campaign_name
+    description: Synthetic campaign label.
+    data_tests:
+    - not_null
+  - name: channel
+    description: Single paid marketing channel.
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - Meta Paid Social
+          - Google Paid Search
+          - TikTok Paid Social
+  - name: objective
+    description: Source campaign objective.
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - Sales
+          - Traffic
+          - Awareness
+  - name: start_date
+    description: Inclusive campaign start date in the source London calendar; no conversion.
+    data_tests:
+    - not_null
+  - name: end_date
+    description: Inclusive campaign end date in the source London calendar; no conversion.
+    data_tests:
+    - not_null
+  - name: budget_gbp
+    description: Fixed lifetime platform media budget in GBP; no revisions or allocation.
+    data_tests:
+    - not_null
+- name: stg_marketing__customers
+  description: One row per synthetic customer, including customers without orders; no acquisition inference.
+  columns:
+  - name: customer_id
+    description: Canonical source customer identifier; exact identity join.
+    data_tests:
+    - not_null
+    - unique
+  - name: created_at
+    description: Source account creation instant as UTC-aware TIMESTAMPTZ; all snapshot accounts were
+      initialised on 2025-01-01.
+    data_tests:
+    - not_null
+- name: stg_marketing__order_items
+  description: One row per source order line; repeated products within an order are allowed. All source
+    snapshot amounts are retained.
+  columns:
+  - name: order_item_id
+    description: Canonical source order-line identifier.
+    data_tests:
+    - not_null
+    - unique
+  - name: order_id
+    description: Parent source order identifier.
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('stg_marketing__orders')
+          field: order_id
+  - name: product_id
+    description: Source product identifier; products may repeat within an order.
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('stg_marketing__products')
+          field: product_id
+  - name: quantity
+    description: Source positive unit count, between one and three in this snapshot.
+    data_tests:
+    - not_null
+  - name: unit_price_gbp
+    description: Source snapshot catalogue unit price in GBP.
+    data_tests:
+    - not_null
+  - name: gross_line_amount_gbp
+    description: Source quantity times unit price in GBP.
+    data_tests:
+    - not_null
+  - name: refund_amount_gbp
+    description: Final source line refund/cancellation reversal in GBP; no refund quantity is inferred.
+    data_tests:
+    - not_null
+  - name: net_line_amount_gbp
+    description: Source gross line amount less refund/reversal in GBP.
+    data_tests:
+    - not_null
+- name: stg_marketing__orders
+  description: One row per source order attempt, including completed, cancelled and refunded orders. No
+    eligibility or attribution policy is applied.
+  columns:
+  - name: order_id
+    description: Canonical source order identifier.
+    data_tests:
+    - not_null
+    - unique
+  - name: order_timestamp
+    description: Source purchase-attempt instant as UTC-aware TIMESTAMPTZ; includes cancellations.
+    data_tests:
+    - not_null
+  - name: customer_id
+    description: Exact source customer identifier; every supplied order is identified.
+    data_tests:
+    - not_null
+    - relationships:
+        arguments:
+          to: ref('stg_marketing__customers')
+          field: customer_id
+  - name: status
+    description: Final source snapshot status, retained without eligibility filtering.
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - completed
+          - cancelled
+          - partially_refunded
+          - refunded
+  - name: gross_order_amount_gbp
+    description: Gross merchandise GBP amount, including cancelled attempts; excludes shipping, tax, discounts
+      and fees.
+    data_tests:
+    - not_null
+  - name: refund_amount_gbp
+    description: Final GBP refund or cancellation reversal at original order grain; refund event time
+      is unavailable.
+    data_tests:
+    - not_null
+  - name: net_order_amount_gbp
+    description: Source gross less refunds/reversals in GBP; not a published accounting or attributed
+      revenue metric.
+    data_tests:
+    - not_null
+- name: stg_marketing__products
+  description: One row per synthetic catalogue product; source prices are not substituted for order-line
+    amounts.
+  columns:
+  - name: product_id
+    description: Canonical source product identifier.
+    data_tests:
+    - not_null
+    - unique
+  - name: product_name
+    description: Fictional source style label.
+    data_tests:
+    - not_null
+  - name: category
+    description: Source catalogue category.
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - Tops
+          - Dresses
+          - Denim
+          - Outerwear
+          - Accessories
+  - name: unit_price_gbp
+    description: Fixed synthetic catalogue unit price in GBP.
+    data_tests:
+    - not_null
+  - name: currency
+    description: Source catalogue currency; GBP only in this snapshot.
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - GBP
+- name: stg_marketing__web_sessions
+  description: One row per supplied website session, retaining anonymous visits and campaignless Direct/Organic
+    traffic. No attribution is performed.
+  columns:
+  - name: session_id
+    description: Stable source session identifier, preserved for later lexical tie-breaking.
+    data_tests:
+    - not_null
+    - unique
+  - name: session_timestamp
+    description: Source session start as a UTC-aware TIMESTAMPTZ; no reporting-timezone conversion.
+    data_tests:
+    - not_null
+  - name: customer_id
+    description: Exact source customer identifier when known; NULL means anonymous and is retained.
+    data_tests:
+    - relationships:
+        arguments:
+          to: ref('stg_marketing__customers')
+          field: customer_id
+  - name: campaign_id
+    description: Source campaign identifier for paid visits; NULL is valid for Direct and Organic.
+    data_tests:
+    - relationships:
+        arguments:
+          to: ref('stg_marketing__campaigns')
+          field: campaign_id
+  - name: channel
+    description: Source session channel; no attribution reclassification.
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - Meta Paid Social
+          - Google Paid Search
+          - TikTok Paid Social
+          - Direct
+          - Organic
+  - name: source_medium
+    description: Source traffic classification corresponding to channel.
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - facebook / paid_social
+          - google / cpc
+          - tiktok / paid_social
+          - (direct) / (none)
+          - google / organic
+  - name: device
+    description: Source device classification.
+    data_tests:
+    - not_null
+    - accepted_values:
+        arguments:
+          values:
+          - mobile
+          - desktop
+          - tablet

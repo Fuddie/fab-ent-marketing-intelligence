@@ -13,9 +13,9 @@ dbt will transform the seeded raw data into analytics tables in DuckDB. Wren AI
 will provide the semantic layer over those tables for consistent, read-only
 answers in the browser-based marketing AI dashboard.
 
-Phase 1 implements only loading and validating the raw CSV seeds in DuckDB.
-Transformation models, analytics tables, the Wren AI semantic layer and the
-browser-based dashboard are planned for later phases.
+Phase 1 loads and validates the raw CSV seeds in DuckDB. Phase 2 adds the clean
+staging layer. Attribution, intermediate models, reporting marts, the Wren AI
+semantic layer and the browser-based dashboard remain future work.
 
 ## Phase 1: dbt + DuckDB seeds
 
@@ -30,8 +30,7 @@ The local database is `data/generated/fab_ent.duckdb`, with tables in schema
 `raw` (for example, `raw.orders`). This database, `.venv`, `.dbt`, local profiles,
 dbt targets/logs/packages and DuckDB temporary files are excluded from Git.
 `profiles.yml.example` contains only a relative path and no credentials.
-`models/` is reserved for future work; Phase 1 has no staging, attribution or
-reporting models, and does not resolve outstanding business metric policies.
+Staging does not resolve outstanding business metric policies.
 
 ## Windows PowerShell setup
 
@@ -82,6 +81,45 @@ Do not run `scripts/generate_synthetic_data.py` as part of this setup: it
 overwrites the existing CSV snapshots. Close other DuckDB connections before
 seeding to avoid file locks. `dbt clean --profiles-dir .dbt` removes only
 `target/` and `dbt_packages/`; it retains the local database and raw CSVs.
+
+## Phase 2: staging
+
+After loading the seeds, build and validate staging from the repository root:
+
+```powershell
+.\.venv\Scripts\dbt.exe build --select staging --profiles-dir .dbt
+.\.venv\Scripts\python.exe scripts/validate_staging.py
+```
+
+The seven views in `models/staging/marketing` are:
+
+- `stg_marketing__campaigns`
+- `stg_marketing__ad_performance`
+- `stg_marketing__web_sessions`
+- `stg_marketing__customers`
+- `stg_marketing__orders`
+- `stg_marketing__order_items`
+- `stg_marketing__products`
+
+With the example profile, dbt creates these in `raw_staging` (the target schema
+`raw` plus the custom schema `staging`). Each view uses `ref()` to select and
+cast every seed column explicitly. Ad `date` becomes `performance_date`; other
+source field names remain unchanged. Timestamps remain UTC-aware TIMESTAMPTZ,
+money remains DECIMAL(18,2), and source reporting dates remain DATE. No reporting
+timezone conversion, attribution, status exclusions or calculated metrics occur.
+NULL identities, campaignless visits, zero measures and signed amounts are
+preserved without imputation, clipping or filtering.
+
+Model and column documentation and built-in tests are in
+`models/staging/marketing/_marketing__models.yml`. Singular tests in
+`tests/staging` check the composite ad key, campaign date/channel structure,
+session classifications, order/line arithmetic, status semantics and the fixed
+snapshot totals below. Bidirectional `EXCEPT ALL` checks every staged row against
+its seed, including NULLs and duplicates. Anonymous customer IDs and campaignless
+Direct/Organic visits intentionally have no non-null test. Repeated products per
+order are valid; clicks are not constrained to impressions or session counts.
+The read-only validator reports all seven seed/staging counts and exact GBP
+totals; its relation names come from dbt's generated manifest.
 
 ## Snapshot reconciliation
 
