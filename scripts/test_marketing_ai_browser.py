@@ -37,12 +37,12 @@ def main():
         page.click('#ask-submit')
         page.wait_for_selector('#ai-result .answer-kpi')
         assert page.locator('#ai-result table').count()==0
-        assert page.locator('.answer-verified').inner_text()=='\u2713 Verified by Wren'
-        assert not page.locator('.answer-technical').evaluate('(e)=>e.open')
+        assert page.locator('#ai-result .answer-verified').inner_text()=='\u2713 Verified by Wren'
+        assert not page.locator('#ai-result .answer-technical').evaluate('(e)=>e.open')
         assert page.locator('#ai-result img').count()==0
         assert not page.evaluate('window.injected || false')
         assert 'N/A' in page.locator('#ai-result').inner_text()
-        page.locator('.answer-technical summary').click()
+        page.locator('#ai-result .answer-technical summary').click()
         assert 'Complete snapshot' in page.locator('#ai-result').inner_text()
         # Explicit opt-in sends the current filters; default sent null above.
         sent=[]
@@ -57,7 +57,7 @@ def main():
         page.evaluate('(filters)=>{window.dashboardState={ready:true,filters}}',selected)
         page.check('#use-filters');page.click('#ask-submit')
         page.wait_for_function("document.querySelector('#ai-result').textContent.includes('2025-03')")
-        page.locator('.answer-technical summary').click()
+        page.locator('#ai-result .answer-technical summary').click()
         assert sent[-1]['filters']==selected
         # Business output: units, readable labels, metadata disclosure and screenshots.
         page.unroute('**/ask')
@@ -75,18 +75,18 @@ def main():
                 ('eligible_conversions',12345,'12,345'),('reporting_month','2025-03-01','Mar 2025'),
                 ('total_spend_gbp',0,'\u00a30.00')]:
             show([{key:value}])
-            assert page.locator('.answer-value').inner_text()==expected
+            assert page.locator('#ai-result .answer-value').inner_text()==expected
             assert page.locator('#ai-result table').count()==0
-            assert not page.locator('.answer-technical').evaluate('(e)=>e.open')
+            assert not page.locator('#ai-result .answer-technical').evaluate('(e)=>e.open')
         show([{'total':1234567.8}],[{'key':'total','unit':'currency'}])
-        assert page.locator('.answer-value').inner_text()=='\u00a31,234,567.80'
+        assert page.locator('#ai-result .answer-value').inner_text()=='\u00a31,234,567.80'
         show([{'total_marketing_spend_gbp':1234567.8}])
         for width in [1440,390]:
             page.set_viewport_size({'width':width,'height':1000})
             page.locator('#ai-result').screenshot(path=str(shots/f'ask-kpi-{width}.png'))
         show([{'marketing_channel':'Meta Paid Social','net_revenue_gbp':'123456.78','net_roas':3.2},
               {'marketing_channel':'Google Paid Search','net_revenue_gbp':None,'net_roas':0}])
-        assert page.locator('.answer-summary').is_visible()
+        assert page.locator('#ai-result .answer-summary').is_visible()
         assert page.locator('#ai-result th').all_text_contents()==['Marketing channel','Net revenue GBP','Net ROAS']
         assert '\u00a3123,456.78' in page.locator('#ai-result tbody').inner_text()
         assert 'N/A' in page.locator('#ai-result tbody').inner_text()
@@ -94,8 +94,8 @@ def main():
             page.set_viewport_size({'width':width,'height':1000})
             assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
             if width!=320:page.locator('#ai-result').screenshot(path=str(shots/f'ask-table-{width}.png'))
-        page.locator('.answer-technical summary').click()
-        assert 'SELECT <unsafe>' in page.locator('.answer-technical').inner_text()
+        page.locator('#ai-result .answer-technical summary').click()
+        assert 'SELECT <unsafe>' in page.locator('#ai-result .answer-technical').inner_text()
         assert page.locator('#ai-result img').count()==0
         page.unroute('**/ask')
         show([{'campaign_name':'<img src=x onerror="window.injected=true">','spend_gbp':12},

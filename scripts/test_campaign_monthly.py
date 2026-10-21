@@ -57,7 +57,7 @@ def main():
         scoped_expected=[]
         for month in sorted({r['reporting_month'] for r in expected_all if '2025-03' <= str(r['reporting_month'])[:7] <= '2025-05'}):
             scoped_expected.extend(sorted([r for r in expected_all if r['reporting_month']==month and r['marketing_channel']=='Meta Paid Social'],key=lambda r:(-r['attributed_net_revenue_gbp'],r['campaign_id']))[:3])
-        assert [(r['reporting_month'],r['campaign_id']) for r in scoped_rows]==[(str(r['reporting_month']),r['campaign_id']) for r in scoped_expected]
+        assert [(str(r['reporting_month']),r['campaign_id']) for r in scoped_rows]==[(str(r['reporting_month']),r['campaign_id']) for r in scoped_expected]
         filtered=ai.governed_sql(semantic,MODEL,dict(filters,campaign='CAM-0001'))
         assert "campaign_id = 'CAM-0001'" in filtered
     with duckdb.connect() as fixture:

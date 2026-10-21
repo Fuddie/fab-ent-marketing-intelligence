@@ -16,6 +16,9 @@ data/generated/
 .dbt/
 profiles.yml
 .user.yml
+.codex/
+.aws/
+auth.json
 
 # DuckDB databases, write-ahead logs and spill directories
 *.duckdb

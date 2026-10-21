@@ -1,6 +1,12 @@
 ﻿import assert from 'node:assert/strict';
 import {test} from 'node:test';
-import {format,label,renderAnswer} from '../docs/answer.mjs';
+import {format,label,renderAnswer,unit} from '../docs/answer.mjs';
+
+test('monthly rank displays as an integer',()=>{
+ assert.equal(label('monthly_rank'),'Monthly rank');
+ assert.equal(unit('monthly_rank'),'integer');
+ assert.equal(format(3,unit('monthly_rank')),'3');
+});
 
 test('business units handle decimals, zero, negative, NULL and dates',()=>{
  for (const [value,type,expected] of [
@@ -12,6 +18,13 @@ test('business units handle decimals, zero, negative, NULL and dates',()=>{
  assert.equal(label('net_roas'),'Net ROAS');
 });
 const base={rows:[{total:'1234.5'}],columns:[{key:'total',unit:'currency'}],assumptions:['Snapshot'],semantic_sql:'SELECT <unsafe>',duration_ms:42};
+test('saved examples share presentation and identify their source',()=>{
+ const html=renderAnswer({...base,source:'saved'});
+ assert.match(html,/Saved verified example/);
+ assert.match(html,/dashboard filters do not apply/);
+ assert.doesNotMatch(html,/New answer|Codex model|Reasoning|Duration/);
+ assert.doesNotMatch(html,/<table/);
+});
 test('scalar is a single KPI with collapsed provenance and no raw table',()=>{
  const html=renderAnswer(base);
  assert.match(html,/£1,234.50/);assert.doesNotMatch(html,/<table/);

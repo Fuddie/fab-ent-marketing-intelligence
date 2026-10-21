@@ -21,12 +21,12 @@
     "paid_acquisitions": 759,
     "unmatched_orders": 789,
     "unmatched_revenue": 124481.5,
-    "budget": 209998,
+    "budget": 209997.99999999997,
     "negative_inputs": 0,
     "rows": 12,
     "roas": 1.2097133519106436,
     "cac": 249.27343873517788,
     "attribution": 64.5870736086176,
-    "utilisation": 90.09540090858007
+    "utilisation": 90.0954009085801
   }
 }

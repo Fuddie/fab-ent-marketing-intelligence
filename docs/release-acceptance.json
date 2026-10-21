@@ -1,0 +1,4471 @@
+{
+  "snapshot": "fixed_2025_synthetic",
+  "deterministic": {
+    "mode": "deterministic Wren (no NL generation)",
+    "cases": [
+      {
+        "question": "What is total marketing spend?",
+        "model": "MarketingMonthlyOverview",
+        "expected": [
+          {
+            "spend_gbp": "189198.54"
+          }
+        ],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT SUM(spend_gbp) AS spend_gbp FROM MarketingMonthlyOverview ORDER BY spend_gbp LIMIT 100",
+        "actual": [
+          {
+            "spend_gbp": "189198.54"
+          }
+        ],
+        "row_count": 1
+      },
+      {
+        "question": "How did spend and attributed net revenue change by month?",
+        "model": "MarketingMonthlyOverview",
+        "expected": [
+          {
+            "reporting_month": "2025-01-01",
+            "spend_gbp": "11150.37",
+            "attributed_net_revenue_gbp": "14705.50"
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "spend_gbp": "10570.53",
+            "attributed_net_revenue_gbp": "18180.50"
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "spend_gbp": "11486.11",
+            "attributed_net_revenue_gbp": "22028.50"
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "spend_gbp": "12400.65",
+            "attributed_net_revenue_gbp": "20279.00"
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "spend_gbp": "12702.52",
+            "attributed_net_revenue_gbp": "16663.00"
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "spend_gbp": "12260.95",
+            "attributed_net_revenue_gbp": "24848.00"
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "spend_gbp": "19489.54",
+            "attributed_net_revenue_gbp": "17739.00"
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "spend_gbp": "20462.01",
+            "attributed_net_revenue_gbp": "17804.00"
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "spend_gbp": "18301.52",
+            "attributed_net_revenue_gbp": "16700.00"
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "spend_gbp": "20469.56",
+            "attributed_net_revenue_gbp": "18994.50"
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "spend_gbp": "20204.00",
+            "attributed_net_revenue_gbp": "20984.50"
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "spend_gbp": "19700.78",
+            "attributed_net_revenue_gbp": "19949.50"
+          }
+        ],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT reporting_month, spend_gbp, attributed_net_revenue_gbp FROM MarketingMonthlyOverview ORDER BY reporting_month LIMIT 100",
+        "actual": [
+          {
+            "reporting_month": "2025-01-01",
+            "spend_gbp": "11150.37",
+            "attributed_net_revenue_gbp": "14705.50"
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "spend_gbp": "10570.53",
+            "attributed_net_revenue_gbp": "18180.50"
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "spend_gbp": "11486.11",
+            "attributed_net_revenue_gbp": "22028.50"
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "spend_gbp": "12400.65",
+            "attributed_net_revenue_gbp": "20279.00"
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "spend_gbp": "12702.52",
+            "attributed_net_revenue_gbp": "16663.00"
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "spend_gbp": "12260.95",
+            "attributed_net_revenue_gbp": "24848.00"
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "spend_gbp": "19489.54",
+            "attributed_net_revenue_gbp": "17739.00"
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "spend_gbp": "20462.01",
+            "attributed_net_revenue_gbp": "17804.00"
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "spend_gbp": "18301.52",
+            "attributed_net_revenue_gbp": "16700.00"
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "spend_gbp": "20469.56",
+            "attributed_net_revenue_gbp": "18994.50"
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "spend_gbp": "20204.00",
+            "attributed_net_revenue_gbp": "20984.50"
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "spend_gbp": "19700.78",
+            "attributed_net_revenue_gbp": "19949.50"
+          }
+        ],
+        "row_count": 12
+      },
+      {
+        "question": "Which five campaigns generated the highest attributed net revenue overall?",
+        "model": "MarketingCampaignSummary",
+        "expected": [
+          {
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "30385.00"
+          },
+          {
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "29027.00"
+          },
+          {
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "27389.00"
+          },
+          {
+            "campaign_id": "CAM-0007",
+            "campaign_name": "2025 Fashion Campaign 07",
+            "attributed_net_revenue_gbp": "9531.50"
+          },
+          {
+            "campaign_id": "CAM-0015",
+            "campaign_name": "2025 Fashion Campaign 15",
+            "attributed_net_revenue_gbp": "8801.00"
+          }
+        ],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT campaign_id, campaign_name, attributed_net_revenue_gbp FROM MarketingCampaignSummary ORDER BY attributed_net_revenue_gbp DESC, campaign_id LIMIT 5",
+        "actual": [
+          {
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "30385.00"
+          },
+          {
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "29027.00"
+          },
+          {
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "27389.00"
+          },
+          {
+            "campaign_id": "CAM-0007",
+            "campaign_name": "2025 Fashion Campaign 07",
+            "attributed_net_revenue_gbp": "9531.50"
+          },
+          {
+            "campaign_id": "CAM-0015",
+            "campaign_name": "2025 Fashion Campaign 15",
+            "attributed_net_revenue_gbp": "8801.00"
+          }
+        ],
+        "row_count": 5
+      },
+      {
+        "question": "Top three campaigns based on attributed net revenue per month.",
+        "model": "MarketingCampaignMonthly",
+        "expected": [
+          {
+            "reporting_month": "2025-01-01",
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "2729.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-01-01",
+            "campaign_id": "CAM-0020",
+            "campaign_name": "2025 Fashion Campaign 20",
+            "attributed_net_revenue_gbp": "2669.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-01-01",
+            "campaign_id": "CAM-0012",
+            "campaign_name": "2025 Fashion Campaign 12",
+            "attributed_net_revenue_gbp": "2523.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "campaign_id": "CAM-0008",
+            "campaign_name": "2025 Fashion Campaign 08",
+            "attributed_net_revenue_gbp": "3373.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "campaign_id": "CAM-0004",
+            "campaign_name": "2025 Fashion Campaign 04",
+            "attributed_net_revenue_gbp": "2980.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "campaign_id": "CAM-0016",
+            "campaign_name": "2025 Fashion Campaign 16",
+            "attributed_net_revenue_gbp": "2899.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "4341.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "4176.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "campaign_id": "CAM-0020",
+            "campaign_name": "2025 Fashion Campaign 20",
+            "attributed_net_revenue_gbp": "3448.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "3396.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "2642.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "campaign_id": "CAM-0021",
+            "campaign_name": "2025 Fashion Campaign 21",
+            "attributed_net_revenue_gbp": "2444.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "campaign_id": "CAM-0013",
+            "campaign_name": "2025 Fashion Campaign 13",
+            "attributed_net_revenue_gbp": "3328.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "campaign_id": "CAM-0009",
+            "campaign_name": "2025 Fashion Campaign 09",
+            "attributed_net_revenue_gbp": "2497.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "2491.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "3828.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "campaign_id": "CAM-0005",
+            "campaign_name": "2025 Fashion Campaign 05",
+            "attributed_net_revenue_gbp": "3504.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "3343.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "campaign_id": "CAM-0018",
+            "campaign_name": "2025 Fashion Campaign 18",
+            "attributed_net_revenue_gbp": "2802.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "campaign_id": "CAM-0014",
+            "campaign_name": "2025 Fashion Campaign 14",
+            "attributed_net_revenue_gbp": "2382.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "2370.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "campaign_id": "CAM-0022",
+            "campaign_name": "2025 Fashion Campaign 22",
+            "attributed_net_revenue_gbp": "2748.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "campaign_id": "CAM-0010",
+            "campaign_name": "2025 Fashion Campaign 10",
+            "attributed_net_revenue_gbp": "2675.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "2605.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "campaign_id": "CAM-0022",
+            "campaign_name": "2025 Fashion Campaign 22",
+            "attributed_net_revenue_gbp": "3696.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "campaign_id": "CAM-0018",
+            "campaign_name": "2025 Fashion Campaign 18",
+            "attributed_net_revenue_gbp": "2628.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "2500.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "campaign_id": "CAM-0015",
+            "campaign_name": "2025 Fashion Campaign 15",
+            "attributed_net_revenue_gbp": "3623.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "3480.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "campaign_id": "CAM-0007",
+            "campaign_name": "2025 Fashion Campaign 07",
+            "attributed_net_revenue_gbp": "3049.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "campaign_id": "CAM-0011",
+            "campaign_name": "2025 Fashion Campaign 11",
+            "attributed_net_revenue_gbp": "4151.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "3916.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "3597.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "campaign_id": "CAM-0007",
+            "campaign_name": "2025 Fashion Campaign 07",
+            "attributed_net_revenue_gbp": "4089.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "campaign_id": "CAM-0011",
+            "campaign_name": "2025 Fashion Campaign 11",
+            "attributed_net_revenue_gbp": "3012.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "campaign_id": "CAM-0019",
+            "campaign_name": "2025 Fashion Campaign 19",
+            "attributed_net_revenue_gbp": "2788.00",
+            "monthly_rank": 3
+          }
+        ],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT reporting_month, campaign_id, campaign_name, attributed_net_revenue_gbp, ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY attributed_net_revenue_gbp DESC, campaign_id ASC) AS monthly_rank FROM MarketingCampaignMonthly QUALIFY ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY attributed_net_revenue_gbp DESC, campaign_id ASC) <= 3 ORDER BY reporting_month ASC, monthly_rank ASC LIMIT 1200",
+        "actual": [
+          {
+            "reporting_month": "2025-01-01",
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "2729.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-01-01",
+            "campaign_id": "CAM-0020",
+            "campaign_name": "2025 Fashion Campaign 20",
+            "attributed_net_revenue_gbp": "2669.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-01-01",
+            "campaign_id": "CAM-0012",
+            "campaign_name": "2025 Fashion Campaign 12",
+            "attributed_net_revenue_gbp": "2523.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "campaign_id": "CAM-0008",
+            "campaign_name": "2025 Fashion Campaign 08",
+            "attributed_net_revenue_gbp": "3373.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "campaign_id": "CAM-0004",
+            "campaign_name": "2025 Fashion Campaign 04",
+            "attributed_net_revenue_gbp": "2980.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "campaign_id": "CAM-0016",
+            "campaign_name": "2025 Fashion Campaign 16",
+            "attributed_net_revenue_gbp": "2899.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "4341.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "4176.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "campaign_id": "CAM-0020",
+            "campaign_name": "2025 Fashion Campaign 20",
+            "attributed_net_revenue_gbp": "3448.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "3396.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "2642.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "campaign_id": "CAM-0021",
+            "campaign_name": "2025 Fashion Campaign 21",
+            "attributed_net_revenue_gbp": "2444.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "campaign_id": "CAM-0013",
+            "campaign_name": "2025 Fashion Campaign 13",
+            "attributed_net_revenue_gbp": "3328.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "campaign_id": "CAM-0009",
+            "campaign_name": "2025 Fashion Campaign 09",
+            "attributed_net_revenue_gbp": "2497.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "2491.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "3828.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "campaign_id": "CAM-0005",
+            "campaign_name": "2025 Fashion Campaign 05",
+            "attributed_net_revenue_gbp": "3504.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "3343.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "campaign_id": "CAM-0018",
+            "campaign_name": "2025 Fashion Campaign 18",
+            "attributed_net_revenue_gbp": "2802.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "campaign_id": "CAM-0014",
+            "campaign_name": "2025 Fashion Campaign 14",
+            "attributed_net_revenue_gbp": "2382.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "2370.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "campaign_id": "CAM-0022",
+            "campaign_name": "2025 Fashion Campaign 22",
+            "attributed_net_revenue_gbp": "2748.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "campaign_id": "CAM-0010",
+            "campaign_name": "2025 Fashion Campaign 10",
+            "attributed_net_revenue_gbp": "2675.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "2605.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "campaign_id": "CAM-0022",
+            "campaign_name": "2025 Fashion Campaign 22",
+            "attributed_net_revenue_gbp": "3696.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "campaign_id": "CAM-0018",
+            "campaign_name": "2025 Fashion Campaign 18",
+            "attributed_net_revenue_gbp": "2628.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "2500.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "campaign_id": "CAM-0015",
+            "campaign_name": "2025 Fashion Campaign 15",
+            "attributed_net_revenue_gbp": "3623.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "3480.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "campaign_id": "CAM-0007",
+            "campaign_name": "2025 Fashion Campaign 07",
+            "attributed_net_revenue_gbp": "3049.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "campaign_id": "CAM-0011",
+            "campaign_name": "2025 Fashion Campaign 11",
+            "attributed_net_revenue_gbp": "4151.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "3916.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "3597.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "campaign_id": "CAM-0007",
+            "campaign_name": "2025 Fashion Campaign 07",
+            "attributed_net_revenue_gbp": "4089.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "campaign_id": "CAM-0011",
+            "campaign_name": "2025 Fashion Campaign 11",
+            "attributed_net_revenue_gbp": "3012.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "campaign_id": "CAM-0019",
+            "campaign_name": "2025 Fashion Campaign 19",
+            "attributed_net_revenue_gbp": "2788.00",
+            "monthly_rank": 3
+          }
+        ],
+        "row_count": 36
+      },
+      {
+        "question": "Top three channels based on attributed net revenue per month.",
+        "model": "MarketingChannelMonthly",
+        "expected": [
+          {
+            "reporting_month": "2025-01-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "5252.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-01-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "5217.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-01-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "4236.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "8104.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "7075.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "3001.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "10027.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "8953.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "3048.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "8073.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "6441.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "5764.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "6550.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "5278.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "4834.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "9752.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "9182.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "5914.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "7113.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "6400.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "4225.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "6802.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "6430.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "4571.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "7060.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "6259.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "3380.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "7238.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "7051.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "4705.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "8874.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "8068.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "4042.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "9451.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "5617.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "4881.00",
+            "monthly_rank": 3
+          }
+        ],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT reporting_month, marketing_channel, attributed_net_revenue_gbp, ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY attributed_net_revenue_gbp DESC, marketing_channel ASC) AS monthly_rank FROM MarketingChannelMonthly QUALIFY ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY attributed_net_revenue_gbp DESC, marketing_channel ASC) <= 3 ORDER BY reporting_month ASC, monthly_rank ASC LIMIT 1200",
+        "actual": [
+          {
+            "reporting_month": "2025-01-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "5252.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-01-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "5217.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-01-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "4236.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "8104.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "7075.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "3001.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "10027.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "8953.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "3048.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "8073.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "6441.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "5764.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "6550.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "5278.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "4834.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "9752.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "9182.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "5914.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "7113.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "6400.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "4225.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "6802.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "6430.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "4571.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "7060.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "6259.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "3380.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "7238.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "7051.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "4705.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "8874.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "8068.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "4042.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "9451.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "5617.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "4881.00",
+            "monthly_rank": 3
+          }
+        ],
+        "row_count": 36
+      },
+      {
+        "question": "Which channel had the strongest net ROAS per month?",
+        "model": "MarketingChannelMonthly",
+        "expected": [
+          {
+            "reporting_month": "2025-01-01",
+            "marketing_channel": "TikTok Paid Social",
+            "net_roas": 1.7560194440915504,
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "marketing_channel": "Meta Paid Social",
+            "net_roas": 2.370373836969525,
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "marketing_channel": "Meta Paid Social",
+            "net_roas": 2.3339781122749574,
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "marketing_channel": "Google Paid Search",
+            "net_roas": 2.4196521431590052,
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "marketing_channel": "Google Paid Search",
+            "net_roas": 1.5797176050900514,
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "marketing_channel": "Google Paid Search",
+            "net_roas": 3.0646332150679894,
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "marketing_channel": "TikTok Paid Social",
+            "net_roas": 1.131634542573703,
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "marketing_channel": "TikTok Paid Social",
+            "net_roas": 1.0381217752923628,
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "marketing_channel": "TikTok Paid Social",
+            "net_roas": 1.2151988929736874,
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "marketing_channel": "TikTok Paid Social",
+            "net_roas": 1.2920039627642959,
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "marketing_channel": "Google Paid Search",
+            "net_roas": 1.2109750240153698,
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "marketing_channel": "Meta Paid Social",
+            "net_roas": 1.1792935468897396,
+            "monthly_rank": 1
+          }
+        ],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT reporting_month, marketing_channel, net_roas, ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY net_roas DESC, marketing_channel ASC) AS monthly_rank FROM MarketingChannelMonthly QUALIFY ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY net_roas DESC, marketing_channel ASC) <= 1 ORDER BY reporting_month ASC, monthly_rank ASC LIMIT 1200",
+        "actual": [
+          {
+            "reporting_month": "2025-01-01",
+            "marketing_channel": "TikTok Paid Social",
+            "net_roas": "1.7560194441",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "marketing_channel": "Meta Paid Social",
+            "net_roas": "2.370373837",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "marketing_channel": "Meta Paid Social",
+            "net_roas": "2.3339781123",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "marketing_channel": "Google Paid Search",
+            "net_roas": "2.4196521432",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "marketing_channel": "Google Paid Search",
+            "net_roas": "1.5797176051",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "marketing_channel": "Google Paid Search",
+            "net_roas": "3.0646332151",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "marketing_channel": "TikTok Paid Social",
+            "net_roas": "1.1316345426",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "marketing_channel": "TikTok Paid Social",
+            "net_roas": "1.0381217753",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "marketing_channel": "TikTok Paid Social",
+            "net_roas": "1.215198893",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "marketing_channel": "TikTok Paid Social",
+            "net_roas": "1.2920039628",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "marketing_channel": "Google Paid Search",
+            "net_roas": "1.210975024",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "marketing_channel": "Meta Paid Social",
+            "net_roas": "1.1792935469",
+            "monthly_rank": 1
+          }
+        ],
+        "row_count": 12
+      },
+      {
+        "question": "Which campaigns spent money without producing eligible conversions?",
+        "model": "MarketingCampaignSummary",
+        "expected": [
+          {
+            "campaign_id": "CAM-0023",
+            "campaign_name": "2025 Fashion Campaign 23",
+            "spend_gbp": "8665.44",
+            "attributed_orders": 0
+          },
+          {
+            "campaign_id": "CAM-0024",
+            "campaign_name": "2025 Fashion Campaign 24",
+            "spend_gbp": "3281.20",
+            "attributed_orders": 0
+          }
+        ],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT campaign_id, campaign_name, spend_gbp, attributed_orders FROM MarketingCampaignSummary WHERE spend_gbp > 0 AND attributed_orders = 0 ORDER BY campaign_id LIMIT 100",
+        "actual": [
+          {
+            "campaign_id": "CAM-0023",
+            "campaign_name": "2025 Fashion Campaign 23",
+            "spend_gbp": "8665.44",
+            "attributed_orders": "0"
+          },
+          {
+            "campaign_id": "CAM-0024",
+            "campaign_name": "2025 Fashion Campaign 24",
+            "spend_gbp": "3281.20",
+            "attributed_orders": "0"
+          }
+        ],
+        "row_count": 2
+      },
+      {
+        "question": "Which campaigns exceeded their budgets?",
+        "model": "MarketingCampaignSummary",
+        "expected": [
+          {
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "spend_gbp": "11248.16",
+            "lifetime_budget_gbp": "10043.00"
+          },
+          {
+            "campaign_id": "CAM-0007",
+            "campaign_name": "2025 Fashion Campaign 07",
+            "spend_gbp": "12249.44",
+            "lifetime_budget_gbp": "10937.00"
+          },
+          {
+            "campaign_id": "CAM-0011",
+            "campaign_name": "2025 Fashion Campaign 11",
+            "spend_gbp": "7249.76",
+            "lifetime_budget_gbp": "6473.00"
+          },
+          {
+            "campaign_id": "CAM-0015",
+            "campaign_name": "2025 Fashion Campaign 15",
+            "spend_gbp": "13687.52",
+            "lifetime_budget_gbp": "12221.00"
+          },
+          {
+            "campaign_id": "CAM-0019",
+            "campaign_name": "2025 Fashion Campaign 19",
+            "spend_gbp": "9774.24",
+            "lifetime_budget_gbp": "8727.00"
+          },
+          {
+            "campaign_id": "CAM-0023",
+            "campaign_name": "2025 Fashion Campaign 23",
+            "spend_gbp": "8665.44",
+            "lifetime_budget_gbp": "7737.00"
+          }
+        ],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT campaign_id, campaign_name, spend_gbp, lifetime_budget_gbp FROM MarketingCampaignSummary WHERE spend_gbp > lifetime_budget_gbp ORDER BY campaign_id LIMIT 100",
+        "actual": [
+          {
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "spend_gbp": "11248.16",
+            "lifetime_budget_gbp": "10043.00"
+          },
+          {
+            "campaign_id": "CAM-0007",
+            "campaign_name": "2025 Fashion Campaign 07",
+            "spend_gbp": "12249.44",
+            "lifetime_budget_gbp": "10937.00"
+          },
+          {
+            "campaign_id": "CAM-0011",
+            "campaign_name": "2025 Fashion Campaign 11",
+            "spend_gbp": "7249.76",
+            "lifetime_budget_gbp": "6473.00"
+          },
+          {
+            "campaign_id": "CAM-0015",
+            "campaign_name": "2025 Fashion Campaign 15",
+            "spend_gbp": "13687.52",
+            "lifetime_budget_gbp": "12221.00"
+          },
+          {
+            "campaign_id": "CAM-0019",
+            "campaign_name": "2025 Fashion Campaign 19",
+            "spend_gbp": "9774.24",
+            "lifetime_budget_gbp": "8727.00"
+          },
+          {
+            "campaign_id": "CAM-0023",
+            "campaign_name": "2025 Fashion Campaign 23",
+            "spend_gbp": "8665.44",
+            "lifetime_budget_gbp": "7737.00"
+          }
+        ],
+        "row_count": 6
+      },
+      {
+        "question": "What percentage of eligible outcomes was unattributed?",
+        "model": "MarketingMonthlyOverview",
+        "expected": [
+          {
+            "unattributed_pct": 35.412926391382406
+          }
+        ],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT 100.0 * SUM(unattributed_eligible_orders) / NULLIF(SUM(eligible_conversions), 0) AS unattributed_pct FROM MarketingMonthlyOverview ORDER BY unattributed_pct LIMIT 100",
+        "actual": [
+          {
+            "unattributed_pct": "35.4129263914"
+          }
+        ],
+        "row_count": 1
+      },
+      {
+        "question": "How many first-observed acquisitions came from each channel?",
+        "model": "MarketingChannelMonthly",
+        "expected": [
+          {
+            "marketing_channel": "Direct",
+            "first_observed_acquisitions": 0
+          },
+          {
+            "marketing_channel": "Google Paid Search",
+            "first_observed_acquisitions": 254
+          },
+          {
+            "marketing_channel": "Meta Paid Social",
+            "first_observed_acquisitions": 274
+          },
+          {
+            "marketing_channel": "Organic",
+            "first_observed_acquisitions": 0
+          },
+          {
+            "marketing_channel": "TikTok Paid Social",
+            "first_observed_acquisitions": 231
+          },
+          {
+            "marketing_channel": "Unattributed",
+            "first_observed_acquisitions": 415
+          }
+        ],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT marketing_channel, SUM(first_observed_acquisitions) AS first_observed_acquisitions FROM MarketingChannelMonthly GROUP BY marketing_channel ORDER BY marketing_channel LIMIT 100",
+        "actual": [
+          {
+            "marketing_channel": "Direct",
+            "first_observed_acquisitions": "0"
+          },
+          {
+            "marketing_channel": "Google Paid Search",
+            "first_observed_acquisitions": "254"
+          },
+          {
+            "marketing_channel": "Meta Paid Social",
+            "first_observed_acquisitions": "274"
+          },
+          {
+            "marketing_channel": "Organic",
+            "first_observed_acquisitions": "0"
+          },
+          {
+            "marketing_channel": "TikTok Paid Social",
+            "first_observed_acquisitions": "231"
+          },
+          {
+            "marketing_channel": "Unattributed",
+            "first_observed_acquisitions": "415"
+          }
+        ],
+        "row_count": 6
+      },
+      {
+        "question": "Channel comparison and zero-denominator ROAS",
+        "model": "MarketingChannelMonthly",
+        "expected": [
+          {
+            "marketing_channel": "Direct",
+            "spend_gbp": "0.00",
+            "attributed_net_revenue_gbp": "0.00",
+            "net_roas": null
+          },
+          {
+            "marketing_channel": "Google Paid Search",
+            "spend_gbp": "59634.58",
+            "attributed_net_revenue_gbp": "75990.50",
+            "net_roas": 1.2742690566446515
+          },
+          {
+            "marketing_channel": "Meta Paid Social",
+            "spend_gbp": "69569.56",
+            "attributed_net_revenue_gbp": "82643.50",
+            "net_roas": 1.1879261562096985
+          },
+          {
+            "marketing_channel": "Organic",
+            "spend_gbp": "0.00",
+            "attributed_net_revenue_gbp": "0.00",
+            "net_roas": null
+          },
+          {
+            "marketing_channel": "TikTok Paid Social",
+            "spend_gbp": "59994.40",
+            "attributed_net_revenue_gbp": "70242.00",
+            "net_roas": 1.1708092755323831
+          },
+          {
+            "marketing_channel": "Unattributed",
+            "spend_gbp": "0.00",
+            "attributed_net_revenue_gbp": "0.00",
+            "net_roas": null
+          }
+        ],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT marketing_channel, SUM(spend_gbp) AS spend_gbp, SUM(attributed_net_revenue_gbp) AS attributed_net_revenue_gbp, SUM(attributed_net_revenue_gbp) / NULLIF(SUM(spend_gbp), 0) AS net_roas FROM MarketingChannelMonthly GROUP BY marketing_channel ORDER BY marketing_channel LIMIT 100",
+        "actual": [
+          {
+            "marketing_channel": "Direct",
+            "spend_gbp": "0.00",
+            "attributed_net_revenue_gbp": "0.00",
+            "net_roas": null
+          },
+          {
+            "marketing_channel": "Google Paid Search",
+            "spend_gbp": "59634.58",
+            "attributed_net_revenue_gbp": "75990.50",
+            "net_roas": "1.2742690566"
+          },
+          {
+            "marketing_channel": "Meta Paid Social",
+            "spend_gbp": "69569.56",
+            "attributed_net_revenue_gbp": "82643.50",
+            "net_roas": "1.1879261562"
+          },
+          {
+            "marketing_channel": "Organic",
+            "spend_gbp": "0.00",
+            "attributed_net_revenue_gbp": "0.00",
+            "net_roas": null
+          },
+          {
+            "marketing_channel": "TikTok Paid Social",
+            "spend_gbp": "59994.40",
+            "attributed_net_revenue_gbp": "70242.00",
+            "net_roas": "1.1708092755"
+          },
+          {
+            "marketing_channel": "Unattributed",
+            "spend_gbp": "0.00",
+            "attributed_net_revenue_gbp": "0.00",
+            "net_roas": null
+          }
+        ],
+        "row_count": 6
+      },
+      {
+        "question": "Selected reporting months and channel before ranking",
+        "model": "MarketingCampaignMonthly",
+        "expected": [
+          {
+            "reporting_month": "2025-03-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "4176.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "campaign_id": "CAM-0016",
+            "campaign_name": "2025 Fashion Campaign 16",
+            "attributed_net_revenue_gbp": "2656.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "campaign_id": "CAM-0004",
+            "campaign_name": "2025 Fashion Campaign 04",
+            "attributed_net_revenue_gbp": "2121.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "2392.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "campaign_id": "CAM-0013",
+            "campaign_name": "2025 Fashion Campaign 13",
+            "attributed_net_revenue_gbp": "1884.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "campaign_id": "CAM-0016",
+            "campaign_name": "2025 Fashion Campaign 16",
+            "attributed_net_revenue_gbp": "992.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "campaign_id": "CAM-0013",
+            "campaign_name": "2025 Fashion Campaign 13",
+            "attributed_net_revenue_gbp": "3328.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "1506.00",
+            "monthly_rank": 2
+          }
+        ],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT reporting_month, campaign_id, campaign_name, attributed_net_revenue_gbp, ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY attributed_net_revenue_gbp DESC, campaign_id ASC) AS monthly_rank FROM MarketingCampaignMonthly WHERE reporting_month >= CAST('2025-03-01' AS DATE) AND reporting_month <= CAST('2025-05-01' AS DATE) AND marketing_channel = 'Meta Paid Social' QUALIFY ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY attributed_net_revenue_gbp DESC, campaign_id ASC) <= 3 ORDER BY reporting_month ASC, monthly_rank ASC LIMIT 1200",
+        "actual": [
+          {
+            "reporting_month": "2025-03-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "4176.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "campaign_id": "CAM-0016",
+            "campaign_name": "2025 Fashion Campaign 16",
+            "attributed_net_revenue_gbp": "2656.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "campaign_id": "CAM-0004",
+            "campaign_name": "2025 Fashion Campaign 04",
+            "attributed_net_revenue_gbp": "2121.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "2392.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "campaign_id": "CAM-0013",
+            "campaign_name": "2025 Fashion Campaign 13",
+            "attributed_net_revenue_gbp": "1884.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "campaign_id": "CAM-0016",
+            "campaign_name": "2025 Fashion Campaign 16",
+            "attributed_net_revenue_gbp": "992.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "campaign_id": "CAM-0013",
+            "campaign_name": "2025 Fashion Campaign 13",
+            "attributed_net_revenue_gbp": "3328.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "1506.00",
+            "monthly_rank": 2
+          }
+        ],
+        "row_count": 8
+      },
+      {
+        "question": "Empty aggregate retains NULL",
+        "model": "MarketingMonthlyOverview",
+        "expected": [
+          {
+            "spend_gbp": null
+          }
+        ],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT SUM(spend_gbp) AS spend_gbp FROM MarketingMonthlyOverview WHERE reporting_month < CAST('2025-01-01' AS DATE) ORDER BY spend_gbp LIMIT 100",
+        "actual": [
+          {
+            "spend_gbp": null
+          }
+        ],
+        "row_count": 1
+      },
+      {
+        "question": "Empty result retains no invented values",
+        "model": "MarketingCampaignMonthly",
+        "expected": [],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT campaign_id FROM MarketingCampaignMonthly WHERE spend_gbp < -999999 ORDER BY campaign_id LIMIT 100",
+        "actual": [],
+        "row_count": 0
+      }
+    ],
+    "rejections": []
+  },
+  "live": {
+    "mode": "live",
+    "cases": [
+      {
+        "question": "What is total marketing spend?",
+        "model": "MarketingMonthlyOverview",
+        "expected": [
+          {
+            "spend_gbp": "189198.54"
+          }
+        ],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT SUM(spend_gbp) AS spend_gbp FROM MarketingMonthlyOverview ORDER BY spend_gbp LIMIT 100",
+        "actual": [
+          {
+            "spend_gbp": "189198.54"
+          }
+        ],
+        "row_count": 1,
+        "live_actual": [
+          {
+            "spend_gbp": "189198.54"
+          }
+        ],
+        "live_semantic_sql": "SELECT SUM(spend_gbp) AS spend_gbp FROM MarketingMonthlyOverview ORDER BY spend_gbp DESC LIMIT 100",
+        "live_status": "PASS"
+      },
+      {
+        "question": "How did spend and attributed net revenue change by month?",
+        "model": "MarketingMonthlyOverview",
+        "expected": [
+          {
+            "reporting_month": "2025-01-01",
+            "spend_gbp": "11150.37",
+            "attributed_net_revenue_gbp": "14705.50"
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "spend_gbp": "10570.53",
+            "attributed_net_revenue_gbp": "18180.50"
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "spend_gbp": "11486.11",
+            "attributed_net_revenue_gbp": "22028.50"
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "spend_gbp": "12400.65",
+            "attributed_net_revenue_gbp": "20279.00"
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "spend_gbp": "12702.52",
+            "attributed_net_revenue_gbp": "16663.00"
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "spend_gbp": "12260.95",
+            "attributed_net_revenue_gbp": "24848.00"
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "spend_gbp": "19489.54",
+            "attributed_net_revenue_gbp": "17739.00"
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "spend_gbp": "20462.01",
+            "attributed_net_revenue_gbp": "17804.00"
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "spend_gbp": "18301.52",
+            "attributed_net_revenue_gbp": "16700.00"
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "spend_gbp": "20469.56",
+            "attributed_net_revenue_gbp": "18994.50"
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "spend_gbp": "20204.00",
+            "attributed_net_revenue_gbp": "20984.50"
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "spend_gbp": "19700.78",
+            "attributed_net_revenue_gbp": "19949.50"
+          }
+        ],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT reporting_month, spend_gbp, attributed_net_revenue_gbp FROM MarketingMonthlyOverview ORDER BY reporting_month LIMIT 100",
+        "actual": [
+          {
+            "reporting_month": "2025-01-01",
+            "spend_gbp": "11150.37",
+            "attributed_net_revenue_gbp": "14705.50"
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "spend_gbp": "10570.53",
+            "attributed_net_revenue_gbp": "18180.50"
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "spend_gbp": "11486.11",
+            "attributed_net_revenue_gbp": "22028.50"
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "spend_gbp": "12400.65",
+            "attributed_net_revenue_gbp": "20279.00"
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "spend_gbp": "12702.52",
+            "attributed_net_revenue_gbp": "16663.00"
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "spend_gbp": "12260.95",
+            "attributed_net_revenue_gbp": "24848.00"
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "spend_gbp": "19489.54",
+            "attributed_net_revenue_gbp": "17739.00"
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "spend_gbp": "20462.01",
+            "attributed_net_revenue_gbp": "17804.00"
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "spend_gbp": "18301.52",
+            "attributed_net_revenue_gbp": "16700.00"
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "spend_gbp": "20469.56",
+            "attributed_net_revenue_gbp": "18994.50"
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "spend_gbp": "20204.00",
+            "attributed_net_revenue_gbp": "20984.50"
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "spend_gbp": "19700.78",
+            "attributed_net_revenue_gbp": "19949.50"
+          }
+        ],
+        "row_count": 12,
+        "live_actual": [
+          {
+            "reporting_month": "2025-01-01",
+            "spend_gbp": "11150.37",
+            "attributed_net_revenue_gbp": "14705.50"
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "spend_gbp": "10570.53",
+            "attributed_net_revenue_gbp": "18180.50"
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "spend_gbp": "11486.11",
+            "attributed_net_revenue_gbp": "22028.50"
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "spend_gbp": "12400.65",
+            "attributed_net_revenue_gbp": "20279.00"
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "spend_gbp": "12702.52",
+            "attributed_net_revenue_gbp": "16663.00"
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "spend_gbp": "12260.95",
+            "attributed_net_revenue_gbp": "24848.00"
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "spend_gbp": "19489.54",
+            "attributed_net_revenue_gbp": "17739.00"
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "spend_gbp": "20462.01",
+            "attributed_net_revenue_gbp": "17804.00"
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "spend_gbp": "18301.52",
+            "attributed_net_revenue_gbp": "16700.00"
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "spend_gbp": "20469.56",
+            "attributed_net_revenue_gbp": "18994.50"
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "spend_gbp": "20204.00",
+            "attributed_net_revenue_gbp": "20984.50"
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "spend_gbp": "19700.78",
+            "attributed_net_revenue_gbp": "19949.50"
+          }
+        ],
+        "live_semantic_sql": "SELECT reporting_month, spend_gbp, attributed_net_revenue_gbp FROM MarketingMonthlyOverview ORDER BY reporting_month ASC LIMIT 100",
+        "live_status": "PASS"
+      },
+      {
+        "question": "Which five campaigns generated the highest attributed net revenue overall?",
+        "model": "MarketingCampaignSummary",
+        "expected": [
+          {
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "30385.00"
+          },
+          {
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "29027.00"
+          },
+          {
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "27389.00"
+          },
+          {
+            "campaign_id": "CAM-0007",
+            "campaign_name": "2025 Fashion Campaign 07",
+            "attributed_net_revenue_gbp": "9531.50"
+          },
+          {
+            "campaign_id": "CAM-0015",
+            "campaign_name": "2025 Fashion Campaign 15",
+            "attributed_net_revenue_gbp": "8801.00"
+          }
+        ],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT campaign_id, campaign_name, attributed_net_revenue_gbp FROM MarketingCampaignSummary ORDER BY attributed_net_revenue_gbp DESC, campaign_id LIMIT 5",
+        "actual": [
+          {
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "30385.00"
+          },
+          {
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "29027.00"
+          },
+          {
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "27389.00"
+          },
+          {
+            "campaign_id": "CAM-0007",
+            "campaign_name": "2025 Fashion Campaign 07",
+            "attributed_net_revenue_gbp": "9531.50"
+          },
+          {
+            "campaign_id": "CAM-0015",
+            "campaign_name": "2025 Fashion Campaign 15",
+            "attributed_net_revenue_gbp": "8801.00"
+          }
+        ],
+        "row_count": 5,
+        "live_actual": [
+          {
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "30385.00"
+          },
+          {
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "29027.00"
+          },
+          {
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "27389.00"
+          },
+          {
+            "campaign_id": "CAM-0007",
+            "campaign_name": "2025 Fashion Campaign 07",
+            "attributed_net_revenue_gbp": "9531.50"
+          },
+          {
+            "campaign_id": "CAM-0015",
+            "campaign_name": "2025 Fashion Campaign 15",
+            "attributed_net_revenue_gbp": "8801.00"
+          }
+        ],
+        "live_semantic_sql": "SELECT campaign_id, campaign_name, SUM(attributed_net_revenue_gbp) AS attributed_net_revenue_gbp FROM MarketingCampaignSummary GROUP BY campaign_id, campaign_name ORDER BY attributed_net_revenue_gbp DESC, campaign_id ASC LIMIT 5",
+        "live_status": "PASS"
+      },
+      {
+        "question": "Top three campaigns based on attributed net revenue per month.",
+        "model": "MarketingCampaignMonthly",
+        "expected": [
+          {
+            "reporting_month": "2025-01-01",
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "2729.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-01-01",
+            "campaign_id": "CAM-0020",
+            "campaign_name": "2025 Fashion Campaign 20",
+            "attributed_net_revenue_gbp": "2669.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-01-01",
+            "campaign_id": "CAM-0012",
+            "campaign_name": "2025 Fashion Campaign 12",
+            "attributed_net_revenue_gbp": "2523.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "campaign_id": "CAM-0008",
+            "campaign_name": "2025 Fashion Campaign 08",
+            "attributed_net_revenue_gbp": "3373.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "campaign_id": "CAM-0004",
+            "campaign_name": "2025 Fashion Campaign 04",
+            "attributed_net_revenue_gbp": "2980.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "campaign_id": "CAM-0016",
+            "campaign_name": "2025 Fashion Campaign 16",
+            "attributed_net_revenue_gbp": "2899.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "4341.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "4176.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "campaign_id": "CAM-0020",
+            "campaign_name": "2025 Fashion Campaign 20",
+            "attributed_net_revenue_gbp": "3448.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "3396.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "2642.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "campaign_id": "CAM-0021",
+            "campaign_name": "2025 Fashion Campaign 21",
+            "attributed_net_revenue_gbp": "2444.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "campaign_id": "CAM-0013",
+            "campaign_name": "2025 Fashion Campaign 13",
+            "attributed_net_revenue_gbp": "3328.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "campaign_id": "CAM-0009",
+            "campaign_name": "2025 Fashion Campaign 09",
+            "attributed_net_revenue_gbp": "2497.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "2491.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "3828.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "campaign_id": "CAM-0005",
+            "campaign_name": "2025 Fashion Campaign 05",
+            "attributed_net_revenue_gbp": "3504.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "3343.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "campaign_id": "CAM-0018",
+            "campaign_name": "2025 Fashion Campaign 18",
+            "attributed_net_revenue_gbp": "2802.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "campaign_id": "CAM-0014",
+            "campaign_name": "2025 Fashion Campaign 14",
+            "attributed_net_revenue_gbp": "2382.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "2370.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "campaign_id": "CAM-0022",
+            "campaign_name": "2025 Fashion Campaign 22",
+            "attributed_net_revenue_gbp": "2748.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "campaign_id": "CAM-0010",
+            "campaign_name": "2025 Fashion Campaign 10",
+            "attributed_net_revenue_gbp": "2675.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "2605.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "campaign_id": "CAM-0022",
+            "campaign_name": "2025 Fashion Campaign 22",
+            "attributed_net_revenue_gbp": "3696.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "campaign_id": "CAM-0018",
+            "campaign_name": "2025 Fashion Campaign 18",
+            "attributed_net_revenue_gbp": "2628.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "2500.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "campaign_id": "CAM-0015",
+            "campaign_name": "2025 Fashion Campaign 15",
+            "attributed_net_revenue_gbp": "3623.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "3480.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "campaign_id": "CAM-0007",
+            "campaign_name": "2025 Fashion Campaign 07",
+            "attributed_net_revenue_gbp": "3049.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "campaign_id": "CAM-0011",
+            "campaign_name": "2025 Fashion Campaign 11",
+            "attributed_net_revenue_gbp": "4151.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "3916.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "3597.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "campaign_id": "CAM-0007",
+            "campaign_name": "2025 Fashion Campaign 07",
+            "attributed_net_revenue_gbp": "4089.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "campaign_id": "CAM-0011",
+            "campaign_name": "2025 Fashion Campaign 11",
+            "attributed_net_revenue_gbp": "3012.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "campaign_id": "CAM-0019",
+            "campaign_name": "2025 Fashion Campaign 19",
+            "attributed_net_revenue_gbp": "2788.00",
+            "monthly_rank": 3
+          }
+        ],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT reporting_month, campaign_id, campaign_name, attributed_net_revenue_gbp, ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY attributed_net_revenue_gbp DESC, campaign_id ASC) AS monthly_rank FROM MarketingCampaignMonthly QUALIFY ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY attributed_net_revenue_gbp DESC, campaign_id ASC) <= 3 ORDER BY reporting_month ASC, monthly_rank ASC LIMIT 1200",
+        "actual": [
+          {
+            "reporting_month": "2025-01-01",
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "2729.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-01-01",
+            "campaign_id": "CAM-0020",
+            "campaign_name": "2025 Fashion Campaign 20",
+            "attributed_net_revenue_gbp": "2669.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-01-01",
+            "campaign_id": "CAM-0012",
+            "campaign_name": "2025 Fashion Campaign 12",
+            "attributed_net_revenue_gbp": "2523.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "campaign_id": "CAM-0008",
+            "campaign_name": "2025 Fashion Campaign 08",
+            "attributed_net_revenue_gbp": "3373.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "campaign_id": "CAM-0004",
+            "campaign_name": "2025 Fashion Campaign 04",
+            "attributed_net_revenue_gbp": "2980.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "campaign_id": "CAM-0016",
+            "campaign_name": "2025 Fashion Campaign 16",
+            "attributed_net_revenue_gbp": "2899.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "4341.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "4176.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "campaign_id": "CAM-0020",
+            "campaign_name": "2025 Fashion Campaign 20",
+            "attributed_net_revenue_gbp": "3448.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "3396.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "2642.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "campaign_id": "CAM-0021",
+            "campaign_name": "2025 Fashion Campaign 21",
+            "attributed_net_revenue_gbp": "2444.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "campaign_id": "CAM-0013",
+            "campaign_name": "2025 Fashion Campaign 13",
+            "attributed_net_revenue_gbp": "3328.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "campaign_id": "CAM-0009",
+            "campaign_name": "2025 Fashion Campaign 09",
+            "attributed_net_revenue_gbp": "2497.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "2491.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "3828.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "campaign_id": "CAM-0005",
+            "campaign_name": "2025 Fashion Campaign 05",
+            "attributed_net_revenue_gbp": "3504.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "3343.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "campaign_id": "CAM-0018",
+            "campaign_name": "2025 Fashion Campaign 18",
+            "attributed_net_revenue_gbp": "2802.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "campaign_id": "CAM-0014",
+            "campaign_name": "2025 Fashion Campaign 14",
+            "attributed_net_revenue_gbp": "2382.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "2370.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "campaign_id": "CAM-0022",
+            "campaign_name": "2025 Fashion Campaign 22",
+            "attributed_net_revenue_gbp": "2748.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "campaign_id": "CAM-0010",
+            "campaign_name": "2025 Fashion Campaign 10",
+            "attributed_net_revenue_gbp": "2675.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "2605.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "campaign_id": "CAM-0022",
+            "campaign_name": "2025 Fashion Campaign 22",
+            "attributed_net_revenue_gbp": "3696.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "campaign_id": "CAM-0018",
+            "campaign_name": "2025 Fashion Campaign 18",
+            "attributed_net_revenue_gbp": "2628.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "2500.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "campaign_id": "CAM-0015",
+            "campaign_name": "2025 Fashion Campaign 15",
+            "attributed_net_revenue_gbp": "3623.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "3480.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "campaign_id": "CAM-0007",
+            "campaign_name": "2025 Fashion Campaign 07",
+            "attributed_net_revenue_gbp": "3049.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "campaign_id": "CAM-0011",
+            "campaign_name": "2025 Fashion Campaign 11",
+            "attributed_net_revenue_gbp": "4151.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "3916.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "3597.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "campaign_id": "CAM-0007",
+            "campaign_name": "2025 Fashion Campaign 07",
+            "attributed_net_revenue_gbp": "4089.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "campaign_id": "CAM-0011",
+            "campaign_name": "2025 Fashion Campaign 11",
+            "attributed_net_revenue_gbp": "3012.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "campaign_id": "CAM-0019",
+            "campaign_name": "2025 Fashion Campaign 19",
+            "attributed_net_revenue_gbp": "2788.00",
+            "monthly_rank": 3
+          }
+        ],
+        "row_count": 36,
+        "live_actual": [
+          {
+            "reporting_month": "2025-01-01",
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "2729.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-01-01",
+            "campaign_id": "CAM-0020",
+            "campaign_name": "2025 Fashion Campaign 20",
+            "attributed_net_revenue_gbp": "2669.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-01-01",
+            "campaign_id": "CAM-0012",
+            "campaign_name": "2025 Fashion Campaign 12",
+            "attributed_net_revenue_gbp": "2523.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "campaign_id": "CAM-0008",
+            "campaign_name": "2025 Fashion Campaign 08",
+            "attributed_net_revenue_gbp": "3373.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "campaign_id": "CAM-0004",
+            "campaign_name": "2025 Fashion Campaign 04",
+            "attributed_net_revenue_gbp": "2980.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "campaign_id": "CAM-0016",
+            "campaign_name": "2025 Fashion Campaign 16",
+            "attributed_net_revenue_gbp": "2899.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "4341.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "4176.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "campaign_id": "CAM-0020",
+            "campaign_name": "2025 Fashion Campaign 20",
+            "attributed_net_revenue_gbp": "3448.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "3396.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "2642.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "campaign_id": "CAM-0021",
+            "campaign_name": "2025 Fashion Campaign 21",
+            "attributed_net_revenue_gbp": "2444.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "campaign_id": "CAM-0013",
+            "campaign_name": "2025 Fashion Campaign 13",
+            "attributed_net_revenue_gbp": "3328.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "campaign_id": "CAM-0009",
+            "campaign_name": "2025 Fashion Campaign 09",
+            "attributed_net_revenue_gbp": "2497.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "2491.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "3828.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "campaign_id": "CAM-0005",
+            "campaign_name": "2025 Fashion Campaign 05",
+            "attributed_net_revenue_gbp": "3504.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "3343.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "campaign_id": "CAM-0018",
+            "campaign_name": "2025 Fashion Campaign 18",
+            "attributed_net_revenue_gbp": "2802.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "campaign_id": "CAM-0014",
+            "campaign_name": "2025 Fashion Campaign 14",
+            "attributed_net_revenue_gbp": "2382.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "2370.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "campaign_id": "CAM-0022",
+            "campaign_name": "2025 Fashion Campaign 22",
+            "attributed_net_revenue_gbp": "2748.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "campaign_id": "CAM-0010",
+            "campaign_name": "2025 Fashion Campaign 10",
+            "attributed_net_revenue_gbp": "2675.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "2605.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "campaign_id": "CAM-0022",
+            "campaign_name": "2025 Fashion Campaign 22",
+            "attributed_net_revenue_gbp": "3696.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "campaign_id": "CAM-0018",
+            "campaign_name": "2025 Fashion Campaign 18",
+            "attributed_net_revenue_gbp": "2628.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "2500.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "campaign_id": "CAM-0015",
+            "campaign_name": "2025 Fashion Campaign 15",
+            "attributed_net_revenue_gbp": "3623.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "attributed_net_revenue_gbp": "3480.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "campaign_id": "CAM-0007",
+            "campaign_name": "2025 Fashion Campaign 07",
+            "attributed_net_revenue_gbp": "3049.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "campaign_id": "CAM-0011",
+            "campaign_name": "2025 Fashion Campaign 11",
+            "attributed_net_revenue_gbp": "4151.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "campaign_id": "CAM-0002",
+            "campaign_name": "2025 Fashion Campaign 02",
+            "attributed_net_revenue_gbp": "3916.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "3597.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "campaign_id": "CAM-0007",
+            "campaign_name": "2025 Fashion Campaign 07",
+            "attributed_net_revenue_gbp": "4089.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "campaign_id": "CAM-0011",
+            "campaign_name": "2025 Fashion Campaign 11",
+            "attributed_net_revenue_gbp": "3012.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "campaign_id": "CAM-0019",
+            "campaign_name": "2025 Fashion Campaign 19",
+            "attributed_net_revenue_gbp": "2788.00",
+            "monthly_rank": 3
+          }
+        ],
+        "live_semantic_sql": "SELECT reporting_month, campaign_id, campaign_name, SUM(attributed_net_revenue_gbp) AS attributed_net_revenue_gbp, ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY SUM(attributed_net_revenue_gbp) DESC, campaign_id ASC) AS monthly_rank FROM MarketingCampaignMonthly GROUP BY reporting_month, campaign_id, campaign_name QUALIFY ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY SUM(attributed_net_revenue_gbp) DESC, campaign_id ASC) <= 3 ORDER BY reporting_month ASC, monthly_rank ASC LIMIT 1200",
+        "live_status": "PASS"
+      },
+      {
+        "question": "Top three channels based on attributed net revenue per month.",
+        "model": "MarketingChannelMonthly",
+        "expected": [
+          {
+            "reporting_month": "2025-01-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "5252.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-01-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "5217.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-01-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "4236.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "8104.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "7075.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "3001.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "10027.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "8953.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "3048.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "8073.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "6441.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "5764.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "6550.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "5278.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "4834.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "9752.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "9182.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "5914.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "7113.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "6400.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "4225.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "6802.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "6430.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "4571.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "7060.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "6259.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "3380.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "7238.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "7051.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "4705.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "8874.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "8068.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "4042.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "9451.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "5617.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "4881.00",
+            "monthly_rank": 3
+          }
+        ],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT reporting_month, marketing_channel, attributed_net_revenue_gbp, ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY attributed_net_revenue_gbp DESC, marketing_channel ASC) AS monthly_rank FROM MarketingChannelMonthly QUALIFY ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY attributed_net_revenue_gbp DESC, marketing_channel ASC) <= 3 ORDER BY reporting_month ASC, monthly_rank ASC LIMIT 1200",
+        "actual": [
+          {
+            "reporting_month": "2025-01-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "5252.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-01-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "5217.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-01-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "4236.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "8104.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "7075.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "3001.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "10027.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "8953.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "3048.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "8073.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "6441.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "5764.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "6550.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "5278.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "4834.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "9752.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "9182.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "5914.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "7113.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "6400.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "4225.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "6802.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "6430.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "4571.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "7060.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "6259.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "3380.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "7238.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "7051.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "4705.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "8874.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "8068.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "4042.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "9451.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "5617.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "4881.00",
+            "monthly_rank": 3
+          }
+        ],
+        "row_count": 36,
+        "live_actual": [
+          {
+            "reporting_month": "2025-01-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "5252.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-01-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "5217.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-01-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "4236.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "8104.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "7075.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "3001.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "10027.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "8953.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "3048.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "8073.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "6441.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "5764.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "6550.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "5278.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "4834.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "9752.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "9182.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "5914.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "7113.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "6400.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "4225.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "6802.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "6430.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "4571.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "7060.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "6259.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "3380.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "7238.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "7051.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "4705.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "8874.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "8068.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "4042.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "marketing_channel": "Meta Paid Social",
+            "attributed_net_revenue_gbp": "9451.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "marketing_channel": "Google Paid Search",
+            "attributed_net_revenue_gbp": "5617.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "marketing_channel": "TikTok Paid Social",
+            "attributed_net_revenue_gbp": "4881.00",
+            "monthly_rank": 3
+          }
+        ],
+        "live_semantic_sql": "SELECT reporting_month, marketing_channel, SUM(attributed_net_revenue_gbp) AS attributed_net_revenue_gbp, ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY SUM(attributed_net_revenue_gbp) DESC, marketing_channel ASC) AS monthly_rank FROM MarketingChannelMonthly GROUP BY reporting_month, marketing_channel QUALIFY ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY SUM(attributed_net_revenue_gbp) DESC, marketing_channel ASC) <= 3 ORDER BY reporting_month ASC, monthly_rank ASC LIMIT 1200",
+        "live_status": "PASS"
+      },
+      {
+        "question": "Which channel had the strongest net ROAS per month?",
+        "model": "MarketingChannelMonthly",
+        "expected": [
+          {
+            "reporting_month": "2025-01-01",
+            "marketing_channel": "TikTok Paid Social",
+            "net_roas": 1.7560194440915504,
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "marketing_channel": "Meta Paid Social",
+            "net_roas": 2.370373836969525,
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "marketing_channel": "Meta Paid Social",
+            "net_roas": 2.3339781122749574,
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "marketing_channel": "Google Paid Search",
+            "net_roas": 2.4196521431590052,
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "marketing_channel": "Google Paid Search",
+            "net_roas": 1.5797176050900514,
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "marketing_channel": "Google Paid Search",
+            "net_roas": 3.0646332150679894,
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "marketing_channel": "TikTok Paid Social",
+            "net_roas": 1.131634542573703,
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "marketing_channel": "TikTok Paid Social",
+            "net_roas": 1.0381217752923628,
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "marketing_channel": "TikTok Paid Social",
+            "net_roas": 1.2151988929736874,
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "marketing_channel": "TikTok Paid Social",
+            "net_roas": 1.2920039627642959,
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "marketing_channel": "Google Paid Search",
+            "net_roas": 1.2109750240153698,
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "marketing_channel": "Meta Paid Social",
+            "net_roas": 1.1792935468897396,
+            "monthly_rank": 1
+          }
+        ],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT reporting_month, marketing_channel, net_roas, ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY net_roas DESC, marketing_channel ASC) AS monthly_rank FROM MarketingChannelMonthly QUALIFY ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY net_roas DESC, marketing_channel ASC) <= 1 ORDER BY reporting_month ASC, monthly_rank ASC LIMIT 1200",
+        "actual": [
+          {
+            "reporting_month": "2025-01-01",
+            "marketing_channel": "TikTok Paid Social",
+            "net_roas": "1.7560194441",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "marketing_channel": "Meta Paid Social",
+            "net_roas": "2.370373837",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "marketing_channel": "Meta Paid Social",
+            "net_roas": "2.3339781123",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "marketing_channel": "Google Paid Search",
+            "net_roas": "2.4196521432",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "marketing_channel": "Google Paid Search",
+            "net_roas": "1.5797176051",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "marketing_channel": "Google Paid Search",
+            "net_roas": "3.0646332151",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "marketing_channel": "TikTok Paid Social",
+            "net_roas": "1.1316345426",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "marketing_channel": "TikTok Paid Social",
+            "net_roas": "1.0381217753",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "marketing_channel": "TikTok Paid Social",
+            "net_roas": "1.215198893",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "marketing_channel": "TikTok Paid Social",
+            "net_roas": "1.2920039628",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "marketing_channel": "Google Paid Search",
+            "net_roas": "1.210975024",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "marketing_channel": "Meta Paid Social",
+            "net_roas": "1.1792935469",
+            "monthly_rank": 1
+          }
+        ],
+        "row_count": 12,
+        "live_actual": [
+          {
+            "reporting_month": "2025-01-01",
+            "marketing_channel": "TikTok Paid Social",
+            "net_roas": "1.7560194441",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-02-01",
+            "marketing_channel": "Meta Paid Social",
+            "net_roas": "2.370373837",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "marketing_channel": "Meta Paid Social",
+            "net_roas": "2.3339781123",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "marketing_channel": "Google Paid Search",
+            "net_roas": "2.4196521432",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "marketing_channel": "Google Paid Search",
+            "net_roas": "1.5797176051",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-06-01",
+            "marketing_channel": "Google Paid Search",
+            "net_roas": "3.0646332151",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-07-01",
+            "marketing_channel": "TikTok Paid Social",
+            "net_roas": "1.1316345426",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-08-01",
+            "marketing_channel": "TikTok Paid Social",
+            "net_roas": "1.0381217753",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-09-01",
+            "marketing_channel": "TikTok Paid Social",
+            "net_roas": "1.215198893",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-10-01",
+            "marketing_channel": "TikTok Paid Social",
+            "net_roas": "1.2920039628",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-11-01",
+            "marketing_channel": "Google Paid Search",
+            "net_roas": "1.210975024",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-12-01",
+            "marketing_channel": "Meta Paid Social",
+            "net_roas": "1.1792935469",
+            "monthly_rank": 1
+          }
+        ],
+        "live_semantic_sql": "SELECT reporting_month, marketing_channel, attributed_net_revenue_gbp / NULLIF(spend_gbp, 0) AS net_roas, ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY attributed_net_revenue_gbp / NULLIF(spend_gbp, 0) DESC, marketing_channel ASC) AS monthly_rank FROM MarketingChannelMonthly WHERE cost_coverage = 'platform_media_only' QUALIFY ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY attributed_net_revenue_gbp / NULLIF(spend_gbp, 0) DESC, marketing_channel ASC) <= 1 ORDER BY reporting_month ASC, monthly_rank ASC LIMIT 1200",
+        "live_status": "PASS"
+      },
+      {
+        "question": "Which campaigns spent money without producing eligible conversions?",
+        "model": "MarketingCampaignSummary",
+        "expected": [
+          {
+            "campaign_id": "CAM-0023",
+            "campaign_name": "2025 Fashion Campaign 23",
+            "spend_gbp": "8665.44",
+            "attributed_orders": 0
+          },
+          {
+            "campaign_id": "CAM-0024",
+            "campaign_name": "2025 Fashion Campaign 24",
+            "spend_gbp": "3281.20",
+            "attributed_orders": 0
+          }
+        ],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT campaign_id, campaign_name, spend_gbp, attributed_orders FROM MarketingCampaignSummary WHERE spend_gbp > 0 AND attributed_orders = 0 ORDER BY campaign_id LIMIT 100",
+        "actual": [
+          {
+            "campaign_id": "CAM-0023",
+            "campaign_name": "2025 Fashion Campaign 23",
+            "spend_gbp": "8665.44",
+            "attributed_orders": "0"
+          },
+          {
+            "campaign_id": "CAM-0024",
+            "campaign_name": "2025 Fashion Campaign 24",
+            "spend_gbp": "3281.20",
+            "attributed_orders": "0"
+          }
+        ],
+        "row_count": 2,
+        "live_actual": [
+          {
+            "campaign_id": "CAM-0023",
+            "campaign_name": "2025 Fashion Campaign 23",
+            "spend_gbp": "8665.44",
+            "attributed_orders": "0"
+          },
+          {
+            "campaign_id": "CAM-0024",
+            "campaign_name": "2025 Fashion Campaign 24",
+            "spend_gbp": "3281.20",
+            "attributed_orders": "0"
+          }
+        ],
+        "live_semantic_sql": "SELECT campaign_id, campaign_name, spend_gbp, attributed_orders FROM MarketingCampaignSummary WHERE flag_spend_without_eligible_attributed_orders = TRUE ORDER BY campaign_id ASC LIMIT 100",
+        "live_status": "PASS"
+      },
+      {
+        "question": "Which campaigns exceeded their budgets?",
+        "model": "MarketingCampaignSummary",
+        "expected": [
+          {
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "spend_gbp": "11248.16",
+            "lifetime_budget_gbp": "10043.00"
+          },
+          {
+            "campaign_id": "CAM-0007",
+            "campaign_name": "2025 Fashion Campaign 07",
+            "spend_gbp": "12249.44",
+            "lifetime_budget_gbp": "10937.00"
+          },
+          {
+            "campaign_id": "CAM-0011",
+            "campaign_name": "2025 Fashion Campaign 11",
+            "spend_gbp": "7249.76",
+            "lifetime_budget_gbp": "6473.00"
+          },
+          {
+            "campaign_id": "CAM-0015",
+            "campaign_name": "2025 Fashion Campaign 15",
+            "spend_gbp": "13687.52",
+            "lifetime_budget_gbp": "12221.00"
+          },
+          {
+            "campaign_id": "CAM-0019",
+            "campaign_name": "2025 Fashion Campaign 19",
+            "spend_gbp": "9774.24",
+            "lifetime_budget_gbp": "8727.00"
+          },
+          {
+            "campaign_id": "CAM-0023",
+            "campaign_name": "2025 Fashion Campaign 23",
+            "spend_gbp": "8665.44",
+            "lifetime_budget_gbp": "7737.00"
+          }
+        ],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT campaign_id, campaign_name, spend_gbp, lifetime_budget_gbp FROM MarketingCampaignSummary WHERE spend_gbp > lifetime_budget_gbp ORDER BY campaign_id LIMIT 100",
+        "actual": [
+          {
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "spend_gbp": "11248.16",
+            "lifetime_budget_gbp": "10043.00"
+          },
+          {
+            "campaign_id": "CAM-0007",
+            "campaign_name": "2025 Fashion Campaign 07",
+            "spend_gbp": "12249.44",
+            "lifetime_budget_gbp": "10937.00"
+          },
+          {
+            "campaign_id": "CAM-0011",
+            "campaign_name": "2025 Fashion Campaign 11",
+            "spend_gbp": "7249.76",
+            "lifetime_budget_gbp": "6473.00"
+          },
+          {
+            "campaign_id": "CAM-0015",
+            "campaign_name": "2025 Fashion Campaign 15",
+            "spend_gbp": "13687.52",
+            "lifetime_budget_gbp": "12221.00"
+          },
+          {
+            "campaign_id": "CAM-0019",
+            "campaign_name": "2025 Fashion Campaign 19",
+            "spend_gbp": "9774.24",
+            "lifetime_budget_gbp": "8727.00"
+          },
+          {
+            "campaign_id": "CAM-0023",
+            "campaign_name": "2025 Fashion Campaign 23",
+            "spend_gbp": "8665.44",
+            "lifetime_budget_gbp": "7737.00"
+          }
+        ],
+        "row_count": 6,
+        "live_actual": [
+          {
+            "campaign_id": "CAM-0003",
+            "campaign_name": "2025 Fashion Campaign 03",
+            "spend_gbp": "11248.16",
+            "lifetime_budget_gbp": "10043.00"
+          },
+          {
+            "campaign_id": "CAM-0007",
+            "campaign_name": "2025 Fashion Campaign 07",
+            "spend_gbp": "12249.44",
+            "lifetime_budget_gbp": "10937.00"
+          },
+          {
+            "campaign_id": "CAM-0011",
+            "campaign_name": "2025 Fashion Campaign 11",
+            "spend_gbp": "7249.76",
+            "lifetime_budget_gbp": "6473.00"
+          },
+          {
+            "campaign_id": "CAM-0015",
+            "campaign_name": "2025 Fashion Campaign 15",
+            "spend_gbp": "13687.52",
+            "lifetime_budget_gbp": "12221.00"
+          },
+          {
+            "campaign_id": "CAM-0019",
+            "campaign_name": "2025 Fashion Campaign 19",
+            "spend_gbp": "9774.24",
+            "lifetime_budget_gbp": "8727.00"
+          },
+          {
+            "campaign_id": "CAM-0023",
+            "campaign_name": "2025 Fashion Campaign 23",
+            "spend_gbp": "8665.44",
+            "lifetime_budget_gbp": "7737.00"
+          }
+        ],
+        "live_semantic_sql": "SELECT campaign_id, campaign_name, spend_gbp, lifetime_budget_gbp FROM MarketingCampaignSummary WHERE flag_budget_overspend = TRUE ORDER BY campaign_id ASC LIMIT 100",
+        "live_status": "PASS"
+      },
+      {
+        "question": "What percentage of eligible outcomes was unattributed?",
+        "model": "MarketingMonthlyOverview",
+        "expected": [
+          {
+            "unattributed_pct": 35.412926391382406
+          }
+        ],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT 100.0 * SUM(unattributed_eligible_orders) / NULLIF(SUM(eligible_conversions), 0) AS unattributed_pct FROM MarketingMonthlyOverview ORDER BY unattributed_pct LIMIT 100",
+        "actual": [
+          {
+            "unattributed_pct": "35.4129263914"
+          }
+        ],
+        "row_count": 1,
+        "live_actual": [
+          {
+            "unattributed_pct": "35.4129263914"
+          }
+        ],
+        "live_semantic_sql": "SELECT 100.0 * SUM(unattributed_eligible_orders) / NULLIF(SUM(eligible_conversions), 0) AS unattributed_pct FROM MarketingMonthlyOverview ORDER BY unattributed_pct ASC LIMIT 100",
+        "live_status": "PASS"
+      },
+      {
+        "question": "How many first-observed acquisitions came from each channel?",
+        "model": "MarketingChannelMonthly",
+        "expected": [
+          {
+            "marketing_channel": "Direct",
+            "first_observed_acquisitions": 0
+          },
+          {
+            "marketing_channel": "Google Paid Search",
+            "first_observed_acquisitions": 254
+          },
+          {
+            "marketing_channel": "Meta Paid Social",
+            "first_observed_acquisitions": 274
+          },
+          {
+            "marketing_channel": "Organic",
+            "first_observed_acquisitions": 0
+          },
+          {
+            "marketing_channel": "TikTok Paid Social",
+            "first_observed_acquisitions": 231
+          },
+          {
+            "marketing_channel": "Unattributed",
+            "first_observed_acquisitions": 415
+          }
+        ],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT marketing_channel, SUM(first_observed_acquisitions) AS first_observed_acquisitions FROM MarketingChannelMonthly GROUP BY marketing_channel ORDER BY marketing_channel LIMIT 100",
+        "actual": [
+          {
+            "marketing_channel": "Direct",
+            "first_observed_acquisitions": "0"
+          },
+          {
+            "marketing_channel": "Google Paid Search",
+            "first_observed_acquisitions": "254"
+          },
+          {
+            "marketing_channel": "Meta Paid Social",
+            "first_observed_acquisitions": "274"
+          },
+          {
+            "marketing_channel": "Organic",
+            "first_observed_acquisitions": "0"
+          },
+          {
+            "marketing_channel": "TikTok Paid Social",
+            "first_observed_acquisitions": "231"
+          },
+          {
+            "marketing_channel": "Unattributed",
+            "first_observed_acquisitions": "415"
+          }
+        ],
+        "row_count": 6,
+        "live_actual": [
+          {
+            "marketing_channel": "Direct",
+            "first_observed_acquisitions": "0"
+          },
+          {
+            "marketing_channel": "Google Paid Search",
+            "first_observed_acquisitions": "254"
+          },
+          {
+            "marketing_channel": "Meta Paid Social",
+            "first_observed_acquisitions": "274"
+          },
+          {
+            "marketing_channel": "Organic",
+            "first_observed_acquisitions": "0"
+          },
+          {
+            "marketing_channel": "TikTok Paid Social",
+            "first_observed_acquisitions": "231"
+          },
+          {
+            "marketing_channel": "Unattributed",
+            "first_observed_acquisitions": "415"
+          }
+        ],
+        "live_semantic_sql": "SELECT marketing_channel, SUM(first_observed_acquisitions) AS first_observed_acquisitions FROM MarketingChannelMonthly GROUP BY marketing_channel ORDER BY marketing_channel ASC LIMIT 100",
+        "live_status": "PASS"
+      },
+      {
+        "question": "Channel comparison and zero-denominator ROAS",
+        "model": "MarketingChannelMonthly",
+        "expected": [
+          {
+            "marketing_channel": "Direct",
+            "spend_gbp": "0.00",
+            "attributed_net_revenue_gbp": "0.00",
+            "net_roas": null
+          },
+          {
+            "marketing_channel": "Google Paid Search",
+            "spend_gbp": "59634.58",
+            "attributed_net_revenue_gbp": "75990.50",
+            "net_roas": 1.2742690566446515
+          },
+          {
+            "marketing_channel": "Meta Paid Social",
+            "spend_gbp": "69569.56",
+            "attributed_net_revenue_gbp": "82643.50",
+            "net_roas": 1.1879261562096985
+          },
+          {
+            "marketing_channel": "Organic",
+            "spend_gbp": "0.00",
+            "attributed_net_revenue_gbp": "0.00",
+            "net_roas": null
+          },
+          {
+            "marketing_channel": "TikTok Paid Social",
+            "spend_gbp": "59994.40",
+            "attributed_net_revenue_gbp": "70242.00",
+            "net_roas": 1.1708092755323831
+          },
+          {
+            "marketing_channel": "Unattributed",
+            "spend_gbp": "0.00",
+            "attributed_net_revenue_gbp": "0.00",
+            "net_roas": null
+          }
+        ],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT marketing_channel, SUM(spend_gbp) AS spend_gbp, SUM(attributed_net_revenue_gbp) AS attributed_net_revenue_gbp, SUM(attributed_net_revenue_gbp) / NULLIF(SUM(spend_gbp), 0) AS net_roas FROM MarketingChannelMonthly GROUP BY marketing_channel ORDER BY marketing_channel LIMIT 100",
+        "actual": [
+          {
+            "marketing_channel": "Direct",
+            "spend_gbp": "0.00",
+            "attributed_net_revenue_gbp": "0.00",
+            "net_roas": null
+          },
+          {
+            "marketing_channel": "Google Paid Search",
+            "spend_gbp": "59634.58",
+            "attributed_net_revenue_gbp": "75990.50",
+            "net_roas": "1.2742690566"
+          },
+          {
+            "marketing_channel": "Meta Paid Social",
+            "spend_gbp": "69569.56",
+            "attributed_net_revenue_gbp": "82643.50",
+            "net_roas": "1.1879261562"
+          },
+          {
+            "marketing_channel": "Organic",
+            "spend_gbp": "0.00",
+            "attributed_net_revenue_gbp": "0.00",
+            "net_roas": null
+          },
+          {
+            "marketing_channel": "TikTok Paid Social",
+            "spend_gbp": "59994.40",
+            "attributed_net_revenue_gbp": "70242.00",
+            "net_roas": "1.1708092755"
+          },
+          {
+            "marketing_channel": "Unattributed",
+            "spend_gbp": "0.00",
+            "attributed_net_revenue_gbp": "0.00",
+            "net_roas": null
+          }
+        ],
+        "row_count": 6
+      },
+      {
+        "question": "Selected reporting months and channel before ranking",
+        "model": "MarketingCampaignMonthly",
+        "expected": [
+          {
+            "reporting_month": "2025-03-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "4176.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "campaign_id": "CAM-0016",
+            "campaign_name": "2025 Fashion Campaign 16",
+            "attributed_net_revenue_gbp": "2656.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "campaign_id": "CAM-0004",
+            "campaign_name": "2025 Fashion Campaign 04",
+            "attributed_net_revenue_gbp": "2121.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "2392.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "campaign_id": "CAM-0013",
+            "campaign_name": "2025 Fashion Campaign 13",
+            "attributed_net_revenue_gbp": "1884.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "campaign_id": "CAM-0016",
+            "campaign_name": "2025 Fashion Campaign 16",
+            "attributed_net_revenue_gbp": "992.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "campaign_id": "CAM-0013",
+            "campaign_name": "2025 Fashion Campaign 13",
+            "attributed_net_revenue_gbp": "3328.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "1506.00",
+            "monthly_rank": 2
+          }
+        ],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT reporting_month, campaign_id, campaign_name, attributed_net_revenue_gbp, ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY attributed_net_revenue_gbp DESC, campaign_id ASC) AS monthly_rank FROM MarketingCampaignMonthly WHERE reporting_month >= CAST('2025-03-01' AS DATE) AND reporting_month <= CAST('2025-05-01' AS DATE) AND marketing_channel = 'Meta Paid Social' QUALIFY ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY attributed_net_revenue_gbp DESC, campaign_id ASC) <= 3 ORDER BY reporting_month ASC, monthly_rank ASC LIMIT 1200",
+        "actual": [
+          {
+            "reporting_month": "2025-03-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "4176.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "campaign_id": "CAM-0016",
+            "campaign_name": "2025 Fashion Campaign 16",
+            "attributed_net_revenue_gbp": "2656.00",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-03-01",
+            "campaign_id": "CAM-0004",
+            "campaign_name": "2025 Fashion Campaign 04",
+            "attributed_net_revenue_gbp": "2121.00",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "2392.50",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "campaign_id": "CAM-0013",
+            "campaign_name": "2025 Fashion Campaign 13",
+            "attributed_net_revenue_gbp": "1884.50",
+            "monthly_rank": 2
+          },
+          {
+            "reporting_month": "2025-04-01",
+            "campaign_id": "CAM-0016",
+            "campaign_name": "2025 Fashion Campaign 16",
+            "attributed_net_revenue_gbp": "992.50",
+            "monthly_rank": 3
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "campaign_id": "CAM-0013",
+            "campaign_name": "2025 Fashion Campaign 13",
+            "attributed_net_revenue_gbp": "3328.00",
+            "monthly_rank": 1
+          },
+          {
+            "reporting_month": "2025-05-01",
+            "campaign_id": "CAM-0001",
+            "campaign_name": "2025 Fashion Campaign 01",
+            "attributed_net_revenue_gbp": "1506.00",
+            "monthly_rank": 2
+          }
+        ],
+        "row_count": 8
+      },
+      {
+        "question": "Empty aggregate retains NULL",
+        "model": "MarketingMonthlyOverview",
+        "expected": [
+          {
+            "spend_gbp": null
+          }
+        ],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT SUM(spend_gbp) AS spend_gbp FROM MarketingMonthlyOverview WHERE reporting_month < CAST('2025-01-01' AS DATE) ORDER BY spend_gbp LIMIT 100",
+        "actual": [
+          {
+            "spend_gbp": null
+          }
+        ],
+        "row_count": 1
+      },
+      {
+        "question": "Empty result retains no invented values",
+        "model": "MarketingCampaignMonthly",
+        "expected": [],
+        "status": "PASS",
+        "semantic_status": "PASS",
+        "semantic_sql": "SELECT campaign_id FROM MarketingCampaignMonthly WHERE spend_gbp < -999999 ORDER BY campaign_id LIMIT 100",
+        "actual": [],
+        "row_count": 0
+      }
+    ],
+    "rejections": [
+      {
+        "case": "unsupported",
+        "expected_http": 400,
+        "actual_http": 400,
+        "status": "PASS"
+      },
+      {
+        "case": "empty question",
+        "expected_http": 400,
+        "actual_http": 400,
+        "status": "PASS"
+      },
+      {
+        "case": "malformed JSON",
+        "expected_http": 400,
+        "actual_http": 400,
+        "status": "PASS"
+      }
+    ]
+  },
+  "application_commands": [
+    {
+      "command": ".venv/Scripts/python.exe -B scripts/validate_raw_data.py",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/Scripts/python.exe -B scripts/governed_snapshot.py",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/Scripts/python.exe -B scripts/validate_dashboard.py",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/Scripts/python.exe -B scripts/test_marketing_ai.py",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/Scripts/python.exe -B scripts/test_governed_snapshot.py",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/Scripts/python.exe -B scripts/test_monthly_top_n.py --wren",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/Scripts/python.exe -B scripts/test_campaign_monthly.py",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/Scripts/python.exe -B scripts/acceptance_matrix.py",
+      "exit_code": 0
+    },
+    {
+      "command": "node --test scripts/test_answer.mjs",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/Scripts/python.exe -m pip check",
+      "exit_code": 0
+    }
+  ],
+  "browser_commands": [
+    {
+      "command": ".venv/Scripts/python.exe -B scripts/test_dashboard_browser.py",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/Scripts/python.exe -B scripts/test_marketing_ai_browser.py",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/Scripts/python.exe -B scripts/test_campaign_monthly_browser.py",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/Scripts/python.exe -B scripts/test_public_browser.py",
+      "exit_code": 0
+    }
+  ],
+  "live_exits": {
+    "matrix_exit": 0,
+    "campaign_exit": 0
+  },
+  "acquisition_current_service": {
+    "question": "How many first-observed acquisitions came from each channel?",
+    "model": "MarketingChannelMonthly",
+    "expected": [
+      {
+        "marketing_channel": "Direct",
+        "first_observed_acquisitions": 0
+      },
+      {
+        "marketing_channel": "Google Paid Search",
+        "first_observed_acquisitions": 254
+      },
+      {
+        "marketing_channel": "Meta Paid Social",
+        "first_observed_acquisitions": 274
+      },
+      {
+        "marketing_channel": "Organic",
+        "first_observed_acquisitions": 0
+      },
+      {
+        "marketing_channel": "TikTok Paid Social",
+        "first_observed_acquisitions": 231
+      },
+      {
+        "marketing_channel": "Unattributed",
+        "first_observed_acquisitions": 415
+      }
+    ],
+    "status": "PASS",
+    "semantic_status": "PASS",
+    "semantic_sql": "SELECT marketing_channel, SUM(first_observed_acquisitions) AS first_observed_acquisitions FROM MarketingChannelMonthly GROUP BY marketing_channel ORDER BY marketing_channel LIMIT 100",
+    "actual": [
+      {
+        "marketing_channel": "Direct",
+        "first_observed_acquisitions": "0"
+      },
+      {
+        "marketing_channel": "Google Paid Search",
+        "first_observed_acquisitions": "254"
+      },
+      {
+        "marketing_channel": "Meta Paid Social",
+        "first_observed_acquisitions": "274"
+      },
+      {
+        "marketing_channel": "Organic",
+        "first_observed_acquisitions": "0"
+      },
+      {
+        "marketing_channel": "TikTok Paid Social",
+        "first_observed_acquisitions": "231"
+      },
+      {
+        "marketing_channel": "Unattributed",
+        "first_observed_acquisitions": "415"
+      }
+    ],
+    "row_count": 6,
+    "live_actual": [
+      {
+        "marketing_channel": "Direct",
+        "first_observed_acquisitions": "0"
+      },
+      {
+        "marketing_channel": "Google Paid Search",
+        "first_observed_acquisitions": "254"
+      },
+      {
+        "marketing_channel": "Meta Paid Social",
+        "first_observed_acquisitions": "274"
+      },
+      {
+        "marketing_channel": "Organic",
+        "first_observed_acquisitions": "0"
+      },
+      {
+        "marketing_channel": "TikTok Paid Social",
+        "first_observed_acquisitions": "231"
+      },
+      {
+        "marketing_channel": "Unattributed",
+        "first_observed_acquisitions": "415"
+      }
+    ],
+    "live_semantic_sql": "SELECT marketing_channel, SUM(first_observed_acquisitions) AS first_observed_acquisitions FROM MarketingChannelMonthly GROUP BY marketing_channel ORDER BY marketing_channel ASC LIMIT 100",
+    "live_status": "PASS"
+  },
+  "hygiene": {
+    "readme_utf8": true,
+    "internal_links": 12,
+    "broken_links": [],
+    "h2_count": 13,
+    "single_h1": true,
+    "balanced_code_fences": true,
+    "table_column_counts_consistent": true,
+    "forbidden_readme_terms": [],
+    "tracked_forbidden_artifacts": [],
+    "tracked_personal_paths": [],
+    "tracked_secret_patterns": [],
+    "encoding_corruption": [],
+    "public_urls": {
+      "https://fuddie.github.io/fab-ent-marketing-intelligence/": 200,
+      "https://github.com/Fuddie/fab-ent-marketing-intelligence": 200
+    }
+  }
+}

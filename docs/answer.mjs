@@ -7,6 +7,7 @@ export function label(field) {
  return text.charAt(0).toUpperCase()+text.slice(1);
 }
 export function unit(field) {
+ if (field==='monthly_rank') return 'integer';
  if (/roas/i.test(field)) return 'multiple';
  if (/pct|percent|ctr|rate|utilisation|coverage/i.test(field)) return 'percent';
  if (/gbp|spend|revenue|budget|cac|cpc|cpm/i.test(field)) return 'currency';
@@ -32,13 +33,14 @@ export function renderAnswer(a) {
  const rows=a.rows||[], headers=Object.keys(rows[0]||{});
  const columns=headers.map(key=>({key,label:label(key),unit:a.columns?.find(c=>c.key===key)?.unit||unit(key)}));
  const scalar=rows.length===1 && headers.length===1;
- const scope=a.filters?'For the selected dashboard scope.':'Across the scope defined by your question.';
+ const saved=a.source==='saved';
+ const scope=saved?'Full fixed 2025 snapshot; dashboard filters do not apply.':a.filters?'For the selected dashboard scope.':'Across the scope defined by your question.';
  const names=items=>new Intl.ListFormat('en-GB',{style:'long',type:'conjunction'}).format(items.map(c=>c.label.replace(/ GBP$/, '')));
  const dimensions=columns.filter(c=>['text','date'].includes(c.unit));
  const measures=columns.filter(c=>!['text','date'].includes(c.unit));
  const summary=rows.length?`${names(measures.length?measures:columns)}${dimensions.length && measures.length?' by '+names(dimensions).toLowerCase():''} for the requested scope.`:'No matching data in this scope.';
  const content=scalar?`<article class="answer-kpi"><h3>${esc(columns[0].label.replace(/ GBP$/, ''))}</h3><div class="answer-value">${esc(format(rows[0][headers[0]],columns[0].unit))}</div><p>${rows[0][headers[0]]==null?'This metric is unavailable in the requested scope.':scope}</p></article>`:
  `<p class="answer-summary">${esc(summary)}</p>${rows.length?`<div class="table-wrap answer-table" tabindex="0" role="region" aria-label="Marketing answer results"><table><caption>Marketing performance</caption><thead><tr>${columns.map(c=>`<th scope="col">${esc(c.label)}</th>`).join('')}</tr></thead><tbody>${rows.map(row=>`<tr>${columns.map(c=>`<td>${esc(format(row[c.key],c.unit))}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`:''}`;
- const details=[['Wren model',a.model],['Codex model',a.codex_model],['Reasoning',a.reasoning],['Duration',`${a.duration_ms} ms`],['Dashboard filters',a.filters?JSON.stringify(a.filters):'Not applied. Complete snapshot unless the question explicitly filters it.'],['Validation',a.validation],['Assumptions',(a.assumptions||[]).join(' ')||'None supplied.'],['Ordering',a.ordering],['Row count',`${rows.length} returned · maximum 100 rows`]];
- return `<div class="answer-heading"><span class="answer-verified">✓ Verified by Wren</span><span class="answer-source">${a.cached?'Cached':'New'} answer</span></div>${content}<details class="answer-technical"><summary>Technical details</summary><dl>${details.map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl><h4>Generated semantic SQL</h4><pre>${esc(a.semantic_sql)}</pre>${a.verification_sql?`<h4>Independent verification SQL</h4><pre>${esc(a.verification_sql)}</pre>`:''}</details>`;
+ const details=[['Wren model',a.model],['Codex model',a.codex_model],['Reasoning',a.reasoning],['Duration',`${a.duration_ms} ms`],['Dashboard filters',a.filters?JSON.stringify(a.filters):'Not applied. Complete snapshot unless the question explicitly filters it.'],['Validation',a.validation],['Assumptions',(a.assumptions||[]).join(' ')||'None supplied.'],['Ordering',a.ordering],['Row count',`${rows.length} returned · ordinary queries: maximum 100 rows; monthly partitioned rankings: maximum 1,200 rows`]];
+ return `<div class="answer-heading"><span class="answer-verified">✓ Verified by Wren</span><span class="answer-source">${saved?'Saved verified example':a.cached?'Cached answer':'New answer'}</span></div>${content}<details class="answer-technical"><summary>Technical details</summary><dl>${details.filter(([k,v])=>v!==undefined && (!saved || !['Codex model','Reasoning','Duration','Dashboard filters','Ordering'].includes(k))).map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl><h4>Generated semantic SQL</h4><pre>${esc(a.semantic_sql)}</pre>${a.verification_sql?`<h4>Independent verification SQL</h4><pre>${esc(a.verification_sql)}</pre>`:''}</details>`;
 }

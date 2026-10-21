@@ -345,220 +345,256 @@
         "reporting_month": "2025-01-01",
         "campaign_id": "CAM-0003",
         "campaign_name": "2025 Fashion Campaign 03",
-        "attributed_net_revenue_gbp": "2729.50"
+        "attributed_net_revenue_gbp": "2729.50",
+        "monthly_rank": 1
       },
       {
         "reporting_month": "2025-01-01",
         "campaign_id": "CAM-0020",
         "campaign_name": "2025 Fashion Campaign 20",
-        "attributed_net_revenue_gbp": "2669.00"
+        "attributed_net_revenue_gbp": "2669.00",
+        "monthly_rank": 2
       },
       {
         "reporting_month": "2025-01-01",
         "campaign_id": "CAM-0012",
         "campaign_name": "2025 Fashion Campaign 12",
-        "attributed_net_revenue_gbp": "2523.00"
+        "attributed_net_revenue_gbp": "2523.00",
+        "monthly_rank": 3
       },
       {
         "reporting_month": "2025-02-01",
         "campaign_id": "CAM-0008",
         "campaign_name": "2025 Fashion Campaign 08",
-        "attributed_net_revenue_gbp": "3373.50"
+        "attributed_net_revenue_gbp": "3373.50",
+        "monthly_rank": 1
       },
       {
         "reporting_month": "2025-02-01",
         "campaign_id": "CAM-0004",
         "campaign_name": "2025 Fashion Campaign 04",
-        "attributed_net_revenue_gbp": "2980.50"
+        "attributed_net_revenue_gbp": "2980.50",
+        "monthly_rank": 2
       },
       {
         "reporting_month": "2025-02-01",
         "campaign_id": "CAM-0016",
         "campaign_name": "2025 Fashion Campaign 16",
-        "attributed_net_revenue_gbp": "2899.00"
+        "attributed_net_revenue_gbp": "2899.00",
+        "monthly_rank": 3
       },
       {
         "reporting_month": "2025-03-01",
         "campaign_id": "CAM-0002",
         "campaign_name": "2025 Fashion Campaign 02",
-        "attributed_net_revenue_gbp": "4341.00"
+        "attributed_net_revenue_gbp": "4341.00",
+        "monthly_rank": 1
       },
       {
         "reporting_month": "2025-03-01",
         "campaign_id": "CAM-0001",
         "campaign_name": "2025 Fashion Campaign 01",
-        "attributed_net_revenue_gbp": "4176.00"
+        "attributed_net_revenue_gbp": "4176.00",
+        "monthly_rank": 2
       },
       {
         "reporting_month": "2025-03-01",
         "campaign_id": "CAM-0020",
         "campaign_name": "2025 Fashion Campaign 20",
-        "attributed_net_revenue_gbp": "3448.00"
+        "attributed_net_revenue_gbp": "3448.00",
+        "monthly_rank": 3
       },
       {
         "reporting_month": "2025-04-01",
         "campaign_id": "CAM-0002",
         "campaign_name": "2025 Fashion Campaign 02",
-        "attributed_net_revenue_gbp": "3396.50"
+        "attributed_net_revenue_gbp": "3396.50",
+        "monthly_rank": 1
       },
       {
         "reporting_month": "2025-04-01",
         "campaign_id": "CAM-0003",
         "campaign_name": "2025 Fashion Campaign 03",
-        "attributed_net_revenue_gbp": "2642.50"
+        "attributed_net_revenue_gbp": "2642.50",
+        "monthly_rank": 2
       },
       {
         "reporting_month": "2025-04-01",
         "campaign_id": "CAM-0021",
         "campaign_name": "2025 Fashion Campaign 21",
-        "attributed_net_revenue_gbp": "2444.00"
+        "attributed_net_revenue_gbp": "2444.00",
+        "monthly_rank": 3
       },
       {
         "reporting_month": "2025-05-01",
         "campaign_id": "CAM-0013",
         "campaign_name": "2025 Fashion Campaign 13",
-        "attributed_net_revenue_gbp": "3328.00"
+        "attributed_net_revenue_gbp": "3328.00",
+        "monthly_rank": 1
       },
       {
         "reporting_month": "2025-05-01",
         "campaign_id": "CAM-0009",
         "campaign_name": "2025 Fashion Campaign 09",
-        "attributed_net_revenue_gbp": "2497.00"
+        "attributed_net_revenue_gbp": "2497.00",
+        "monthly_rank": 2
       },
       {
         "reporting_month": "2025-05-01",
         "campaign_id": "CAM-0003",
         "campaign_name": "2025 Fashion Campaign 03",
-        "attributed_net_revenue_gbp": "2491.00"
+        "attributed_net_revenue_gbp": "2491.00",
+        "monthly_rank": 3
       },
       {
         "reporting_month": "2025-06-01",
         "campaign_id": "CAM-0001",
         "campaign_name": "2025 Fashion Campaign 01",
-        "attributed_net_revenue_gbp": "3828.50"
+        "attributed_net_revenue_gbp": "3828.50",
+        "monthly_rank": 1
       },
       {
         "reporting_month": "2025-06-01",
         "campaign_id": "CAM-0005",
         "campaign_name": "2025 Fashion Campaign 05",
-        "attributed_net_revenue_gbp": "3504.00"
+        "attributed_net_revenue_gbp": "3504.00",
+        "monthly_rank": 2
       },
       {
         "reporting_month": "2025-06-01",
         "campaign_id": "CAM-0002",
         "campaign_name": "2025 Fashion Campaign 02",
-        "attributed_net_revenue_gbp": "3343.50"
+        "attributed_net_revenue_gbp": "3343.50",
+        "monthly_rank": 3
       },
       {
         "reporting_month": "2025-07-01",
         "campaign_id": "CAM-0018",
         "campaign_name": "2025 Fashion Campaign 18",
-        "attributed_net_revenue_gbp": "2802.00"
+        "attributed_net_revenue_gbp": "2802.00",
+        "monthly_rank": 1
       },
       {
         "reporting_month": "2025-07-01",
         "campaign_id": "CAM-0014",
         "campaign_name": "2025 Fashion Campaign 14",
-        "attributed_net_revenue_gbp": "2382.50"
+        "attributed_net_revenue_gbp": "2382.50",
+        "monthly_rank": 2
       },
       {
         "reporting_month": "2025-07-01",
         "campaign_id": "CAM-0001",
         "campaign_name": "2025 Fashion Campaign 01",
-        "attributed_net_revenue_gbp": "2370.00"
+        "attributed_net_revenue_gbp": "2370.00",
+        "monthly_rank": 3
       },
       {
         "reporting_month": "2025-08-01",
         "campaign_id": "CAM-0022",
         "campaign_name": "2025 Fashion Campaign 22",
-        "attributed_net_revenue_gbp": "2748.00"
+        "attributed_net_revenue_gbp": "2748.00",
+        "monthly_rank": 1
       },
       {
         "reporting_month": "2025-08-01",
         "campaign_id": "CAM-0010",
         "campaign_name": "2025 Fashion Campaign 10",
-        "attributed_net_revenue_gbp": "2675.00"
+        "attributed_net_revenue_gbp": "2675.00",
+        "monthly_rank": 2
       },
       {
         "reporting_month": "2025-08-01",
         "campaign_id": "CAM-0002",
         "campaign_name": "2025 Fashion Campaign 02",
-        "attributed_net_revenue_gbp": "2605.00"
+        "attributed_net_revenue_gbp": "2605.00",
+        "monthly_rank": 3
       },
       {
         "reporting_month": "2025-09-01",
         "campaign_id": "CAM-0022",
         "campaign_name": "2025 Fashion Campaign 22",
-        "attributed_net_revenue_gbp": "3696.50"
+        "attributed_net_revenue_gbp": "3696.50",
+        "monthly_rank": 1
       },
       {
         "reporting_month": "2025-09-01",
         "campaign_id": "CAM-0018",
         "campaign_name": "2025 Fashion Campaign 18",
-        "attributed_net_revenue_gbp": "2628.00"
+        "attributed_net_revenue_gbp": "2628.00",
+        "monthly_rank": 2
       },
       {
         "reporting_month": "2025-09-01",
         "campaign_id": "CAM-0003",
         "campaign_name": "2025 Fashion Campaign 03",
-        "attributed_net_revenue_gbp": "2500.00"
+        "attributed_net_revenue_gbp": "2500.00",
+        "monthly_rank": 3
       },
       {
         "reporting_month": "2025-10-01",
         "campaign_id": "CAM-0015",
         "campaign_name": "2025 Fashion Campaign 15",
-        "attributed_net_revenue_gbp": "3623.50"
+        "attributed_net_revenue_gbp": "3623.50",
+        "monthly_rank": 1
       },
       {
         "reporting_month": "2025-10-01",
         "campaign_id": "CAM-0003",
         "campaign_name": "2025 Fashion Campaign 03",
-        "attributed_net_revenue_gbp": "3480.50"
+        "attributed_net_revenue_gbp": "3480.50",
+        "monthly_rank": 2
       },
       {
         "reporting_month": "2025-10-01",
         "campaign_id": "CAM-0007",
         "campaign_name": "2025 Fashion Campaign 07",
-        "attributed_net_revenue_gbp": "3049.00"
+        "attributed_net_revenue_gbp": "3049.00",
+        "monthly_rank": 3
       },
       {
         "reporting_month": "2025-11-01",
         "campaign_id": "CAM-0011",
         "campaign_name": "2025 Fashion Campaign 11",
-        "attributed_net_revenue_gbp": "4151.50"
+        "attributed_net_revenue_gbp": "4151.50",
+        "monthly_rank": 1
       },
       {
         "reporting_month": "2025-11-01",
         "campaign_id": "CAM-0002",
         "campaign_name": "2025 Fashion Campaign 02",
-        "attributed_net_revenue_gbp": "3916.50"
+        "attributed_net_revenue_gbp": "3916.50",
+        "monthly_rank": 2
       },
       {
         "reporting_month": "2025-11-01",
         "campaign_id": "CAM-0001",
         "campaign_name": "2025 Fashion Campaign 01",
-        "attributed_net_revenue_gbp": "3597.00"
+        "attributed_net_revenue_gbp": "3597.00",
+        "monthly_rank": 3
       },
       {
         "reporting_month": "2025-12-01",
         "campaign_id": "CAM-0007",
         "campaign_name": "2025 Fashion Campaign 07",
-        "attributed_net_revenue_gbp": "4089.50"
+        "attributed_net_revenue_gbp": "4089.50",
+        "monthly_rank": 1
       },
       {
         "reporting_month": "2025-12-01",
         "campaign_id": "CAM-0011",
         "campaign_name": "2025 Fashion Campaign 11",
-        "attributed_net_revenue_gbp": "3012.50"
+        "attributed_net_revenue_gbp": "3012.50",
+        "monthly_rank": 2
       },
       {
         "reporting_month": "2025-12-01",
         "campaign_id": "CAM-0019",
         "campaign_name": "2025 Fashion Campaign 19",
-        "attributed_net_revenue_gbp": "2788.00"
+        "attributed_net_revenue_gbp": "2788.00",
+        "monthly_rank": 3
       }
     ],
-    "semantic_sql": "SELECT CAST(reporting_month AS VARCHAR) AS reporting_month, campaign_id, campaign_name, attributed_net_revenue_gbp FROM MarketingCampaignMonthly QUALIFY ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY attributed_net_revenue_gbp DESC, campaign_id ASC) <= 3 ORDER BY reporting_month ASC, attributed_net_revenue_gbp DESC, campaign_id ASC\n",
-    "direct_sql": "SELECT CAST(reporting_month AS VARCHAR) AS reporting_month, campaign_id, campaign_name, attributed_net_revenue_gbp FROM fab_ent.raw_marts.mart_marketing__campaign_monthly QUALIFY ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY attributed_net_revenue_gbp DESC, campaign_id ASC) <= 3 ORDER BY reporting_month ASC, attributed_net_revenue_gbp DESC, campaign_id ASC\n"
+    "semantic_sql": "SELECT CAST(reporting_month AS VARCHAR) AS reporting_month, campaign_id, campaign_name, attributed_net_revenue_gbp, ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY attributed_net_revenue_gbp DESC, campaign_id ASC) AS monthly_rank FROM MarketingCampaignMonthly QUALIFY ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY attributed_net_revenue_gbp DESC, campaign_id ASC) <= 3 ORDER BY reporting_month ASC, monthly_rank ASC\n",
+    "direct_sql": "SELECT CAST(reporting_month AS VARCHAR) AS reporting_month, campaign_id, campaign_name, attributed_net_revenue_gbp, ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY attributed_net_revenue_gbp DESC, campaign_id ASC) AS monthly_rank FROM fab_ent.raw_marts.mart_marketing__campaign_monthly QUALIFY ROW_NUMBER() OVER (PARTITION BY reporting_month ORDER BY attributed_net_revenue_gbp DESC, campaign_id ASC) <= 3 ORDER BY reporting_month ASC, monthly_rank ASC\n"
   }
 ]

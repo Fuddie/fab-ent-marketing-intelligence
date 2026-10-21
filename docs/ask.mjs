@@ -1,5 +1,7 @@
 import {renderAnswer} from './answer.mjs';
 const $=id=>document.getElementById(id), URL='http://127.0.0.1:4174';
+const localHost=['127.0.0.1','localhost'].includes(location.hostname);
+const localOnly='Local questions are available only on localhost with the local Python, Wren and authenticated Codex services. Verified examples remain available here.';
 const suggestions=[
  'Which five campaigns generated the highest net revenue?',
  'Which channel had the strongest net ROAS?',
@@ -28,11 +30,13 @@ function mode(){
 }
 function counter(){$('character-count').textContent=`${$('ai-question').value.length}/500 characters`;}
 async function health(){
+ if(!localHost){$('ai-connection').textContent=localOnly;return;}
  try{const r=await fetch(URL+'/health',{signal:AbortSignal.timeout(2500)});if(!r.ok)throw Error();const h=await r.json();
  $('ai-connection').textContent=`${h.ready?'Connected':'Starting'} · ${URL} · Model: ${h.model} · Reasoning: ${h.reasoning} · ${h.running?'Request running':'Idle'}`;
  }catch{$('ai-connection').textContent=`Local service unavailable · ${URL} · Model/reasoning unavailable · ${running?'Request running':'Idle'}. Start the local service for new questions; verified examples remain available.`;}
 }
 async function post(path,body){
+ if(!localHost)throw Error(localOnly);
  const r=await fetch(URL+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),signal:AbortSignal.timeout(95000)});
  const v=await r.json();if(!r.ok)throw Error(v.error||'Local execution failed.');return v;
 }

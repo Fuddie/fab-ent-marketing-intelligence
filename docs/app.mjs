@@ -1,4 +1,5 @@
 import {select, cash, count, pct, multiple, month, esc} from './metrics.mjs';
+import {renderAnswer} from './answer.mjs';
 
 const $ = id => document.getElementById(id);
 const VERSION='1.29.0';
@@ -54,7 +55,7 @@ function update(){
   }catch(e){failure(e);}
 }
 async function verified(){
-  try{const items=await json('verified.json');$('questions').innerHTML=items.map((q,i)=>`<details><summary>${i+1}. ${esc(q.question)}</summary><p class="muted">Saved verified answer · full fixed snapshot · GBP. Revenue-eligible sales include fully refunded sales; conversion eligibility is separate. NULL is N/A.</p>${table(Object.keys(q.answer[0]||{}).map(s=>s.replaceAll('_',' ')),q.answer.map(r=>Object.entries(r).map(([key,v])=>v==null?'N/A':/gbp|spend|revenue|refund/.test(key)?cash(v):/pct/.test(key)?pct(v):/roas/.test(key)?multiple(v):String(v))),'Saved Wren-verified answer')}<details><summary>Review saved semantic SQL</summary><pre>${esc(q.semantic_sql)}</pre></details></details>`).join('');}catch(e){$('questions').textContent=`Saved verified examples unavailable: ${e.message}`;}
+  try{const items=await json('verified.json');$('questions').innerHTML=items.map((q,i)=>`<details><summary>${i+1}. ${esc(q.question)}</summary>${renderAnswer({source:'saved',rows:q.answer,model:q.model,semantic_sql:q.semantic_sql,verification_sql:q.direct_sql,validation:'Saved Wren execution independently checked against DuckDB',assumptions:['Full fixed 2025 snapshot; dashboard filters do not apply.']})}</details>`).join('');}catch(e){$('questions').textContent=`Saved verified examples unavailable: ${e.message}`;}
 }
 async function boot(){
   busy(true);verified();

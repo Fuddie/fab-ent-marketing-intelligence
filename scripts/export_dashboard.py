@@ -12,6 +12,7 @@ import shutil
 
 import duckdb
 from validate_wren import ROOT, PROJECT, MODELS, run, records, compare, reference, require
+from governed_snapshot import source_digest
 
 
 def main():
@@ -21,6 +22,8 @@ def main():
     exe = str(Path(args.wren_exe).resolve())
     require(run([exe,'--version']) == 'wrenai 0.15.0', 'Wren version drift')
     evidence = json.loads((PROJECT/'target/validation/summary.json').read_text())
+    source_stamp = source_digest()
+    require(evidence.get('source_sha256') == source_stamp, 'Governed inputs changed; run Wren validation again')
     require(len(evidence['checks']) >= 32 and all(c['status']=='PASS' for c in evidence['checks']), 'Run Wren validation first')
     out = ROOT/'docs/data'
     out.mkdir(parents=True, exist_ok=True)
@@ -74,7 +77,8 @@ def main():
     def save(path,value):
         path.write_text(json.dumps(value,indent=2,default=str)+'\n',encoding='utf-8')
     save(ROOT/'docs/verified.json',verified)
-    save(ROOT/'docs/snapshot.json',{'snapshot':'fixed_2025_synthetic','reporting_timezone':'Europe/London','wren_version':'0.15.0','duckdb_export_version':duckdb.__version__,'models':snapshots,'queries_sha256':hashlib.sha256((ROOT/'docs/queries.json').read_bytes()).hexdigest(),'comparison':manifest['tolerance'],'checks':'All exported rows, all fixed SQL queries and all saved verified examples passed Wren versus direct DuckDB and typed Parquet parity.'})
+    require(source_digest() == source_stamp, 'Governed inputs changed during export; revalidate and export again')
+    save(ROOT/'docs/snapshot.json',{'snapshot':'fixed_2025_synthetic','source_sha256':source_stamp,'mdl_sha256':hashlib.sha256((PROJECT/'target/mdl.json').read_bytes()).hexdigest(),'reporting_timezone':'Europe/London','wren_version':'0.15.0','duckdb_export_version':duckdb.__version__,'models':snapshots,'queries_sha256':hashlib.sha256((ROOT/'docs/queries.json').read_bytes()).hexdigest(),'comparison':manifest['tolerance'],'checks':'All exported rows, all fixed SQL queries and all saved verified examples passed Wren versus direct DuckDB and typed Parquet parity.'})
     report=ROOT/'target/dashboard'
     report.mkdir(parents=True,exist_ok=True)
     save(report/'query-results.json',query_results)

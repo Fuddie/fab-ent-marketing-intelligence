@@ -1,5 +1,7 @@
 {
   "snapshot": "fixed_2025_synthetic",
+  "source_sha256": "076ee4211ddf09ad12980b2a6c86e7b65988477c887b4b44787100bcd8d7337a",
+  "mdl_sha256": "b46f508601368902562d67f36980c1a0e861800915fa2a54422f56de650ecc90",
   "reporting_timezone": "Europe/London",
   "wren_version": "0.15.0",
   "duckdb_export_version": "1.5.6",

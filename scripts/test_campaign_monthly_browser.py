@@ -15,7 +15,7 @@ if __name__=='__main__':
         monthly.locator('> summary').click()
         assert monthly.locator('tbody tr').count()==36
         page.set_content((ROOT/'target/campaign-monthly/preview.html').read_text(encoding='utf-8'))
-        assert page.locator('th').all_text_contents()==['Reporting month','Campaign ID','Campaign name','Attributed net revenue GBP']
+        assert page.locator('th').all_text_contents()==['Reporting month','Campaign ID','Campaign name','Attributed net revenue GBP','Monthly rank']
         assert page.locator('tbody tr').count()==36
         assert 'Reporting date' not in page.inner_text('main')
         for width in [1440,390]:

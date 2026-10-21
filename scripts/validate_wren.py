@@ -16,6 +16,7 @@ import sys
 
 import duckdb
 import yaml
+from governed_snapshot import source_digest
 
 ROOT = Path(__file__).resolve().parents[1]
 PROJECT = ROOT / "wren"
@@ -228,7 +229,7 @@ def main():
         empty = check("empty_null_ratios", f"SELECT {formula} FROM MarketingMonthlyOverview WHERE 1=0",
                       f"SELECT {formula} FROM fab_ent.raw_marts.mart_marketing__monthly_overview WHERE 1=0")
         require(all(v is None for v in empty[0].values()), "Empty ratios must be NULL")
-    (report / "summary.json").write_text(json.dumps({"version": version, "absolute_tolerance": ABS_TOL,
+    (report / "summary.json").write_text(json.dumps({"version": version, "source_sha256": source_digest(), "absolute_tolerance": ABS_TOL,
         "relative_tolerance": REL_TOL, "checks": results}, indent=2) + "\n", encoding="utf-8")
     print(f"PASS: {len(results)} comparisons; report in wren/target/validation (ignored)")
 

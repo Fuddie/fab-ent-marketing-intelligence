@@ -1,7 +1,7 @@
 # Marketing semantic project
 
 This isolated Wren CLI 0.15.0 project reads the five governed dbt marts.
-Setup and validation commands are in the [root README](../README.md#phase-5-wren-semantic-layer).
+Setup and validation commands are in the [root README](../README.md#reproducible-windows-setup).
 The repository root remains exclusively the dbt project; Wren YAML lives here.
 
 `models/*/metadata.yml` preserves every physical mart column, with descriptions

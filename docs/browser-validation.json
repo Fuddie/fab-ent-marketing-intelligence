@@ -1,5 +1,5 @@
 {
-  "status": "BLOCKED",
+  "status": "PASS",
   "browser": "installed Google Chrome, headless Playwright 1.56.0",
   "viewports": [
     1440,
@@ -22,12 +22,5 @@
   "screenshots": [
     "assets/screenshots/desktop.png",
     "assets/screenshots/mobile.png"
-  ],
-  "current_run": "2026-10-20",
-  "failure": "Failed to fetch dynamically imported module: https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0/+esm",
-  "checks_completed_this_run": [
-    "Ask UI modes, policies, error states and layouts",
-    "Saved Wren monthly answer: 36 rows; Reporting month; 1440/390 screenshots; no overflow"
-  ],
-  "prior_run_evidence": "Existing checks and dashboard screenshots describe a previous run; full WASM parity and interaction assertions were not reached this run."
+  ]
 }
